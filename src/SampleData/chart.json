@@ -1,0 +1,302 @@
+{
+    "categories":[
+        {
+            "name":"Vegetales enlatados",
+            "id":1,
+            "variables":[
+                {
+                    "name":"Inflacion",
+                    "color":"#e74c3c", "id":1
+                },
+                {
+                    "name":"SOS",
+                    "color":"#f1c40f", "id":2
+                },
+                {
+                    "name":"Clima",
+                    "color":"#9b59b6", "id":3
+                }
+            ]
+        }
+    ], 
+    "subcategories":[
+        {
+            "name":"Chicharos",
+            "id":1,
+            "variables":[
+                {
+                    "name":"Inflacion",
+                    "color":"#e74c3c", "id":1
+                },
+                {
+                    "name":"SOS",
+                    "color":"#f1c40f", "id":2
+                },
+                {
+                    "name":"Clima",
+                    "color":"#9b59b6", "id":3
+                }
+            ],
+            "category":{
+                "name":"Vegetales enlatados",
+                "id":1,
+                "variables":[
+                    {
+                        "name":"Inflacion",
+                        "color":"#e74c3c", "id":1
+                    },
+                    {
+                        "name":"SOS",
+                        "color":"#f1c40f", "id":2
+                    },
+                    {
+                        "name":"Clima",
+                        "color":"#9b59b6", "id":3
+                    }
+                ]
+            }
+        },
+        {
+            "name":"Chicharos con zanahoria",
+            "id":2,
+            "variables":[
+                {
+                    "name":"Inflacion",
+                    "color":"#e74c3c", "id":1
+                },
+                {
+                    "name":"SOS",
+                    "color":"#f1c40f", "id":2
+                },
+                {
+                    "name":"Clima",
+                    "color":"#9b59b6", "id":3
+                }
+            ],
+            "category":{
+                "name":"Vegetales enlatados",
+                "id":1,
+                "variables":[
+                    {
+                        "name":"Inflacion",
+                        "color":"#e74c3c", "id":1
+                    },
+                    {
+                        "name":"SOS",
+                        "color":"#f1c40f", "id":2
+                    },
+                    {
+                        "name":"Clima",
+                        "color":"#9b59b6", "id":3
+                    }
+                ]
+            }
+        }
+    ],
+    "skus":[
+        {
+            "name":"HERDEZ CHICHARO FINO LATA 400 GR",
+            "id":1,
+            "groupers":[
+                {
+                    "name":"Marca",
+                    "color":"#3498db", "id":1
+                },
+                {
+                    "name":"Presentacion",
+                    "color":"#1abc9c", "id":2
+                },
+                {
+                    "name":"Fabricante",
+                    "color":"#34495e", "id":3
+                }
+            ],
+            "variables":[
+                {
+                    "name":"Inflacion",
+                    "color":"#e74c3c", "id":1
+                },
+                {
+                    "name":"SOS",
+                    "color":"#f1c40f", "id":2
+                },
+                {
+                    "name":"Clima",
+                    "color":"#9b59b6", "id":3
+                }
+            ],
+            "subcategory":{
+                "name":"Chicharos",
+                "id":1,
+                "variables":[
+                    {
+                        "name":"Inflacion",
+                        "color":"#e74c3c", "id":1
+                    },
+                    {
+                        "name":"SOS",
+                        "color":"#f1c40f", "id":2
+                    },
+                    {
+                        "name":"Clima",
+                        "color":"#9b59b6", "id":3
+                    }
+                ],
+                "category":{
+                    "name":"Vegetales enlatados",
+                    "id":1,
+                    "variables":[
+                        {
+                            "name":"Inflacion",
+                            "color":"#e74c3c", "id":1
+                        },
+                        {
+                            "name":"SOS",
+                            "color":"#f1c40f", "id":2
+                        },
+                        {
+                            "name":"Clima",
+                            "color":"#9b59b6", "id":3
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name":"LA COSTEÑA LATA 220 GR",
+            "id":2,
+            "groupers":[
+                {
+                    "name":"Marca",
+                    "color":"#3498db", "id":1
+                },
+                {
+                    "name":"Presentacion",
+                    "color":"#1abc9c", "id":2
+                },
+                {
+                    "name":"Fabricante",
+                    "color":"#34495e", "id":3
+                }
+            ],
+            "variables":[
+                {
+                    "name":"Inflacion",
+                    "color":"#e74c3c", "id":1
+                },
+                {
+                    "name":"SOS",
+                    "color":"#f1c40f", "id":2
+                },
+                {
+                    "name":"Clima",
+                    "color":"#9b59b6", "id":3
+                }
+            ],
+            "subcategory":{
+                "name":"Chicharos",
+                "id":1,
+                "variables":[
+                    {
+                        "name":"Inflacion",
+                        "color":"#e74c3c", "id":1
+                    },
+                    {
+                        "name":"SOS",
+                        "color":"#f1c40f", "id":2
+                    },
+                    {
+                        "name":"Clima",
+                        "color":"#9b59b6", "id":3
+                    }
+                ],
+                "category":{
+                    "name":"Vegetales enlatados",
+                    "id":1,
+                    "variables":[
+                        {
+                            "name":"Inflacion",
+                            "color":"#e74c3c", "id":1
+                        },
+                        {
+                            "name":"SOS",
+                            "color":"#f1c40f", "id":2
+                        },
+                        {
+                            "name":"Clima",
+                            "color":"#9b59b6", "id":3
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name":"DEL MONTE CHICHARO LATA 200 GR",
+            "id":3,
+            "groupers":[
+                {
+                    "name":"Marca",
+                    "color":"#3498db", "id":1
+                },
+                {
+                    "name":"Presentacion",
+                    "color":"#1abc9c", "id":2
+                },
+                {
+                    "name":"Fabricante",
+                    "color":"#34495e", "id":3
+                }
+            ],
+            "variables":[
+                {
+                    "name":"Inflacion",
+                    "color":"#e74c3c", "id":1
+                },
+                {
+                    "name":"SOS",
+                    "color":"#f1c40f", "id":2
+                },
+                {
+                    "name":"Clima",
+                    "color":"#9b59b6", "id":3
+                }
+            ],
+            "subcategory":{
+                "name":"Chicharos",
+                "id":1,
+                "variables":[
+                    {
+                        "name":"Inflacion",
+                        "color":"#e74c3c", "id":1
+                    },
+                    {
+                        "name":"SOS",
+                        "color":"#f1c40f", "id":2
+                    },
+                    {
+                        "name":"Clima",
+                        "color":"#9b59b6", "id":3
+                    }
+                ],
+                "category":{
+                    "name":"Vegetales enlatados",
+                    "id":1,
+                    "variables":[
+                        {
+                            "name":"Inflacion",
+                            "color":"#e74c3c", "id":1
+                        },
+                        {
+                            "name":"SOS",
+                            "color":"#f1c40f", "id":2
+                        },
+                        {
+                            "name":"Clima",
+                            "color":"#9b59b6", "id":3
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

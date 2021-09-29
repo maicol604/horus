@@ -1,0 +1,11 @@
+.simple_menu_container {
+    opacity: 0;
+    transition: all .25s;
+}
+
+.fade_in {
+    opacity: 1;
+}
+
+.fade_out {
+}

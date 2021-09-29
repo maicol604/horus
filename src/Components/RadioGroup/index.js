@@ -1,0 +1,27 @@
+import React from 'react';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+
+export default function RadioButtonsGroup({items, title, onChange, name}) {
+  const [value, setValue] = React.useState('female');
+
+    const handleChange = (event) => {
+        if(onChange)
+            onChange({target: {name, value:event.target.value}})
+        setValue(event.target.value);
+    };
+
+    return (
+        <FormControl component="fieldset">
+            {title?<FormLabel component="legend">{title}</FormLabel>:<React.Fragment/>}
+            <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
+                {items.map((data, index)=>
+                    <FormControlLabel key={index} value={''+ data.id} control={<Radio />} label={data.name} />
+                )}
+            </RadioGroup>
+        </FormControl>
+    );
+}
