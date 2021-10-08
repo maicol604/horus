@@ -61,14 +61,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const datalist = [
   {
-    title:'Agrupadores',
+    title:'Marcas',
     items: [
       {color:'#eeefaf', name:'primer agrupador'},{color:'#e74c3c', name:'2 agrupador'},{color:'#af3eee', name:'3'},{color:'#3fddaa', name:'agrupador con texto largo'},{color:'#afffaa', name:'5'}
     ]
   }
 ]
 
-export default function FullScreenDialog({skus, categories, subcategories}) {
+export default function FullScreenDialog({skus, categories, subcategories, groupers}) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
@@ -132,6 +132,9 @@ export default function FullScreenDialog({skus, categories, subcategories}) {
                     }
                   </div>
                 </Drawer>*/}
+                {
+                  //console.log(groupers,'groupers')
+                }
                 <HorusChart
                   categories={[...categories]}
                   subcategories={[...subcategories]}

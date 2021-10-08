@@ -12,12 +12,12 @@ import EditIcon from '@mui/icons-material/EditOutlined';
 
 import ConfirmDialog from '../../../Components/ConfirmDialog';
 import RadioGroup from '../../../Components/RadioGroup';
-import CheckboxGroup from '../../../Components/CheckboxGroup';
+import RadioGropupGroupers from './RadioGropupGroupers';
 
 const initialValue = {
     name:'',
     description:'',
-    groupers:[],
+    grouper:null,
     subcategory:null
 }
 
@@ -51,7 +51,7 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[] }) => {
     })
 
     React.useEffect(()=>{
-        console.log('useffect',skus)
+        console.log('useffect',groupers,skus)
     },[skus])
 
     const getSkus = () => {
@@ -70,17 +70,18 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[] }) => {
                     </Grid>
                     <Grid item xs={2}>
                         {
-                            data.groupers.filter(data=>data.checked).map((data)=>
+                            data.grouper?
                                 <div className={classes.colorContainer}>
-                                    <div className={classes.colorSquare} style={{backgroundColor:data.color}}/>
-                                    {/*<Typography variant="subtitle1">{data.name}</Typography>*/}
+                                    <div className={classes.colorSquare} style={{backgroundColor:data.grouper.color}}/>
+                                    <Typography variant="subtitle1" align="left">{data.grouper.name}</Typography>
                                 </div>
-                            )
+                            :
+                            <></>
                         }
                     </Grid>
                     <Grid item xs={2}>
                         <Typography>
-                            {data.subcategory}
+                            {data.subcategory.name}
                         </Typography>
                     </Grid>
                     <Grid item xs={1}>
@@ -115,6 +116,7 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[] }) => {
     }
 
     const handleSaveSku = () => {
+        console.log(sku)
         let cpy = JSON.stringify(sku);
         if(pushSku){
             pushSku(JSON.parse(cpy));
@@ -146,16 +148,16 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[] }) => {
             </Grid>
             <Grid container spacing={3}>
                 <Grid item xs={3}>
-                    <Typography variant="subtitle1">Nombre</Typography>
+                    <Typography variant="subtitle1" align="left">Nombre</Typography>
                 </Grid>
                 <Grid item xs={2}>
-                    <Typography variant="subtitle1">Contenido</Typography>
+                    <Typography variant="subtitle1" align="left">Contenido</Typography>
                 </Grid>
                 <Grid item xs={3}>
-                    <Typography variant="subtitle1">Agrupadores</Typography>
+                    <Typography variant="subtitle1" align="left">Marcas</Typography>
                 </Grid>
                 <Grid item xs={3}>
-                    <Typography variant="subtitle1">Subcategoria</Typography>
+                    <Typography variant="subtitle1" align="left">Subcategoria</Typography>
                 </Grid>
                 <Grid item xs={1}>
                     
@@ -177,7 +179,7 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[] }) => {
                 <Grid item xs={2}>
                     <TextField 
                         id="" 
-                        label="Descripcion" 
+                        label="Contenido" 
                         variant="outlined" 
                         fullWidth
                         multiline
@@ -188,9 +190,9 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[] }) => {
                     />
                 </Grid>
                 <Grid item xs={3}>
-                    <CheckboxGroup
-                        name = 'groupers'
-                        items = {[...groupers.map((data, index) => ({...data, id:index}))]}
+                    <RadioGropupGroupers
+                        name = 'grouper'
+                        items = {[...groupers]}
                         onChange={handleInputSku}
                     />
                 </Grid>

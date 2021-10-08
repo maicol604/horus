@@ -14,13 +14,46 @@ const useStyles = makeStyles((theme)=>({
         boxSizing: 'border-box',
         transition: 'all .5s',
         backgroundColor: '#fff',
-        zIndex: '1'
+        zIndex: '1',
+        position: 'relative',
+        overflow: 'hidden',
+        color: '#727272',
+        //backgroundColor: '#fff'
     },
     startNodeContainer: {
         display: 'flex',
         alignItems: 'center',
         marginBottom: '.5em',
         transition: 'all .5s'
+    },
+    borderTop: {
+        height: '.5em',
+        width: '100%',
+        backgroundColor: props => props.color, 
+        position: 'absolute',
+        left: '0',
+        top: '0'
+    },
+    grouperCircle: {
+        width: '1em',
+        height: '1em',
+        backgroundColor: props => props.color,
+        borderRadius: '50%',
+        marginRight: '.5em',
+    },
+    title: {
+        textTransform: 'uppercase',
+        display: 'flex',
+        marginBottom: '.25em',
+        fontWeight: '600'
+    },
+    detail: {
+        fontSize: '.75em'
+    },
+    startPoint: {
+        position: 'absolute',
+        right: '0',
+        top: '25%'
     }
 }));
 
@@ -49,7 +82,7 @@ function useOutsideAlerter(ref, callback) {
 const StartBox = ({id, data, onStop}) => {
 
     const wrapperRef = React.useRef(null);
-    const classes = useStyles();
+    const classes = useStyles({color: data.grouper.color});
     const [focus, setFocus] = React.useState(false);
 
     const hanldeFocus = () => {
@@ -61,16 +94,33 @@ const StartBox = ({id, data, onStop}) => {
     }
 
     useOutsideAlerter(wrapperRef, handleFocusOut);
-
+console.log(data)
     return (
-        <div className={classes.startNodeContainer} ref={wrapperRef} id={'startBox-'+id} >
+        <div className={classes.startNodeContainer} ref={wrapperRef}>
             <div 
                 className={classes.startNode} 
-                id={'start-'+id} 
+                 
                 onClick={hanldeFocus}
                 style={{borderWidth: focus?'2px':'1px'}}
             >
-                {data.name}
+                <div id={'startBox-'+id} className={classes.startPoint}/>
+                <div id={'start-'+id} className={classes.startPoint}/>
+                <div className={classes.borderTop}/>
+                <div className={classes.title}>
+                    {data.name}
+                </div>
+                <div className={classes.dataContainer}>
+                    <div style={{display: 'flex', alignItems: 'center'}}>
+                        <div className={classes.grouperCircle}/> 
+                        <span style={{textTransform: 'uppercase'}}>{data.grouper.name}</span>
+                    </div>
+                    <div>
+                        {data.grouper.description}
+                    </div>
+                    <div className={classes.detail}>
+                        <span style={{textTransform: 'capitalize'}}>{data.grouper.presentation}vidrio</span> / <span style={{fontWeight: '600'}}>100 Ml</span>
+                    </div>
+                </div>
             </div>
             <Draggable data={data} onStop={onStop}/>
         </div>

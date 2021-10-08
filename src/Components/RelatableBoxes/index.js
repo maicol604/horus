@@ -11,7 +11,7 @@ import Fab from '@mui/material/Fab';
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 
 
-const useStyles = makeStyles((theme)=>({
+const useStyles = makeStyles({
     container: {
         display: 'flex',
     },
@@ -38,12 +38,19 @@ const useStyles = makeStyles((theme)=>({
         padding: '.25em',
         color: '#fff',
         borderRadius: '4px 4px 0 0'
-    }
-}));
+    },
 
+    '@global': {
+        
+    }
+
+});
+
+//console.log('here',{...lineClasses => lineClasses.classes, ...{".stroke-color-herdez-8889104302314472": {stroke:'#417505 !important'}}})
 const defaultStyleClass = 'relationship-line';
 
-const RelatableBoxes = ({dataFrom, dataTo}) => {
+const RelatableBoxes = ({dataFrom, dataTo, lineClasses={}}) => {
+
     const classes = useStyles();
     const [draggablesNodes, setDraggablesNodes] = React.useState([]);
     const [settings, setSettings] = React.useState([]);
@@ -51,8 +58,11 @@ const RelatableBoxes = ({dataFrom, dataTo}) => {
     const ref = React.useRef();
 
     React.useEffect(()=>{
-        console.log(dataFrom,dataTo)
+        //console.log(dataFrom,dataTo)
+        //console.log(groupers)
+        //console.log(classes)
         let newSettings = [];
+        
         for(let i=0;i<dataFrom.length;i++){
             newSettings.push(
                 {
@@ -69,7 +79,7 @@ const RelatableBoxes = ({dataFrom, dataTo}) => {
                             side: "left",
                         },
                     },
-                    style: "relationship-line-selected",
+                    style: `relationship-line-selected`,
               }
             )
         }
@@ -112,7 +122,7 @@ const RelatableBoxes = ({dataFrom, dataTo}) => {
                         side: "left",
                     },
                 },
-                style: "relationship-line",
+                style: "relationship-line "+`stroke-color-${data.grouper.name}-${data.grouper.id}`.replace(/\s/g, '_').split('.').join(""),
             }
             aux.push(newData);
             //console.log(newData)
@@ -218,6 +228,9 @@ const RelatableBoxes = ({dataFrom, dataTo}) => {
                     {/*<ContextMenu
                         ref={ref}
                     />*/}
+                    {
+                       //console.log(groupers,'groupers')
+                    }
                     <ReactBezier settings={settings}>
                         {/*<CustonCursor/>*/}
                         <div className={classes.container}>
@@ -253,6 +266,7 @@ const RelatableBoxes = ({dataFrom, dataTo}) => {
                                                     onEnter={handleEnter}
                                                     onExit={handleExit}
                                                     related={isRelated(data.id)}
+                                                    
                                                     onEnterDelete={()=>{changeLineColor(data.id, 'relationship-line-delete')}}
                                                     onExitDelete={()=>{changeLineColor(data.id, 'relationship-line')}}
 

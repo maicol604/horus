@@ -10,7 +10,7 @@ export default function RadioButtonsGroup({items, title, onChange, name}) {
 
     const handleChange = (event) => {
         if(onChange)
-            onChange({target: {name, value:event.target.value}})
+            onChange({target: {name, value:JSON.parse(event.target.value)}})
         setValue(event.target.value);
     };
 
@@ -19,7 +19,7 @@ export default function RadioButtonsGroup({items, title, onChange, name}) {
             {title?<FormLabel component="legend">{title}</FormLabel>:<React.Fragment/>}
             <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
                 {items.map((data, index)=>
-                    <FormControlLabel key={index} value={''+ data.id} control={<Radio />} label={data.name} />
+                    <FormControlLabel key={index} value={JSON.stringify(data)} control={<Radio />} label={data.name} />
                 )}
             </RadioGroup>
         </FormControl>

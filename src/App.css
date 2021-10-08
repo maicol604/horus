@@ -38,7 +38,7 @@
 }
 
 .relationship-line {
-  stroke: #2B9982;
+  /*stroke: #2B9982;*/
   stroke-width: 2px;
 }
 .relationship-line-selected {

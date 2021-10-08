@@ -23,7 +23,7 @@ const initialValue = {
     name:'',
     description:'',
     color:'#ffffff',
-    type:''
+    presentation :''
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -59,24 +59,24 @@ const Step2 = ({ groupers=[], pushGrouper }) => {
             groupers.map((data, index) => 
                 <React.Fragment>
                     <Grid item xs={3}>
-                        <Typography>
+                        <Typography align="left">
                             {data.name}
                         </Typography>
                     </Grid>
                     <Grid item xs={3}>
-                        <Typography>
+                        <Typography align="left">
                             {data.name}
                         </Typography>
                     </Grid>
                     <Grid item xs={2}>
                         <div className={classes.colorContainer}>
                             <div className={classes.colorSquare} style={{backgroundColor:data.color}}/>
-                            <Typography variant="subtitle1">{data.color.split('#')[1]}</Typography>
+                            <Typography variant="subtitle1" align="left">{data.color.split('#')[1]}</Typography>
                         </div>
                     </Grid>
                     <Grid item xs={2}>
-                        <Typography>
-                            {data.type}
+                        <Typography align="left">
+                            {data.presentation }
                         </Typography>
                     </Grid>
                     <Grid item xs={1}>
@@ -124,33 +124,38 @@ const Step2 = ({ groupers=[], pushGrouper }) => {
     return (
         <React.Fragment>
             <Grid container alignItems='center' spacing={3}>
+                <Grid item xs={12}/>
                 <Grid item xs={12}>
                     <Typography
                         variant='h6'
+                        align="left"
                     >
-                        Añade o elimina tus agrupadores
+                        Añade o elimina tus marcas
                     </Typography>
                     <Typography
                         variant='caption'
+                        align="left"
+                        display="block"
                     >
                         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur
                         unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam
                         dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.
                     </Typography>
                 </Grid>
+                <Grid item xs={12}/>
             </Grid>
             <Grid container spacing={3}>
                 <Grid item xs={3}>
-                    <Typography variant="subtitle1">Nombre</Typography>
+                    <Typography variant="subtitle1" align="left">Marca</Typography>
                 </Grid>
                 <Grid item xs={3}>
-                    <Typography variant="subtitle1">Descripcion</Typography>
+                    <Typography variant="subtitle1" align="left">Fabricante</Typography>
                 </Grid>
                 <Grid item xs={2}>
-                    <Typography variant="subtitle1">Color</Typography>
+                    <Typography variant="subtitle1" align="left">Color</Typography>
                 </Grid>
                 <Grid item xs={3}>
-                    <Typography variant="subtitle1">Tipo</Typography>
+                    <Typography variant="subtitle1" align="left">Presentación</Typography>
                 </Grid>
                 <Grid item xs={1}>
                     
@@ -159,7 +164,7 @@ const Step2 = ({ groupers=[], pushGrouper }) => {
                 <Grid item xs={3}>
                     <TextField 
                         id="" 
-                        label="Nombre" 
+                        label="Marca" 
                         variant="outlined" 
                         fullWidth
                         name='name'
@@ -171,7 +176,7 @@ const Step2 = ({ groupers=[], pushGrouper }) => {
                 <Grid item xs={3}>
                     <TextField 
                         id="" 
-                        label="Descripcion" 
+                        label="Fabricante" 
                         variant="outlined" 
                         fullWidth
                         multiline
@@ -189,24 +194,17 @@ const Step2 = ({ groupers=[], pushGrouper }) => {
                     />
                 </Grid>
                 <Grid item xs={2}>
-                    <FormControl variant="outlined" className={classes.formControl}>
-                        <InputLabel id="demo-simple-select-outlined-label">Tipo</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-outlined-label"
-                            id="demo-simple-select-outlined"
-                            value={grouper.type}
-                            onChange={handleInputGrouper}
-                            label="Tipo"
-                            name={'type'}
-                        >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
-                            <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem>
-                        </Select>
-                    </FormControl>
+                    <TextField 
+                        id="" 
+                        label="Presentación" 
+                        variant="outlined" 
+                        fullWidth
+                        multiline
+                        name='presentation'
+                        //rows={2}
+                        onChange={handleInputGrouper}
+                        value={grouper.presentation}
+                    />
                 </Grid>
                 <Grid item xs={2}>
                     <div style={{height: '100%', display: 'flex', justifyContent: 'center', alignItems:'center'}}>

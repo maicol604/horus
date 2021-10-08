@@ -46,7 +46,7 @@ const HorusChart = ({categories=[], subcategories=[], skus=[]}) => {
         let newSettings = [];
         for(let i=0;i<categories.length;i++){
             for(let j=0;j<subcategories.length;j++){
-                if(`${categories[i].id}`===`${subcategories[j].category}`){
+                if(`${categories[i].id}`===`${subcategories[j].category.id}`){
                     newSettings.push(
                         {
                             from: "category-"+categories[i].id,
@@ -66,7 +66,7 @@ const HorusChart = ({categories=[], subcategories=[], skus=[]}) => {
                 }
             }
         }
-        //console.log('sub',subcategories)
+        console.log('sub',subcategories)
         //console.log('skus',skus)
         for(let i=0;i<subcategories.length;i++){
             for(let j=0;j<skus.length;j++){
