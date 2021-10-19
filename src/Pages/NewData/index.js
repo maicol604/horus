@@ -578,7 +578,7 @@ const NewData = ({onUpdate, onFinish}) => {
                             </Breadcrumbs>
                         </Grid>
                         {subStep.step===0?
-                            <React.fragment>
+                            <>
                                 <Groupers
                                     groupers={state.groupers} 
                                     pushGrouper={pushGrouper}
@@ -610,9 +610,9 @@ const NewData = ({onUpdate, onFinish}) => {
                                         </Button>
                                     </Stack>
                                 </div>
-                            </React.fragment>
+                            </>
                             :
-                            <React.fragment>
+                            <>
                                 <Skus
                                     groupers={state.groupers} 
                                     subcategories={state.subcategories}
@@ -648,13 +648,13 @@ const NewData = ({onUpdate, onFinish}) => {
                                         </Button>
                                     </Stack>
                                 </div>
-                            </React.fragment>
+                            </>
                         }
                     </React.Fragment>
                 );
             case 2:
             return(
-                <React.fragment>
+                <>
                     <Grid container alignItems='center' spacing={3}>
                         <Grid item xs={12}>
                             <Typography
@@ -710,11 +710,11 @@ const NewData = ({onUpdate, onFinish}) => {
                             </Button>
                         </Stack>
                     </div>
-                </React.fragment>
+                </>
             );
             // case 3:
             //     return (
-            //         <React.fragment>
+            //         <>
             //             <Grid container alignItems='center' spacing={3}>
             //                 <Grid item xs={12}>
             //                     <Typography
@@ -826,7 +826,7 @@ const NewData = ({onUpdate, onFinish}) => {
             //                     </Button>
             //                 </Stack>
             //             </div>
-            //         </React.fragment>
+            //         </>
             //     );
             default:
                 return 'Unknown step';
@@ -903,7 +903,7 @@ const NewData = ({onUpdate, onFinish}) => {
                                                 subcategories={sortSubcategories( [state.category], state.subcategories)}
                                             />
                                             :
-                                            <React.fragment></React.fragment>
+                                            <></>
                                         }
                                     </div>
                                 </Grid>

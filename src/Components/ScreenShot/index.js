@@ -87,7 +87,7 @@ const ScreenShot = ({children, onCapture}) => {
     }
 
     return (
-        <React.fragment>
+        <>
             <div ref={ref} className={classes.container}>
                 {/*<div className={classes.capture} style={{display: shutter?'block':'none'}}></div>
                 <canvas ref={ref2} style={{width: '100%', height: '100vh', background: 'red', position: 'absolute'}}></canvas>*/}
@@ -134,7 +134,7 @@ const ScreenShot = ({children, onCapture}) => {
                     />
                 }
             </div>
-        </React.fragment>
+        </>
     )
 }
 

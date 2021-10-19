@@ -15,9 +15,9 @@ const Categories = () => {
     const [waiting, setWaiting] = React.useState(false);
 
     return (
-        <React.fragment>
+        <>
             {waiting?
-                <React.fragment>
+                <>
                     {
                     categories.map((state, index)=>{
                         return (
@@ -129,7 +129,7 @@ const Categories = () => {
                             </Button>
                         </Stack>
                     </div>
-                </React.fragment>
+                </>
             :
                 <NewData
                     onUpdate={(data)=>{
@@ -140,7 +140,7 @@ const Categories = () => {
                     }}
                 />
             }
-        </React.fragment>
+        </>
     )
 }
 
