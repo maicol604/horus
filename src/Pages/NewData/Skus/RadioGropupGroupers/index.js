@@ -22,20 +22,20 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function RadioButtonsGroup({items, title, onChange, name}) {
-    const [value, setValue] = React.useState('female');
+export default function RadioButtonsGroup({items, title, onChange, name, value}) {
+    //const [value, setValue] = React.useState();
     const classes = useStyles();
     const handleChange = (event) => {
-        //console.log(JSON.parse(event.target.value))
+        ////console.log(JSON.parse(event.target.value))
         if(onChange)
             onChange({target: {name, value:JSON.parse(event.target.value)}})
-        setValue(event.target.value);
+        //setValue(event.target.value);
     };
-
+    //console.log(value)
     return (
         <FormControl component="fieldset">
             {title?<FormLabel component="legend">{title}</FormLabel>:<React.Fragment/>}
-            <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
+            <RadioGroup aria-label="gender" name="gender1" value={JSON.stringify(value)} onChange={handleChange}>
                 {items.map((data, index)=>
                     <FormControlLabel key={index} value={JSON.stringify(data)} control={<Radio />} label={<div style={{display: 'flex', alignItems: 'center'}}><div className={classes.colorSquare} style={{backgroundColor:data.color}}/>{data.name}</div>} />
                 )}

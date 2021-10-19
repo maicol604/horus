@@ -7,10 +7,10 @@ import Tooltip from '@mui/material/Tooltip';
 const useStyles = makeStyles((theme)=>({
     endNodePoint: {
         position: 'absolute',
-        width: '.5em',
-        height: '.5em',
-        border: '2px solid #2B9982',
-        backgroundColor: '#2B9982',
+        width: '.75em',
+        height: '.75em',
+        border: '2px solid #E6EBF1',
+        backgroundColor: '#aaa',
         borderRadius: '50%',
         left: '-.75em',
         top: 'calc(50% - .25em)',
@@ -27,9 +27,9 @@ const useStyles = makeStyles((theme)=>({
     }
 }));
 
-const DeleteNode = ({ onMouseEnter, onMouseLeave, related, relations, onEnterItem, onLeaveItem, onDelete }) => {
+const DeleteNode = ({ onMouseEnter, onMouseLeave, related, relations, onEnterItem, onLeaveItem, onDelete, color='#fff' }) => {
 
-    const classes = useStyles();
+    const classes = useStyles({color: color});
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -47,6 +47,7 @@ const DeleteNode = ({ onMouseEnter, onMouseLeave, related, relations, onEnterIte
         handleClose();
     }
 
+    ////console.log('relations',relations)
     return (
         <div className={classes.nodeContainer}>
             <Tooltip title="Delete" placement="top">
@@ -69,7 +70,7 @@ const DeleteNode = ({ onMouseEnter, onMouseLeave, related, relations, onEnterIte
             >
                 {
                     relations.map((data, index)=>{
-                        //console.log(data)
+                        ////console.log(data)
                         return (
                             <MenuItem 
                                 key={index} 
@@ -83,7 +84,7 @@ const DeleteNode = ({ onMouseEnter, onMouseLeave, related, relations, onEnterIte
                                         onLeaveItem(data)
                                     }}
                                 >
-                                    {data.from.title} Delete
+                                    {data.from.name}
                                 </spam>
                             </MenuItem>
                         )

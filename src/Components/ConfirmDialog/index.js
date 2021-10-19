@@ -43,10 +43,10 @@ export default function AlertDialog(props) {
                 </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="primary">
-                    Disagree
+                    Cancelar
                 </Button>
                 <Button onClick={handleOk} color="primary" autoFocus>
-                    Agree
+                    Aceptar
                 </Button>
             </DialogActions>
         </Dialog>

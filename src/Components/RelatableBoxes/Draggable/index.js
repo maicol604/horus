@@ -4,14 +4,16 @@ import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme)=>({
     dragabbleNode: {
-        width: '.5em',
-        height: '.5em',
+        width: '.75em',
+        height: '.75em',
         cursor: 'move',
-        backgroundColor: '#fff',
+        backgroundColor: props=>props.color,
         borderRadius: '50%',
-        border: '2px solid #2B9982',//verde principal
+        border: '2px solid #E6EBF1',//verde principal
         TransitionEvent: 'all 1.5s ease',
         zIndex: '1',
+        position: 'relative',
+        left: '-.5em',
         "&:hover": {
             boxShadow: '0px 0px 10px 0px rgba(43,153,130,1)',
             backgroundColor: '#2B9982',
@@ -19,9 +21,9 @@ const useStyles = makeStyles((theme)=>({
     },
 }));
 
-const Draggable2 = ({data, position=null, fixed=false, onStop}) => {
+const Draggable2 = ({data, position=null, fixed=false, onStop, color='#fff'}) => {
 
-    const classes = useStyles();
+    const classes = useStyles({color: color});
     const nodeRef = React.useRef(null);
     const [conf, setConf] = React.useState({
         position:{
@@ -44,7 +46,7 @@ const Draggable2 = ({data, position=null, fixed=false, onStop}) => {
     },[position])
 
     const eventLogger = (e) => {
-        //console.log('Data: ', e);
+        ////console.log('Data: ', e);
     };
 
     const getTranslateValues = (translate) => {
@@ -59,7 +61,7 @@ const Draggable2 = ({data, position=null, fixed=false, onStop}) => {
     }
 
     const handleDrag = (e) => {
-        //console.log(getTranslateValues(nodeRef.current.style.transform));
+        ////console.log(getTranslateValues(nodeRef.current.style.transform));
         setConf({
             ...conf, 
             position: {
@@ -69,7 +71,7 @@ const Draggable2 = ({data, position=null, fixed=false, onStop}) => {
     }
 
     const handleStart = (e) => {
-        /*console.log( e)
+        /*//console.log( e)
         setConf({
             ...conf, 
             position: {
@@ -80,7 +82,7 @@ const Draggable2 = ({data, position=null, fixed=false, onStop}) => {
     }
     
     const handleEnd = (e) => {
-        /*console.log( e)*/
+        /*//console.log( e)*/
         if(onStop){
             onStop(data)
         }

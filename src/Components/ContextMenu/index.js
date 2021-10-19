@@ -8,7 +8,7 @@ const ContextMenu = ({ref}) => {
 
     React.useEffect(()=>{
         let rightClick = document.addEventListener("contextmenu", (event) => {
-            console.log(event)
+            //console.log(event)
             event.preventDefault();
             const x = event.screenX + "px";
             const y = 'calc('+event.screenY + "px - 6em)";
@@ -16,7 +16,7 @@ const ContextMenu = ({ref}) => {
             setVisible(true);
         });
         let leftClick = document.addEventListener("click", (event) => {
-            console.log(event)
+            //console.log(event)
             //event.preventDefault();
             //const x = event.screenX + "px";
             //const y = event.screenY + "px";

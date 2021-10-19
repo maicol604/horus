@@ -7,9 +7,9 @@ const maingreen = '#2B9982';
 
 const useStyles = makeStyles((theme)=>({
     startNode: {
-        border: '1px solid '+maingreen,
-        borderRadius: '.5em',
-        padding: '.5em 1.5em',
+        border: '1px solid #E6EBF1',
+        borderRadius: '2px',
+        padding: '.25em 1.5em',
         width: '100%',
         boxSizing: 'border-box',
         transition: 'all .5s',
@@ -26,21 +26,14 @@ const useStyles = makeStyles((theme)=>({
         marginBottom: '.5em',
         transition: 'all .5s'
     },
-    borderTop: {
-        height: '.5em',
-        width: '100%',
+    borderColor: {
+        height: '100%',
+        width: '.5em',
         backgroundColor: props => props.color, 
         position: 'absolute',
-        left: '0',
+        right: '0',
         top: '0'
-    },
-    grouperCircle: {
-        width: '1em',
-        height: '1em',
-        backgroundColor: props => props.color,
-        borderRadius: '50%',
-        marginRight: '.5em',
-    },
+    },    
     title: {
         textTransform: 'uppercase',
         display: 'flex',
@@ -48,7 +41,9 @@ const useStyles = makeStyles((theme)=>({
         fontWeight: '600'
     },
     detail: {
-        fontSize: '.75em'
+        fontSize: '.75em',
+        display: 'flex',
+        opacity: '.75'
     },
     startPoint: {
         position: 'absolute',
@@ -94,7 +89,7 @@ const StartBox = ({id, data, onStop}) => {
     }
 
     useOutsideAlerter(wrapperRef, handleFocusOut);
-console.log(data)
+//console.log(data)
     return (
         <div className={classes.startNodeContainer} ref={wrapperRef}>
             <div 
@@ -105,24 +100,30 @@ console.log(data)
             >
                 <div id={'startBox-'+id} className={classes.startPoint}/>
                 <div id={'start-'+id} className={classes.startPoint}/>
-                <div className={classes.borderTop}/>
+                <div className={classes.borderColor}/>
                 <div className={classes.title}>
                     {data.name}
                 </div>
                 <div className={classes.dataContainer}>
                     <div style={{display: 'flex', alignItems: 'center'}}>
-                        <div className={classes.grouperCircle}/> 
-                        <span style={{textTransform: 'uppercase'}}>{data.grouper.name}</span>
+                        {/*<div className={classes.grouperCircle}/> */}
+                        <span style={{textTransform: 'uppercase'}}>
+                            {data.grouper.name} / {data.grouper.maker}
+                        </span>
                     </div>
                     <div>
                         {data.grouper.description}
                     </div>
                     <div className={classes.detail}>
-                        <span style={{textTransform: 'capitalize'}}>{data.grouper.presentation}vidrio</span> / <span style={{fontWeight: '600'}}>100 Ml</span>
+                        <span style={{textTransform: 'capitalize'}}>{data.grouper.presentation}</span> / <span style={{fontWeight: '600'}}>{data.content} {data.unit}</span>
                     </div>
                 </div>
             </div>
-            <Draggable data={data} onStop={onStop}/>
+            <Draggable 
+                data={data} 
+                onStop={onStop}
+                color={data.grouper.color}
+            />
         </div>
     )
 }

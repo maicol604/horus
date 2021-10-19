@@ -161,7 +161,7 @@ const Menu = React.forwardRef(function Menu({ style, close, items }, ref) {
           key={index}
           Icon={item.Icon}
           label={item.label}
-          onClick={() => console.log(item.value)}
+          onClick={() => //console.log(item.value)}
           index={index}
           totalItems={items.length}
         />
