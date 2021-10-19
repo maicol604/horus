@@ -5,6 +5,7 @@ import { makeStyles } from '@mui/styles';
 import Fab from '@mui/material/Fab';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import SaveIcon from '@mui/icons-material/Save';
+import DownloadIcon from '@mui/icons-material/Download';
 
 import Alert from '../Alert';
 
@@ -51,29 +52,45 @@ const useStyles = makeStyles((theme)=>({
 const ScreenShot = ({children, onCapture}) => {
     const classes = useStyles();
 
-    const ref = React.createRef(null);const ref2 = React.createRef(null);
+    const ref = React.createRef(null);
     const [image, takeScreenShot] = useScreenshot();
-    const [alert, setAlert] = React.useState(false);
-    const [shutter, setShutter] = React.useState(false);
+    const [loaded, setLoaded] = React.useState(true);
+    //const [alert, setAlert] = React.useState(false);
+    //const [shutter, setShutter] = React.useState(false);
     const getImage = () => {
-        //console.log(ref2.current.getContext('2d'))
+        ////console.log(ref2.current.getContext('2d'))
         takeScreenShot(ref.current);
-        setAlert(true);
+        //setAlert(true);
         //setShutter(true);
-        if(onCapture)
-            onCapture();
-        setTimeout(()=>{
-            setAlert(false);
-        },3000)
-        setTimeout(()=>{
-            setShutter(false);
-        }, 100)
+        // if(onCapture)
+        //     onCapture(image);
+        // setTimeout(()=>{
+        //     setAlert(false);
+        // },3000)
+        // setTimeout(()=>{
+        //     setShutter(false);
+        // }, 100)
     };
+
+    function downloadBase64File( base64Data, fileName) {
+        const linkSource = `${base64Data}`;
+        const downloadLink = document.createElement("a");
+        downloadLink.href = linkSource;
+        downloadLink.download = fileName;
+        downloadLink.click();
+    }
+
+    const handleDownload = () => {
+        takeScreenShot(ref.current);
+        setLoaded(true);
+        //downloadBase64File(, image, 'ScreenShot');
+    }
+
     return (
-        <>
+        <React.fragment>
             <div ref={ref} className={classes.container}>
-                <div className={classes.capture} style={{display: shutter?'block':'none'}}></div>
-                {/*<canvas ref={ref2} style={{width: '100%', height: '100vh', background: 'red', position: 'absolute'}}></canvas>*/}
+                {/*<div className={classes.capture} style={{display: shutter?'block':'none'}}></div>
+                <canvas ref={ref2} style={{width: '100%', height: '100vh', background: 'red', position: 'absolute'}}></canvas>*/}
                 {children}
             </div>
             <div style={{display: 'flex'}}>
@@ -91,15 +108,33 @@ const ScreenShot = ({children, onCapture}) => {
                 <Fab size="small" color="primary" aria-label="clean">
                     <SaveIcon />
                 </Fab>
-                <div className={classes.alert}>
+                <Fab size="small" onClick={handleDownload} color="primary" aria-label="clean">
+                    <DownloadIcon />
+                </Fab>
+                {/*<div className={classes.alert}>
                     <Alert
                         type={'success'}
                         open={alert}
                         text='Copiado'
                     />
-                </div>
+                </div>*/}
+                {
+                    loaded &&
+                    <img 
+                        src={image} 
+                        alt='' 
+                        onLoad={()=>{
+                            ////console.log(image)
+                            downloadBase64File(image,'screenshot.png');
+                            setLoaded(false);
+                            if(onCapture)
+                                onCapture(image);
+                        }} 
+                        style={{width: '0em', height: '0em'}}
+                    />
+                }
             </div>
-        </>
+        </React.fragment>
     )
 }
 

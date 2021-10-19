@@ -6,22 +6,17 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 
 import { makeStyles } from '@mui/styles';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import ColorPicker from '../../../Components/ColorPicker';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import EditIcon from '@mui/icons-material/EditOutlined';
-
+import Stack from '@mui/material/Stack';
+import Modal from '@mui/material/Modal';
+import Paper from '@mui/material/Paper';
 import ConfirmDialog from '../../../Components/ConfirmDialog';
 
 const initialValue = {
     name:'',
-    description:'',
+    maker:'',
     color:'#ffffff',
     presentation :''
 }
@@ -46,13 +41,31 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         width: 'inherit'
     },
+    modal: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '50%',
+        padding:'1em',
+        p: 4,
+    }
 }));
 
-const Step2 = ({ groupers=[], pushGrouper }) => {
+const randomColor = () => {
+    let color = Math.floor(Math.random()*16777215).toString(16);
+    return `#${color}`;
+}
+
+const Step2 = ({ groupers=[], pushGrouper, updateGroupers }) => {
     const classes = useStyles();
     const [grouper, setGrouper] = React.useState({
-        ...initialValue
+        ...initialValue,
+        color: randomColor(),
     })
+
+    const [editGrouper, setEditGrouper] = React.useState({});
+    const [openEditGrouper, setOpenEditGrouper] = React.useState(false);
 
     const getGroupers = () => {
         return (
@@ -65,7 +78,7 @@ const Step2 = ({ groupers=[], pushGrouper }) => {
                     </Grid>
                     <Grid item xs={3}>
                         <Typography align="left">
-                            {data.name}
+                            {data.maker}
                         </Typography>
                     </Grid>
                     <Grid item xs={2}>
@@ -94,8 +107,11 @@ const Step2 = ({ groupers=[], pushGrouper }) => {
                     </Grid>
                     <Grid item xs={1}>
                         <div
-                            style={{height: '100%', display: 'flex', justifyContent: 'center', alignItems:'center'}}
-                            onClick={()=>{}}
+                            style={{height: '100%', display: 'flex', justifyContent: 'center', alignItems:'center', cursor: 'pointer'}}
+                            onClick={()=>{
+                                setOpenEditGrouper(!openEditGrouper);
+                                setEditGrouper({...data, index})
+                            }}
                         >
                             <EditIcon/>
                         </div>
@@ -114,7 +130,7 @@ const Step2 = ({ groupers=[], pushGrouper }) => {
         if(pushGrouper){
             pushGrouper(grouper);
         }   
-        setGrouper(initialValue)
+        setGrouper({...initialValue, color: randomColor()})
     }
 
     const handleRemoveGrouper = (index) => {
@@ -180,17 +196,18 @@ const Step2 = ({ groupers=[], pushGrouper }) => {
                         variant="outlined" 
                         fullWidth
                         multiline
-                        name='description'
+                        name='maker'
                         //rows={2}
                         onChange={handleInputGrouper}
-                        value={grouper.description}
+                        value={grouper.maker}
+                        required
                     />
                 </Grid>
                 <Grid item xs={2}>
                     <ColorPicker 
                         onChangeComplete={handleInputGrouper}
                         name='color'
-                        value={grouper.value}
+                        value={grouper.color}
                     />
                 </Grid>
                 <Grid item xs={2}>
@@ -204,6 +221,7 @@ const Step2 = ({ groupers=[], pushGrouper }) => {
                         //rows={2}
                         onChange={handleInputGrouper}
                         value={grouper.presentation}
+                        required
                     />
                 </Grid>
                 <Grid item xs={2}>
@@ -213,12 +231,119 @@ const Step2 = ({ groupers=[], pushGrouper }) => {
                             variant='contained'
                             color='primary'
                             onClick={handleSaveGrouper}
+                            disabled={grouper.name==='' || grouper.maker==='' || grouper.presentation===''}
                         >
                             Guardar
                         </Button>
                     </div>
                 </Grid>
             </Grid>
+
+            <Modal
+                open={openEditGrouper}
+                onClose={()=>{setOpenEditGrouper(!openEditGrouper)}}
+            >
+                <Paper 
+                    className={classes.modal}
+                    variant="outlined"
+                >
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            <Typography
+                                variant='h6'
+                                align="left"
+                            >
+                                Editar marca
+                            </Typography>
+                        </Grid>
+                        
+                        <Grid item xs={3}>
+                            <TextField 
+                                id="" 
+                                label="Marca" 
+                                variant="outlined" 
+                                fullWidth
+                                name='name'
+                                onChange={(e)=>{
+                                    setEditGrouper({...editGrouper, name:e.target.value})
+                                }}
+                                value={editGrouper.name}
+                                required
+                            />
+                        </Grid>
+                        <Grid item xs={3}>
+                            <TextField 
+                                id="" 
+                                label="Fabricante" 
+                                variant="outlined" 
+                                fullWidth
+                                multiline
+                                name='maker'
+                                //rows={2}
+                                onChange={(e)=>{
+                                    setEditGrouper({...editGrouper, maker:e.target.value})
+                                }}
+                                value={editGrouper.maker}
+                                required
+                            />
+                        </Grid>
+                        <Grid item xs={2}>
+                            <ColorPicker 
+                                onChangeComplete={(e)=>{
+                                    //console.log(e)
+                                    setEditGrouper({...editGrouper, color:e.target.value})
+                                }}
+                                name='color'
+                                value={editGrouper.color}
+                            />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <TextField 
+                                id="" 
+                                label="Presentación" 
+                                variant="outlined" 
+                                fullWidth
+                                multiline
+                                name='presentation'
+                                //rows={2}
+                                onChange={(e)=>{
+                                    setEditGrouper({...editGrouper, presentation:e.target.value})
+                                }}
+                                value={editGrouper.presentation}
+                                required
+                            />
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <Stack spacing={2} direction="row">
+                                <Button
+                                    variant='contained'
+                                    color='secondary'
+                                    onClick={()=>{setOpenEditGrouper(!openEditGrouper)}}
+                                >
+                                    Cancelar
+                                </Button>
+                                <Button
+                                    variant='contained'
+                                    color='primary'
+                                    onClick={()=>{
+                                        let aux = groupers.slice();
+                                        aux[editGrouper.index] = editGrouper;
+                                        if(updateGroupers){
+                                            //console.log(editGrouper)
+                                            updateGroupers(aux, editGrouper.index);
+                                        }
+                                        setOpenEditGrouper(!openEditGrouper)
+                                    }}
+                                    disabled={editGrouper.name==='' || editGrouper.maker==='' || editGrouper.presentation===''}
+                                >
+                                    Actualizar
+                                </Button>
+                            </Stack>
+                        </Grid>
+                    </Grid>
+                </Paper>
+            </Modal>
         </React.Fragment>
     )
 }

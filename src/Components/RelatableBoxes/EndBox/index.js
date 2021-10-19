@@ -6,9 +6,9 @@ import DeleteNode from './DeleteNode';
 
 const useStyles = makeStyles((theme)=>({
     endNode: {
-        border: '1px solid #2B9982',
-        borderRadius: '.5em',
-        padding: '.5em 1.5em',
+        border: '1px solid #E6EBF1',
+        borderRadius: '2px',
+        padding: '.25em 1.5em',
         marginBottom: '.5em',
         position: 'relative',
         overflow: 'hidden',
@@ -27,24 +27,9 @@ const useStyles = makeStyles((theme)=>({
         top: '0',
         zIndex: '1',
     },
-    endNodePoint: {
-        position: 'absolute',
+    borderColor: {
+        height: '100%',
         width: '.5em',
-        height: '.5em',
-        border: '2px solid #2B9982',
-        backgroundColor: '#2B9982',
-        borderRadius: '50%',
-        left: '-.75em',
-        top: 'calc(50% - .25em)',
-        zIndex: '1',
-        "&:hover": {
-            backgroundColor: '#C72C1C',
-            borderColor: '#C72C1C'
-        }
-    },
-    borderTop: {
-        height: '.5em',
-        width: '100%',
         backgroundColor: props => props.color, 
         position: 'absolute',
         left: '0',
@@ -64,7 +49,9 @@ const useStyles = makeStyles((theme)=>({
         fontWeight: '600'
     },
     detail: {
-        fontSize: '.75em'
+        fontSize: '.75em',
+        display: 'flex',
+        opacity: '.75'
     }
 }));
 
@@ -106,6 +93,7 @@ const EndBox = ({data, id, onEnter, onExit, related=false, onEnterDelete, onExit
                 onLeaveItem={onLeaveItem}
                 onDelete={(data)=>onDelete(data)}
                 className={classes.container}
+                color={data.grouper.color}
             />
             <div 
                 className={classes.endNode}
@@ -117,20 +105,22 @@ const EndBox = ({data, id, onEnter, onExit, related=false, onEnterDelete, onExit
                 onMouseEnter={handleEnter}
                 onMouseLeave={handleExit}
             />
-                <div className={classes.borderTop}/>
+                <div className={classes.borderColor}/>
                 <div className={classes.title}>
                     {data.name}
                 </div>
                 <div className={classes.dataContainer}>
                     <div style={{display: 'flex', alignItems: 'center'}}>
-                        <div className={classes.grouperCircle}/> 
-                        <span style={{textTransform: 'uppercase'}}>{data.grouper.name}</span>
+                        {/*<div className={classes.grouperCircle}/> */}
+                        <span style={{textTransform: 'uppercase'}}>
+                            {data.grouper.name} / {data.grouper.maker}
+                        </span>
                     </div>
                     <div>
                         {data.grouper.description}
                     </div>
                     <div className={classes.detail}>
-                        <span style={{textTransform: 'capitalize'}}>{data.grouper.presentation}vidrio</span> / <span style={{fontWeight: '600'}}>100 Ml</span>
+                        <span style={{textTransform: 'capitalize'}}>{data.grouper.presentation}</span> / <span style={{fontWeight: '600'}}>{data.content} {data.unit}</span>
                     </div>
                 </div>
             </div>

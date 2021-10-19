@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { SketchPicker } from 'react-color';
 import { makeStyles } from '@mui/styles';
 import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
 
 const useStyles = makeStyles({
     colorSquare: {
@@ -51,6 +52,7 @@ const ColorPicker = ({ onChangeComplete, value='#ffffff', name='' }) => {
     const classes = useStyles();
     const [state, setState] = React.useState({background:'#ffffff'});
     const [visible, setVisible] = React.useState(false);
+    const [anchorEl, setAnchorEl] = React.useState(null);
     
     useEffect(() => {
         setState({background:value});
@@ -64,8 +66,9 @@ const ColorPicker = ({ onChangeComplete, value='#ffffff', name='' }) => {
         setState({ background: color.hex });
     };
 
-    const handleVisible = () => {
+    const handleVisible = (e) => {
         setVisible(!visible);
+        setAnchorEl(e.currentTarget)
     }
     useOutsideAlerter(wrapperRef, handleVisible);
 
@@ -75,7 +78,7 @@ const ColorPicker = ({ onChangeComplete, value='#ffffff', name='' }) => {
                 <div className={classes.colorSquare} style={{backgroundColor:state.background}}/>
                 <Typography variant="subtitle1">{state.background.split('#')[1]}</Typography>
             </div>
-            {visible?
+            {/*visible?
                 <div className={classes.colorPicker} ref={wrapperRef}>
                     <SketchPicker
                         color={ state.background }
@@ -85,8 +88,22 @@ const ColorPicker = ({ onChangeComplete, value='#ffffff', name='' }) => {
                     />
                 </div>
                 :
-                <React.Fragment/>
+                <React.Fragment/>*/
             }
+            <Menu
+                anchorEl={anchorEl}
+                open={anchorEl}
+                onClose={()=>{
+                    setAnchorEl(null);
+                }}
+            >
+                <SketchPicker
+                    color={ state.background }
+                    onChangeComplete={ handleChangeComplete }
+                    onChange={ handleChangeComplete }
+                    disableAlpha
+                />
+            </Menu>
         </React.Fragment>
     );
 }

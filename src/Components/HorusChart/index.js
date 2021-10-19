@@ -42,39 +42,15 @@ const HorusChart = ({categories=[], subcategories=[], skus=[]}) => {
     const [settings, setSettings] = React.useState([]);
 
     React.useEffect(()=>{
-        //console.log(categories)
+        ////console.log(categories)
         let newSettings = [];
         for(let i=0;i<categories.length;i++){
             for(let j=0;j<subcategories.length;j++){
                 if(`${categories[i].id}`===`${subcategories[j].category.id}`){
                     newSettings.push(
                         {
-                            from: "category-"+categories[i].id,
-                            to: "subcategory-"+subcategories[j].id,
-                            positions: {
-                                start: {
-                                side: "right",
-                                indent: 20
-                                },
-                                end: {
-                                    side: "left",
-                                },
-                            },
-                            style: "white-line",
-                        }
-                    )
-                }
-            }
-        }
-        console.log('sub',subcategories)
-        //console.log('skus',skus)
-        for(let i=0;i<subcategories.length;i++){
-            for(let j=0;j<skus.length;j++){
-                if(`${subcategories[i].id}`===`${skus[j].subcategory}`){
-                    newSettings.push(
-                        {
-                            from: "subcategory-"+subcategories[i].id,
-                            to: "sku-"+skus[j].id,
+                            from: "category-"+(`${categories[i].id}`.split('.').join("")),
+                            to: "subcategory-"+(`${subcategories[j].id}`.split('.').join("")),
                             positions: {
                                 start: {
                                 side: "right",
@@ -91,11 +67,36 @@ const HorusChart = ({categories=[], subcategories=[], skus=[]}) => {
             }
         }
         //console.log(newSettings)
+        ////console.log('sub',subcategories)
+        ////console.log('skus',skus)
+        for(let i=0;i<subcategories.length;i++){
+            for(let j=0;j<skus.length;j++){
+                if(`${subcategories[i].id}`===`${skus[j].subcategory.id}`){
+                    newSettings.push(
+                        {
+                            from: "subcategory-"+(`${subcategories[i].id}`.split('.').join("")),
+                            to: "sku-"+(`${skus[j].id}`.split('.').join("")),
+                            positions: {
+                                start: {
+                                side: "right",
+                                indent: 20
+                                },
+                                end: {
+                                    side: "left",
+                                },
+                            },
+                            style: "white-line",
+                        }
+                    )
+                }
+            }
+        }
+        ////console.log(newSettings)
         setSettings(newSettings);
     },[categories, subcategories, skus])
 
     const getItem = (data, type) => {
-        console.log(data.groupers)
+        ////console.log(data.groupers)
         return (
             <Item 
                 id={`${type}-${data.id}`}
@@ -105,6 +106,7 @@ const HorusChart = ({categories=[], subcategories=[], skus=[]}) => {
                 variant={type}
                 vars={data.variables}
                 groupers={data.groupers}
+                data={data}
             />
         )
     }

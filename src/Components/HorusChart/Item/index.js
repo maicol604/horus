@@ -1,18 +1,21 @@
 import React from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import { makeStyles } from '@mui/styles';
 import Grid from '@mui/material/Grid';
 
-import Group from './Group';
 import Variable from './Variable';
 
 const useStyles = makeStyles((theme)=>({
     container: {
         width: '15em',
-        height: '5em',
+        //height: '5em',
         position: 'relative',
-        marginBottom: '2em'
+        marginBottom: '2em',
+        backgroundColor: '#fff',
+        borderRadius: '2px',
+        padding: '.25em 1.5em',
+        overflow: 'hidden',
+        zIndex: 1,
+        //border: '1px solid #E6EBF1'
     },
     groupersContainer: {
         display: 'flex',
@@ -27,25 +30,50 @@ const useStyles = makeStyles((theme)=>({
         position: 'absolute',
         display: 'flex',
         bottom: '-.25em',
+    },
+    borderColor: {
+        backgroundColor: props => props.color,
+        height: '110%',
+        width: '.5em',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+    },
+    description: {
+        opacity: '.5',
+        padding: '.5em',
+        paddingLeft: 0,
+        paddingTop: '.25em',
+        fontSize: '.75em'
     }
 }));
 
-const Item = ({id, style, title='', variant='', groupers=[], vars=[]}) => {
+const Item = ({id, style, title='', variant='', groupers=[], vars=[], data=null}) => {
 
-    const classes = useStyles();
+    const classes = useStyles({color:data.grouper?data.grouper.color:''});
 
     const getVariantContent = () => {
         switch(variant){
             case 'sku':
                 return (
-                    <>
-                        <div style={{postition: 'relative', height: '1.5em', width: '100%'}}>
-                            <div className={classes.groupersContainer}>
-                                {
-                                    groupers.map((data,index)=>
-                                        <Group key={index} color={data.color}/>
-                                    )
-                                }
+                    <React.fragment>
+                        <div style={{postition: 'relative', width: '100%'}}>
+                            <div className={classes.borderColor}/>
+                            <div style={{display: 'flex'}}>
+                                <div style={{textTransform: 'capitalize'}}>
+                                    {data.grouper.name}
+                                </div> / 
+                                <div style={{textTransform: 'capitalize'}}>
+                                    {data.grouper.maker}
+                                </div>
+                            </div>
+                            <div style={{display: 'flex'}}>
+                                <span style={{textTransform: 'capitalize'}}>
+                                    {data.grouper.presentation}
+                                </span> / 
+                                <span style={{fontWeight: '600'}}>
+                                    {data.content} {data.unit}
+                                </span>
                             </div>
                         </div>
                         <div className={classes.variablesContainer}>
@@ -55,11 +83,14 @@ const Item = ({id, style, title='', variant='', groupers=[], vars=[]}) => {
                                 )
                             }
                         </div>
-                    </>
+                    </React.fragment>
                 )
             case 'subcategory':
                 return (
-                    <>
+                    <React.fragment>
+                        <div className={classes.description}>
+                            {data.description}
+                        </div>  
                         <div className={classes.variablesContainerBottom}>
                             {
                                 vars.map((data,index)=>
@@ -67,11 +98,14 @@ const Item = ({id, style, title='', variant='', groupers=[], vars=[]}) => {
                                 )
                             }
                         </div>
-                    </>
+                    </React.fragment>
                 )
             case 'category':
                 return (
-                    <>
+                    <React.fragment>
+                        <div className={classes.description}>
+                            {data.description}
+                        </div>  
                         <div className={classes.variablesContainerBottom}>
                             {
                                 vars.map((data,index)=>
@@ -79,7 +113,7 @@ const Item = ({id, style, title='', variant='', groupers=[], vars=[]}) => {
                                 )
                             }
                         </div>
-                    </>
+                    </React.fragment>
                 )
             default:
                 return (<React.Fragment/>);     
@@ -88,18 +122,16 @@ const Item = ({id, style, title='', variant='', groupers=[], vars=[]}) => {
 
     return ( 
         <div id={id} className={classes.container} style={{...style}}>
-            <Card className={classes.root}>
-                <CardContent>
-                        <Grid container alignItems='center' spacing={3}>
-                            <Grid item xs={12}>
-                                {title}
-                            </Grid>
-                            <Grid item xs={12} style={{padding:0, paddingLeft:'.25em'}}>
-                                {getVariantContent()}
-                            </Grid>
-                        </Grid>
-                </CardContent>
-            </Card>
+            <Grid container alignItems='center' spacing={3}>
+                <Grid item xs={12}>
+                    <span style={{textTransform:'uppercase'}}>
+                        {title}
+                    </span>
+                </Grid>
+                <Grid item xs={12} style={{paddingTop:'0'}}>
+                    {getVariantContent()}
+                </Grid>
+            </Grid>
         </div>
     )
 }

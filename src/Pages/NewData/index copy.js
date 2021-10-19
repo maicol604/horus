@@ -259,7 +259,7 @@ const NewData = () => {
 
         for(let j=0;j<base.length;j++){
             for(let i=0;i<sorted.length;i++){
-                //console.log(`${base[j].id}`+`${sorted[i].category}`)
+                ////console.log(`${base[j].id}`+`${sorted[i].category}`)
                 if(`${base[j].id}`===`${sorted[i].category}`){
                     aux.push(sorted[i])
                 }
@@ -274,7 +274,7 @@ const NewData = () => {
 
         for(let j=0;j<base.length;j++){
             for(let i=0;i<sorted.length;i++){
-                //console.log(`${base[j].id}`+`${sorted[i].subcategory}`)
+                ////console.log(`${base[j].id}`+`${sorted[i].subcategory}`)
                 if(`${base[j].id}`===`${sorted[i].subcategory}`){
                     aux.push(sorted[i])
                 }
@@ -370,7 +370,7 @@ const NewData = () => {
                                 <Grid item xs={12}>
                                     <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
                                         <Typography color="inherit">
-                                            Categorias
+                                            Categoria
                                         </Typography>
                                         <Typography color="primary">
                                             Subategorias
@@ -521,7 +521,7 @@ const NewData = () => {
             );
           case 2:
             return(
-                <>
+                <React.fragment>
                     <Grid container alignItems='center' spacing={3}>
                         <Grid item xs={12}>
                             <Typography
@@ -545,7 +545,7 @@ const NewData = () => {
                         </Grid>
                     </Grid>
                     
-                </>
+                </React.fragment>
             );
           default:
             return 'Unknown step';

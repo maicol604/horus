@@ -80,7 +80,7 @@ export default function FullScreenDialog({skus, categories, subcategories, group
     setOpen(false);
   };
 
-  //console.log(sampleData)
+  ////console.log(sampleData)
 
   return (
     <div>
@@ -133,7 +133,7 @@ export default function FullScreenDialog({skus, categories, subcategories, group
                   </div>
                 </Drawer>*/}
                 {
-                  //console.log(groupers,'groupers')
+                 // //console.log(skus,'skus')
                 }
                 <HorusChart
                   categories={[...categories]}
