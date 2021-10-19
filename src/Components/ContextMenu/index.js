@@ -38,13 +38,13 @@ const ContextMenu = ({ref}) => {
     },[ref])
 
     return (
-        <>
+        <React.fragment>
             <div style={{position:'fixed', left:position.x, top:position.y, display:visible?'block':'none', zIndex: 1000}}>
                 <SimpleMenu
                     open={visible}
                 />
             </div>
-        </>
+        </React.fragment>
     )
 }
 

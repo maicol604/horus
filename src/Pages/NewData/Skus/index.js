@@ -96,7 +96,7 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus }) 
                                     <Typography variant="subtitle1" align="left">{data.grouper.name}</Typography>
                                 </div>
                             :
-                            <></>
+                            <React.fragment></React.fragment>
                         }
                     </Grid>
                     <Grid item xs={2}>

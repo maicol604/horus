@@ -521,7 +521,7 @@ const NewData = () => {
             );
           case 2:
             return(
-                <>
+                <React.fragment>
                     <Grid container alignItems='center' spacing={3}>
                         <Grid item xs={12}>
                             <Typography
@@ -545,7 +545,7 @@ const NewData = () => {
                         </Grid>
                     </Grid>
                     
-                </>
+                </React.fragment>
             );
           default:
             return 'Unknown step';

@@ -56,7 +56,7 @@ const Item = ({id, style, title='', variant='', groupers=[], vars=[], data=null}
         switch(variant){
             case 'sku':
                 return (
-                    <>
+                    <React.fragment>
                         <div style={{postition: 'relative', width: '100%'}}>
                             <div className={classes.borderColor}/>
                             <div style={{display: 'flex'}}>
@@ -83,11 +83,11 @@ const Item = ({id, style, title='', variant='', groupers=[], vars=[], data=null}
                                 )
                             }
                         </div>
-                    </>
+                    </React.fragment>
                 )
             case 'subcategory':
                 return (
-                    <>
+                    <React.fragment>
                         <div className={classes.description}>
                             {data.description}
                         </div>  
@@ -98,11 +98,11 @@ const Item = ({id, style, title='', variant='', groupers=[], vars=[], data=null}
                                 )
                             }
                         </div>
-                    </>
+                    </React.fragment>
                 )
             case 'category':
                 return (
-                    <>
+                    <React.fragment>
                         <div className={classes.description}>
                             {data.description}
                         </div>  
@@ -113,7 +113,7 @@ const Item = ({id, style, title='', variant='', groupers=[], vars=[], data=null}
                                 )
                             }
                         </div>
-                    </>
+                    </React.fragment>
                 )
             default:
                 return (<React.Fragment/>);     

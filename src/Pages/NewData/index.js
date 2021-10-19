@@ -578,7 +578,7 @@ const NewData = ({onUpdate, onFinish}) => {
                             </Breadcrumbs>
                         </Grid>
                         {subStep.step===0?
-                            <>
+                            <React.fragment>
                                 <Groupers
                                     groupers={state.groupers} 
                                     pushGrouper={pushGrouper}
@@ -610,9 +610,9 @@ const NewData = ({onUpdate, onFinish}) => {
                                         </Button>
                                     </Stack>
                                 </div>
-                            </>
+                            </React.fragment>
                             :
-                            <>
+                            <React.fragment>
                                 <Skus
                                     groupers={state.groupers} 
                                     subcategories={state.subcategories}
@@ -648,13 +648,13 @@ const NewData = ({onUpdate, onFinish}) => {
                                         </Button>
                                     </Stack>
                                 </div>
-                            </>
+                            </React.fragment>
                         }
                     </React.Fragment>
                 );
             case 2:
             return(
-                <>
+                <React.fragment>
                     <Grid container alignItems='center' spacing={3}>
                         <Grid item xs={12}>
                             <Typography
@@ -710,124 +710,124 @@ const NewData = ({onUpdate, onFinish}) => {
                             </Button>
                         </Stack>
                     </div>
-                </>
+                </React.fragment>
             );
-            case 3:
-                return (
-                    <>
-                        <Grid container alignItems='center' spacing={3}>
-                            <Grid item xs={12}>
-                                <Typography
-                                    variant='h6'
-                                    align='left'
-                                >
-                                    Categoria {state.category.name} creada con exito
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Paper 
-                                    variant="outlined"
-                                    style={{padding:'1em'}}
-                                >
-                                    <div>
+            // case 3:
+            //     return (
+            //         <React.fragment>
+            //             <Grid container alignItems='center' spacing={3}>
+            //                 <Grid item xs={12}>
+            //                     <Typography
+            //                         variant='h6'
+            //                         align='left'
+            //                     >
+            //                         Categoria {state.category.name} creada con exito
+            //                     </Typography>
+            //                 </Grid>
+            //                 <Grid item xs={12}>
+            //                     <Paper 
+            //                         variant="outlined"
+            //                         style={{padding:'1em'}}
+            //                     >
+            //                         <div>
                                         
-                                    <Grid container alignItems='center' spacing={3} alignItems="stretch">
-                                        <Grid item xs={12}>
-                                            <Typography 
-                                                variant='subtitle1'
-                                                align='left'
-                                                style={{textTransform:'capitalize'}}
-                                            >
-                                                {state.category.name}
-                                            </Typography>
-                                            <Typography variant='body2' align='left' display='flex' alignItems='center'>
-                                                {state.category.description}
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={6} style={{display: 'flex'}}>
-                                            <Paper 
-                                                variant="outlined"
-                                                style={{padding:'1em', width: '100%'}}
-                                            >
-                                                <Typography 
-                                                    variant='subtitle2'
-                                                    align='left'
-                                                    style={{textTransform:'capitalize'}}
-                                                >
-                                                    Marcas
-                                                </Typography>
-                                                <Divider light style={{marginBottom: '.5em'}}/>
-                                                <div>
-                                                    {
-                                                        state.groupers.map((data, index)=>{
-                                                            return (
-                                                                <Typography key={index} variant='body2' align='left' display='flex' alignItems='center'>
-                                                                    <div style={{width:'1em', height:'1em', backgroundColor:data.color, marginRight:'.5em', borderRadius: '50%'}}/>{data.name}
-                                                                </Typography>
-                                                            )
-                                                        })
-                                                    }
-                                                </div>
-                                            </Paper>
-                                        </Grid>
-                                        <Grid item xs={6} style={{display: 'flex'}}>
-                                            <Paper 
-                                                variant="outlined"
-                                                style={{padding:'1em', width: '100%'}}
-                                            >
-                                                <Typography 
-                                                    variant='subtitle2'
-                                                    align='left'
-                                                    style={{textTransform:'capitalize'}}
-                                                >
-                                                    SKUs
-                                                </Typography>
-                                                <Divider light style={{marginBottom: '.5em'}}/>
-                                                <div>
-                                                    {
-                                                        state.skus.map((data, index)=>{
-                                                            return (
-                                                                <Typography key={index} variant='body2' align='left'>
-                                                                    {data.name}
-                                                                </Typography>
-                                                            )
-                                                        })
-                                                    }
-                                                </div>
-                                            </Paper>
-                                        </Grid>
-                                    </Grid>
-                                    </div>
-                                </Paper>
-                            </Grid>
-                        </Grid>
-                        <div
-                            style={{
-                                marginTop: '1em'
-                            }}
-                        >
-                            <Stack spacing={2} direction="row">
-                                <Button
-                                    variant='contained'
-                                    onClick={()=>{}}
-                                >
-                                    Agregar otra categoria
-                                </Button>
-                                <Button
-                                    variant='contained'
-                                    color='primary'
-                                    onClick={()=>{
-                                        if(onFinish){
-                                            onFinish();
-                                        }
-                                    }}
-                                >
-                                    Finalizar
-                                </Button>
-                            </Stack>
-                        </div>
-                    </>
-                );
+            //                         <Grid container alignItems='center' spacing={3} alignItems="stretch">
+            //                             <Grid item xs={12}>
+            //                                 <Typography 
+            //                                     variant='subtitle1'
+            //                                     align='left'
+            //                                     style={{textTransform:'capitalize'}}
+            //                                 >
+            //                                     {state.category.name}
+            //                                 </Typography>
+            //                                 <Typography variant='body2' align='left' display='flex' alignItems='center'>
+            //                                     {state.category.description}
+            //                                 </Typography>
+            //                             </Grid>
+            //                             <Grid item xs={6} style={{display: 'flex'}}>
+            //                                 <Paper 
+            //                                     variant="outlined"
+            //                                     style={{padding:'1em', width: '100%'}}
+            //                                 >
+            //                                     <Typography 
+            //                                         variant='subtitle2'
+            //                                         align='left'
+            //                                         style={{textTransform:'capitalize'}}
+            //                                     >
+            //                                         Marcas
+            //                                     </Typography>
+            //                                     <Divider light style={{marginBottom: '.5em'}}/>
+            //                                     <div>
+            //                                         {
+            //                                             state.groupers.map((data, index)=>{
+            //                                                 return (
+            //                                                     <Typography key={index} variant='body2' align='left' display='flex' alignItems='center'>
+            //                                                         <div style={{width:'1em', height:'1em', backgroundColor:data.color, marginRight:'.5em', borderRadius: '50%'}}/>{data.name}
+            //                                                     </Typography>
+            //                                                 )
+            //                                             })
+            //                                         }
+            //                                     </div>
+            //                                 </Paper>
+            //                             </Grid>
+            //                             <Grid item xs={6} style={{display: 'flex'}}>
+            //                                 <Paper 
+            //                                     variant="outlined"
+            //                                     style={{padding:'1em', width: '100%'}}
+            //                                 >
+            //                                     <Typography 
+            //                                         variant='subtitle2'
+            //                                         align='left'
+            //                                         style={{textTransform:'capitalize'}}
+            //                                     >
+            //                                         SKUs
+            //                                     </Typography>
+            //                                     <Divider light style={{marginBottom: '.5em'}}/>
+            //                                     <div>
+            //                                         {
+            //                                             state.skus.map((data, index)=>{
+            //                                                 return (
+            //                                                     <Typography key={index} variant='body2' align='left'>
+            //                                                         {data.name}
+            //                                                     </Typography>
+            //                                                 )
+            //                                             })
+            //                                         }
+            //                                     </div>
+            //                                 </Paper>
+            //                             </Grid>
+            //                         </Grid>
+            //                         </div>
+            //                     </Paper>
+            //                 </Grid>
+            //             </Grid>
+            //             <div
+            //                 style={{
+            //                     marginTop: '1em'
+            //                 }}
+            //             >
+            //                 <Stack spacing={2} direction="row">
+            //                     <Button
+            //                         variant='contained'
+            //                         onClick={()=>{}}
+            //                     >
+            //                         Agregar otra categoria
+            //                     </Button>
+            //                     <Button
+            //                         variant='contained'
+            //                         color='primary'
+            //                         onClick={()=>{
+            //                             if(onFinish){
+            //                                 onFinish();
+            //                             }
+            //                         }}
+            //                     >
+            //                         Finalizar
+            //                     </Button>
+            //                 </Stack>
+            //             </div>
+            //         </React.fragment>
+            //     );
             default:
                 return 'Unknown step';
         }
@@ -903,7 +903,7 @@ const NewData = ({onUpdate, onFinish}) => {
                                                 subcategories={sortSubcategories( [state.category], state.subcategories)}
                                             />
                                             :
-                                            <></>
+                                            <React.fragment></React.fragment>
                                         }
                                     </div>
                                 </Grid>
