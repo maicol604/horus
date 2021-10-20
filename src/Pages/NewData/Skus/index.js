@@ -26,7 +26,8 @@ const initialValue = {
     content:'',
     unit: null,
     grouper:null,
-    subcategory:null
+    subcategory:null,
+    presentation:''
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -60,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus }) => {
+const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, removeSku }) => {
 
     const classes = useStyles();
     const [sku, setSku] = React.useState({
@@ -85,7 +86,7 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus }) 
                     </Grid>
                     <Grid item xs={2}>
                         <Typography align='left'>
-                            {data.content} {data.unit}
+                            {data.content} {data.unit} / {data.presentation}
                         </Typography>
                     </Grid>
                     <Grid item xs={3}>
@@ -149,7 +150,8 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus }) 
     }
 
     const handleRemoveSku = (index) => {
-
+        if(removeSku)
+            removeSku(index);
     }
 
     return (
@@ -229,12 +231,25 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus }) 
                                     value={sku.unit}
                                     onChange={handleInputSku}
                                 >
-                                    <MenuItem value={null}></MenuItem>
                                     <MenuItem value={'Kg'}>Kg</MenuItem>
                                     <MenuItem value={'Lib'}>Lib</MenuItem>
                                     <MenuItem value={'Gr'}>Gr</MenuItem>
                                 </Select>
                             </FormControl>
+                        </div>
+                        <div style={{marginTop:'.5em'}}>
+                            <TextField 
+                                id="" 
+                                label="Presentación" 
+                                variant="outlined" 
+                                fullWidth
+                                multiline
+                                name='presentation'
+                                //rows={2}
+                                onChange={handleInputSku}
+                                value={sku.presentation}
+                                required
+                            />
                         </div>
                     </div>
                 </Grid>
@@ -248,7 +263,7 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus }) 
                         />
                     </div>
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={2} align='left'>
                     <RadioGroup
                         name = 'subcategory'
                         items = {[...subcategories]}
@@ -263,7 +278,7 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus }) 
                             variant='contained'
                             color='primary'
                             onClick={handleSaveSku}
-                            disabled={sku.name==='' || sku.content==='' || sku.grouper===null || sku.subcategory===null || sku.unit===null}
+                            disabled={sku.name==='' || sku.content==='' || sku.grouper===null || sku.subcategory===null || sku.unit===null || sku.presentation===''}
                         >
                             Guardar
                         </Button>
@@ -331,12 +346,25 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus }) 
                                                 setEditSku({...editSku, [e.target.name]:e.target.value})
                                             }}
                                         >
-                                            <MenuItem value={null}></MenuItem>
                                             <MenuItem value={'Kg'}>Kg</MenuItem>
                                             <MenuItem value={'Lib'}>Lib</MenuItem>
                                             <MenuItem value={'Gr'}>Gr</MenuItem>
                                         </Select>
                                     </FormControl>
+                                </div>
+                                <div>
+                                    <TextField 
+                                        id=""
+                                        label="Presentación" 
+                                        variant="outlined" 
+                                        fullWidth
+                                        multiline
+                                        name='presentation'
+                                        //rows={2}
+                                        onChange={handleInputSku}
+                                        value={editSku.presentation}
+                                        required
+                                    />
                                 </div>
                             </div>
                         </Grid>
@@ -387,7 +415,7 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus }) 
                                         }
                                         setOpenEditSku(!openEditSku)
                                     }}
-                                    disabled={editSku.name==='' || editSku.content==='' || editSku.grouper===null || editSku.subcategory===null || editSku.unit===null}
+                                    disabled={editSku.name==='' || editSku.content==='' || editSku.grouper===null || editSku.subcategory===null || editSku.unit===null || editSku.presentation===''}
                                 >
                                     Actualizar
                                 </Button>

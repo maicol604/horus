@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 10,
   },
   button: {
-    position: 'fixed',
+    position: props=>props.position,
     bottom: '1em',
     right: '1em',
   },
@@ -68,8 +68,8 @@ const datalist = [
   }
 ]
 
-export default function FullScreenDialog({skus, categories, subcategories, groupers}) {
-  const classes = useStyles();
+export default function FullScreenDialog({skus, categories, subcategories, position='fixed'}) {
+  const classes = useStyles({position});
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {

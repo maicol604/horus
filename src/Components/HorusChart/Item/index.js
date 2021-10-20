@@ -70,9 +70,9 @@ const Item = ({id, style, title='', variant='', groupers=[], vars=[], data=null}
                             <div style={{display: 'flex'}}>
                                 <span style={{textTransform: 'capitalize'}}>
                                     {data.grouper.presentation}
-                                </span> / 
+                                </span> 
                                 <span style={{fontWeight: '600'}}>
-                                    {data.content} {data.unit}
+                                    {data.content} {data.unit} / {data.presentation}
                                 </span>
                             </div>
                         </div>

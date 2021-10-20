@@ -180,6 +180,24 @@ const NewData = ({onUpdate, onFinish}) => {
         });
     }
 
+    const handleRemoveGrouper = (index) => {
+        let groupers = state.groupers.slice();
+        groupers.splice(index,1);
+        setState({
+            ...state,
+            groupers:[...groupers],
+        });
+    }
+
+    const handleRemoveSku = (index) => {
+        let skus = state.skus.slice();
+        skus.splice(index,1);
+        setState({
+            ...state,
+            skus:[...skus],
+        });
+    }
+
     const getSubcategories = () => {
         return (
             state.subcategories.map((data, index) => 
@@ -586,6 +604,7 @@ const NewData = ({onUpdate, onFinish}) => {
                                         //console.log('upating groupers', data)
                                         setState({...state, groupers:data});
                                     }}
+                                    removeGrouper={handleRemoveGrouper}
                                 />
                                 <div
                                     style={{
@@ -623,6 +642,7 @@ const NewData = ({onUpdate, onFinish}) => {
                                     updateSkus={(data)=>{
                                         setState({...state, skus: data})
                                     }}
+                                    removeSku={handleRemoveSku}
                                 />
                                 <div
                                     style={{
@@ -897,13 +917,13 @@ const NewData = ({onUpdate, onFinish}) => {
                                         }
                                         {
                                             activeStep<3?
-                                            <FullScreenDialog
-                                                skus={sortSkus( state.subcategories, state.skus)}
-                                                categories={[state.category]}
-                                                subcategories={sortSubcategories( [state.category], state.subcategories)}
-                                            />
+                                                <FullScreenDialog
+                                                    skus={sortSkus( state.subcategories, state.skus)}
+                                                    categories={[state.category]}
+                                                    subcategories={sortSubcategories( [state.category], state.subcategories)}
+                                                />
                                             :
-                                            <></>
+                                                <></>
                                         }
                                     </div>
                                 </Grid>

@@ -18,7 +18,7 @@ const initialValue = {
     name:'',
     maker:'',
     color:'#ffffff',
-    presentation :''
+    //presentation :''
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -57,7 +57,7 @@ const randomColor = () => {
     return `#${color}`;
 }
 
-const Step2 = ({ groupers=[], pushGrouper, updateGroupers }) => {
+const Step2 = ({ groupers=[], pushGrouper, updateGroupers, removeGrouper }) => {
     const classes = useStyles();
     const [grouper, setGrouper] = React.useState({
         ...initialValue,
@@ -71,12 +71,12 @@ const Step2 = ({ groupers=[], pushGrouper, updateGroupers }) => {
         return (
             groupers.map((data, index) => 
                 <React.Fragment>
-                    <Grid item xs={3}>
+                    <Grid item xs={4}>
                         <Typography align="left">
                             {data.name}
                         </Typography>
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={4}>
                         <Typography align="left">
                             {data.maker}
                         </Typography>
@@ -84,21 +84,21 @@ const Step2 = ({ groupers=[], pushGrouper, updateGroupers }) => {
                     <Grid item xs={2}>
                         <div className={classes.colorContainer}>
                             <div className={classes.colorSquare} style={{backgroundColor:data.color}}/>
-                            <Typography variant="subtitle1" align="left">{data.color.split('#')[1]}</Typography>
+                            {/*<Typography variant="subtitle1" align="left">{data.color.split('#')[1]}</Typography>*/}
                         </div>
                     </Grid>
-                    <Grid item xs={2}>
+                    {/*<Grid item xs={2}>
                         <Typography align="left">
                             {data.presentation }
                         </Typography>
-                    </Grid>
+                    </Grid>*/}
                     <Grid item xs={1}>
                         <div
                             style={{height: '100%', display: 'flex', justifyContent: 'center', alignItems:'center'}}
                         >
                             <ConfirmDialog
-                                message='Esta seguro de eliminar esta categoria?'
-                                title='Esta seguro de eliminar esta categoria?'
+                                //message='Esta seguro de eliminar esta categoria?'
+                                title='Esta seguro de eliminar esta marca?'
                                 onOk={()=>{handleRemoveGrouper(index)}}
                             >
                                 <DeleteIcon/>
@@ -134,7 +134,8 @@ const Step2 = ({ groupers=[], pushGrouper, updateGroupers }) => {
     }
 
     const handleRemoveGrouper = (index) => {
-
+        if(removeGrouper)
+            removeGrouper(index);
     }
 
     return (
@@ -161,23 +162,23 @@ const Step2 = ({ groupers=[], pushGrouper, updateGroupers }) => {
                 <Grid item xs={12}/>
             </Grid>
             <Grid container spacing={3}>
-                <Grid item xs={3}>
+                <Grid item xs={4}>
                     <Typography variant="subtitle1" align="left">Marca</Typography>
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={4}>
                     <Typography variant="subtitle1" align="left">Fabricante</Typography>
                 </Grid>
                 <Grid item xs={2}>
                     <Typography variant="subtitle1" align="left">Color</Typography>
                 </Grid>
-                <Grid item xs={3}>
+                {/*<Grid item xs={3}>
                     <Typography variant="subtitle1" align="left">Presentación</Typography>
-                </Grid>
+                </Grid>*/}
                 <Grid item xs={1}>
                     
                 </Grid>
                 { getGroupers() }
-                <Grid item xs={3}>
+                <Grid item xs={4}>
                     <TextField 
                         id="" 
                         label="Marca" 
@@ -189,7 +190,7 @@ const Step2 = ({ groupers=[], pushGrouper, updateGroupers }) => {
                         required
                     />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={4}>
                     <TextField 
                         id="" 
                         label="Fabricante" 
@@ -210,7 +211,7 @@ const Step2 = ({ groupers=[], pushGrouper, updateGroupers }) => {
                         value={grouper.color}
                     />
                 </Grid>
-                <Grid item xs={2}>
+                {/*<Grid item xs={2}>
                     <TextField 
                         id="" 
                         label="Presentación" 
@@ -223,7 +224,7 @@ const Step2 = ({ groupers=[], pushGrouper, updateGroupers }) => {
                         value={grouper.presentation}
                         required
                     />
-                </Grid>
+                </Grid>*/}
                 <Grid item xs={2}>
                     <div style={{height: '100%', display: 'flex', justifyContent: 'center', alignItems:'center'}}>
                         {/*<DeleteIcon/>*/}
@@ -231,7 +232,7 @@ const Step2 = ({ groupers=[], pushGrouper, updateGroupers }) => {
                             variant='contained'
                             color='primary'
                             onClick={handleSaveGrouper}
-                            disabled={grouper.name==='' || grouper.maker==='' || grouper.presentation===''}
+                            disabled={grouper.name==='' || grouper.maker===''}
                         >
                             Guardar
                         </Button>
