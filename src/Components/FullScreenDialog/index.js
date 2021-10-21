@@ -44,8 +44,8 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     position: props=>props.position,
-    bottom: '1em',
-    right: '1em',
+    bottom: props=>props.position==='fixed'?'1em':'auto',
+    right: props=>props.position==='fixed'?'1em':'auto',
   },
   close: {
     position: 'absolute',
@@ -68,7 +68,7 @@ const datalist = [
   }
 ]
 
-export default function FullScreenDialog({skus, categories, subcategories, position='fixed'}) {
+export default function FullScreenDialog({skus, categories, subcategories, position='fixed', children}) {
   const classes = useStyles({position});
   const [open, setOpen] = React.useState(false);
 
@@ -85,9 +85,15 @@ export default function FullScreenDialog({skus, categories, subcategories, posit
   return (
     <div>
         <div className={classes.button}>
-          <Fab size="small" color="primary" aria-label="clean" onClick={handleClickOpen}>
-            <OpenWithIcon />
-          </Fab>
+          {children?
+            <div style={{width:'max-content'}} onClick={handleClickOpen}>
+              {children}
+            </div>
+            :
+            <Fab size="small" color="primary" aria-label="clean" onClick={handleClickOpen}>
+              <OpenWithIcon />
+            </Fab>
+          }
         </div>
         <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition} className={classes.root}>
             <div style={{backgroundColor: '#1F1C36', width: '200%', height: '100vh', position: 'fixed'}}/>
