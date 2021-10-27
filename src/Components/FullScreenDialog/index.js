@@ -1,28 +1,21 @@
 import React from 'react';
 import { makeStyles } from '@mui/styles';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import ListItemText from '@mui/material/ListItemText';
-import ListItem from '@mui/material/ListItem';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import CloseIcon from '@mui/icons-material/Close';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 import Slide from '@mui/material/Slide';
-import InputBase from '@mui/material/InputBase';
-import SearchIcon from '@mui/icons-material/Search';
+import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
+import CheckboxGroup from '../CheckboxGroup';
 
 import HorusChart from '../HorusChart';
-import Drawer from '../Drawer';
 
 import Fab from '@mui/material/Fab';  
 import OpenWithIcon from '@mui/icons-material/OpenWith';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
-import sampleData from '../../SampleData/chart.json';
+import Modal from '../Modal';
+import { ConstructionOutlined } from '@mui/icons-material';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,6 +64,14 @@ const datalist = [
 export default function FullScreenDialog({skus, categories, subcategories, position='fixed', children}) {
   const classes = useStyles({position});
   const [open, setOpen] = React.useState(false);
+  const [filter, setFilter] = React.useState(
+    {
+      skus:skus,
+      subcategories:subcategories,
+      groupers:null,
+      apply: false,
+    }
+  );
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -80,7 +81,17 @@ export default function FullScreenDialog({skus, categories, subcategories, posit
     setOpen(false);
   };
 
-  ////console.log(sampleData)
+  const getSkus = () => {
+    if(!filter.apply)
+      return skus;
+    return filter.skus.filter(item => item.checked);
+  }
+
+  const getSubcategories = () => {
+    if(!filter.apply)
+      return subcategories;
+    return filter.subcategories.filter(item=> item.checked);
+  }
 
   return (
     <div>
@@ -102,49 +113,105 @@ export default function FullScreenDialog({skus, categories, subcategories, posit
                 <HighlightOffIcon />
               </div>
               <div>
-                {/*<Drawer>
-                  <div style={{padding: '1em'}}>
-                    <span>
-                      <InputBase
-                        className={classes.input}
-                        placeholder="Buscar"
-                        variant="outlined"
-                      />
-                      <IconButton type="submit" className={classes.iconButton} aria-label="search">
-                        <SearchIcon />
-                      </IconButton>
-                      <Divider />
-                    </span>
-                    {
-                      datalist.map((data, index)=>
-                        <span key={index}>
-                          <Typography variant='subtitle1'>
-                            {data.title}
-                          </Typography>
-                          <List style={{width:'15em'}}>
-                            {data.items.map((item, i) => (
-                              <ListItem button key={i}>
-                                {
-                                  //<ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                                }
-                                <ListItemIcon style={{minWidth:'2.5em'}}><div style={{width:'1.5em', height:'1.5em', borderRadius:'50%', backgroundColor:item.color}}/></ListItemIcon>
-                                <ListItemText primary={item.name} />
-                              </ListItem>
-                            ))}
-                          </List>
-                          <Divider />
-                        </span>
-                      )
-                    }
-                  </div>
-                </Drawer>*/}
+
                 {
-                 // //console.log(skus,'skus')
+                  // <Drawer>
+                  //   <div style={{padding: '1em'}}>
+                  //     <span>
+                  //       <InputBase
+                  //         className={classes.input}
+                  //         placeholder="Buscar"
+                  //         variant="outlined"
+                  //       />
+                  //       <IconButton type="submit" className={classes.iconButton} aria-label="search">
+                  //         <SearchIcon />
+                  //       </IconButton>
+                  //       <Divider />
+                  //     </span>
+                  //     {
+                  //       datalist.map((data, index)=>
+                  //         <span key={index}>
+                  //           <Typography variant='subtitle1'>
+                  //             {data.title}
+                  //           </Typography>
+                  //           <List style={{width:'15em'}}>
+                  //             {data.items.map((item, i) => (
+                  //               <ListItem button key={i}>
+                  //                 {
+                  //                   //<ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                  //                 }
+                  //                 <ListItemIcon style={{minWidth:'2.5em'}}>
+                  //                   <div style={{width:'1.5em', height:'1.5em', borderRadius:'50%', backgroundColor:item.color}}/>
+                  //                 </ListItemIcon>
+                  //                 <ListItemText primary={item.name} />
+                  //               </ListItem>
+                  //             ))}
+                  //           </List>
+                  //           <Divider />
+                  //         </span>
+                  //       )
+                  //     }
+                  //   </div>
+                  // </Drawer>
+                }
+                {
+                  <Modal
+                    visible={false}
+                  >
+                    <div>
+
+                      <Typography variant='h5'>
+                        Filtros
+                      </Typography>
+
+                      <Divider style={{marginBottom:'.75em'}}/>
+                      <Typography>
+                        Subcategorias
+                      </Typography>
+                      <CheckboxGroup
+                        items={subcategories}
+                        title='some'
+                        name='subcategories'
+                        onChange={(e)=>{
+                          setFilter({...filter, subcategories: e.target.value})
+                        }}
+                      />
+                      
+                      <Divider style={{marginBottom:'.75em'}}/>
+                      <Typography>
+                        Skus
+                      </Typography>
+                      <CheckboxGroup
+                        items={skus}
+                        title='some'
+                        name='skus'
+                        onChange={(e)=>{
+                          setFilter({...filter, skus: e.target.value})
+                        }}
+                      />
+
+                      <Divider style={{marginBottom:'.75em'}}/>
+                      <Stack spacing={2} direction="row">
+                        <Button 
+                          primary 
+                          variant='contained' 
+                          onclick={()=>{
+                            setFilter({...filter, apply:false})
+                          }}
+                        >
+                          Filtrar
+                        </Button>
+                        <Button primary variant='outlined'>
+                          Limpiar filtros
+                        </Button>
+                      </Stack>
+                    </div>
+                  </Modal>
                 }
                 <HorusChart
                   categories={[...categories]}
-                  subcategories={[...subcategories]}
-                  skus={[...skus]}
+                  subcategories={getSubcategories()}
+                  skus={getSkus()}
                 />
               </div>
             </div>

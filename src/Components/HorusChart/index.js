@@ -2,8 +2,13 @@ import React from 'react';
 import ReactBezier from "react-bezier";
 
 import { makeStyles } from '@mui/styles';
+import styled from 'styled-components';
 
 import Item from './Item';
+
+const WrapperDiv = styled.div`
+    ${props => props.classes}
+`;
 
 const useStyles = makeStyles((theme)=>({
     box: {
@@ -41,6 +46,21 @@ const HorusChart = ({categories=[], subcategories=[], skus=[]}) => {
     const classes = useStyles();
     const [settings, setSettings] = React.useState([]);
 
+    const getClasses = (data) => {
+        let lineClasses = {};
+
+        for(let i=0;i<data.length;i++){
+            lineClasses = {
+                ...lineClasses, 
+                [".subcategory-color-"+(`${data[i].id}`.split('.').join(""))]:{
+                    stroke:`${data[i].color}`
+                }
+            };
+        }
+        //console.log(lineClasses)
+        return lineClasses;
+    }
+
     React.useEffect(()=>{
         ////console.log(categories)
         let newSettings = [];
@@ -60,7 +80,7 @@ const HorusChart = ({categories=[], subcategories=[], skus=[]}) => {
                                     side: "left",
                                 },
                             },
-                            style: "white-line",
+                            style: "subcategory-color-"+(`${subcategories[j].id}`.split('.').join("")),
                         }
                     )
                 }
@@ -85,7 +105,7 @@ const HorusChart = ({categories=[], subcategories=[], skus=[]}) => {
                                     side: "left",
                                 },
                             },
-                            style: "white-line",
+                            style: "subcategory-color-"+(`${subcategories[i].id}`.split('.').join("")),
                         }
                     )
                 }
@@ -112,7 +132,7 @@ const HorusChart = ({categories=[], subcategories=[], skus=[]}) => {
     }
 
     return (
-        <div style={{padding: '5em'}}>
+        <WrapperDiv style={{padding: '5em'}} classes={getClasses(subcategories)}>
             <ReactBezier settings={settings}>
                 <div style={{display:'flex'}}>
                     <div className={classes.chartRow}>
@@ -144,7 +164,7 @@ const HorusChart = ({categories=[], subcategories=[], skus=[]}) => {
                     </div>
                 </div>
             </ReactBezier>
-        </div>
+        </WrapperDiv>
     )
 }
 

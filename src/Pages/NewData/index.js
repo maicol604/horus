@@ -26,7 +26,6 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import EditIcon from '@mui/icons-material/EditOutlined';
 
 import ConfirmDialog from '../../Components/ConfirmDialog';
-import RadioGroup from '../../Components/RadioGroup';
 import FullScreenDialog from '../../Components/FullScreenDialog';
 
 import Groupers from './Groupers';
@@ -35,13 +34,18 @@ import Skus from './Skus';
 //temporal
 import RelatableBoxes from '../../Components/RelatableBoxes';
 import styled from 'styled-components';
-import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Modal from '@mui/material/Modal';
+import ColorPicker from '../../Components/ColorPicker';
 
 const WrapperDiv = styled.div`
     ${props => props.classes}
 `;
+
+const randomColor = () => {
+    let color = Math.floor(Math.random()*16777215).toString(16);
+    return `#${color}`;
+}
 
 const getid = () => {
     return `${(Math.random() * (1000 - 1) + 1)}`.split('.').join("");
@@ -88,7 +92,14 @@ const useStyles = makeStyles((theme)=>({
         width: '50%',
         padding:'1em',
         p: 4,
-    }
+    },
+    colorSquare: {
+        width: '1em',
+        height: '1em',
+        borderRadius: '2px',
+        marginRight: '.5em',
+        border: '2px solid #c4c4c4',
+    },
 }));
 
 
@@ -119,6 +130,7 @@ const NewData = ({onUpdate, onFinish}) => {
         name:'',
         description:'',
         category:null,
+        color:randomColor()
     });
 
     const [editSubcategory, setEditSubcategory] = React.useState({
@@ -168,7 +180,7 @@ const NewData = ({onUpdate, onFinish}) => {
             ...state,
             subcategories:[...state.subcategories, {...data, id:getid(), category: state.category}],
         });
-        setSubcategory({name:'',description:'', category:''});
+        setSubcategory({name:'',description:'', category:'', color:randomColor()});
     }
 
     const handleRemoveSubcategory = (index) => {
@@ -207,10 +219,13 @@ const NewData = ({onUpdate, onFinish}) => {
                             {data.name}
                         </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                         <Typography align="left">
                             {data.description}
                         </Typography>
+                    </Grid>
+                    <Grid item xs={2}>
+                        <div className={classes.colorSquare} style={{backgroundColor:data.color}}/>
                     </Grid>
                     <Grid item xs={1}>
                         <div
@@ -290,7 +305,12 @@ const NewData = ({onUpdate, onFinish}) => {
         let lineClasses = {};
 
         for(let i=0;i<state.groupers.length;i++){
-            lineClasses = {...lineClasses, ['.'+(`stroke-color-${state.groupers[i].name}-${state.groupers[i].id}`.replace(/\s/g, '_').split('.').join(""))]:{stroke:`${state.groupers[i].color} !important`}};
+            lineClasses = {
+                ...lineClasses, 
+                ['.'+(`stroke-color-${state.groupers[i].name}-${state.groupers[i].id}`.replace(/\s/g, '_').split('.').join(""))]:{
+                    stroke:`${state.groupers[i].color} !important`
+                }
+            };
         }
         ////console.log(JSON.stringify(lineClasses))
         return lineClasses;
@@ -438,8 +458,11 @@ const NewData = ({onUpdate, onFinish}) => {
                                     <Grid item xs={4}>
                                         <Typography variant="subtitle1" align="left">Nombre</Typography>
                                     </Grid>
-                                    <Grid item xs={8}>
+                                    <Grid item xs={4}>
                                         <Typography variant="subtitle1" align="left">Descripcion</Typography>
+                                    </Grid>
+                                    <Grid item xs={4}>
+                                        <Typography variant="subtitle1" align="left">Color</Typography>
                                     </Grid>
                                     { getSubcategories() }
                                     <Grid item xs={4}>
@@ -454,7 +477,7 @@ const NewData = ({onUpdate, onFinish}) => {
                                             required
                                         />
                                     </Grid>
-                                    <Grid item xs={6}>
+                                    <Grid item xs={4}>
                                         <TextField 
                                             id="" 
                                             label="Descripcion" 
@@ -465,6 +488,13 @@ const NewData = ({onUpdate, onFinish}) => {
                                             //rows={2}
                                             onChange={handleInputChangeSubcategories}
                                             value={subcategory.description}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={2}>
+                                        <ColorPicker
+                                            onChangeComplete={handleInputChangeSubcategories}
+                                            name='color'
+                                            value={subcategory.color}
                                         />
                                     </Grid>
                                     <Grid item xs={2}>
@@ -523,7 +553,7 @@ const NewData = ({onUpdate, onFinish}) => {
                                                     Editar subcategoria
                                                 </Typography>
                                             </Grid>
-                                            <Grid item xs={6}>
+                                            <Grid item xs={5}>
                                                 <TextField 
                                                     label="Nombre" 
                                                     variant="outlined" 
@@ -536,7 +566,7 @@ const NewData = ({onUpdate, onFinish}) => {
                                                     required
                                                 />
                                             </Grid>
-                                            <Grid item xs={6}>
+                                            <Grid item xs={5}>
                                                 <TextField 
                                                     id="" 
                                                     label="Descripcion" 
@@ -549,6 +579,16 @@ const NewData = ({onUpdate, onFinish}) => {
                                                         setEditSubcategory({...editSubcategory, description:e.target.value})
                                                     }}
                                                     value={editSubcategory.description}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={2}>
+                                                <ColorPicker
+                                                    onChangeComplete={(e)=>{
+                                                        //console.log(e)
+                                                        setEditSubcategory({...editSubcategory, color:e.target.value})
+                                                    }}
+                                                    name='color'
+                                                    value={editSubcategory.color}
                                                 />
                                             </Grid>
                                             <Grid item xs={12}>

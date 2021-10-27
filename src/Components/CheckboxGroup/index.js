@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function CheckboxGroup({items=[], title, onChange, name}) {
+export default function CheckboxGroup({items=[], title='', onChange, name}) {
     const [itemList, setItemList] = React.useState([]);
     const classes = useStyles();
     const handleChange = (index) => {

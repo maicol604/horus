@@ -1,20 +1,9 @@
 import React from 'react';
-import clsx from 'clsx';
-import { makeStyles } from '@mui/styles';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 
-const useStyles = makeStyles({
-  list: {
-    width: 250,
-  },
-  fullList: {
-    width: 'auto',
-  },
-});
-
 export default function TemporaryDrawer({children=null}) {
-  const classes = useStyles();
+
   const [state, setState] = React.useState({
     top: false,
     left: false,
@@ -54,8 +43,14 @@ export default function TemporaryDrawer({children=null}) {
     <div>
       {['left'].map((anchor) => (
         <React.Fragment key={anchor}>
-          <Button onClick={toggleDrawer(anchor, true)}>{'buscar'}</Button>
-          <Drawer anchor={anchor} open={state[anchor]} onClose={toggleDrawer(anchor, false)}>
+          <Button onClick={toggleDrawer(anchor, true)}>
+            {'buscar'}
+          </Button>
+          <Drawer 
+            anchor={anchor} 
+            open={state[anchor]} 
+            onClose={toggleDrawer(anchor, false)}
+          >
             {children}
           </Drawer>
         </React.Fragment>
