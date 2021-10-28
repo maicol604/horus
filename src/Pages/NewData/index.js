@@ -37,6 +37,7 @@ import styled from 'styled-components';
 import Stack from '@mui/material/Stack';
 import Modal from '@mui/material/Modal';
 import ColorPicker from '../../Components/ColorPicker';
+import Tabs from '../../Components/Tabs';
 
 const WrapperDiv = styled.div`
     ${props => props.classes}
@@ -140,6 +141,8 @@ const NewData = ({onUpdate, onFinish}) => {
     });
 
     const [openEditSubcategory, setOpenEditSubcategory] = React.useState(false);
+
+    const [tab, setTab] = React.useState(0);
     
     const steps = getSteps();
 
@@ -318,6 +321,16 @@ const NewData = ({onUpdate, onFinish}) => {
 
     const handleUpdate = (data) => {
         setState({...state, relations: data})
+    }
+
+    const skuFilter = (index) => {
+        let newSkus = [];
+        for(let i=0;i<state.skus.length;i++){
+            if(state.skus[i].subcategory.id===state.subcategories[index].id)
+                newSkus.push(state.skus[i])
+            //console.log(state.skus[i].subcategory.id, state.subcategories[index].id)
+        }
+        return (newSkus);
     }
 
     function getStepContent(step) {
@@ -735,13 +748,30 @@ const NewData = ({onUpdate, onFinish}) => {
                             </Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <RelatableBoxes
-                                dataFrom = {[...state.skus]}
-                                dataTo = {[...state.skus]}
-                                lineClasses={getClasses()}
-                                onUpdate={handleUpdate}
-                                relations={state.relations}
-                            />
+                            {
+                                // <RelatableBoxes
+                                //     dataFrom = {[...state.skus]}
+                                //     dataTo = {[...state.skus]}
+                                //     lineClasses={getClasses()}
+                                //     onUpdate={handleUpdate}
+                                //     relations={state.relations}
+                                // />
+                            }
+                            <Tabs
+                                tabs={state.subcategories}
+                                onChange={(index)=>{
+                                    //skuFilter(index);
+                                    setTab(index);
+                                }}
+                            >
+                                <RelatableBoxes
+                                     dataFrom = {[...skuFilter(tab)]}
+                                     dataTo = {[...skuFilter(tab)]}
+                                     lineClasses={getClasses()}
+                                     onUpdate={handleUpdate}
+                                     relations={state.relations}
+                                 />
+                            </Tabs>
                         </Grid>
                     </Grid>
                     <div

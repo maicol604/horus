@@ -82,14 +82,27 @@ export default function FullScreenDialog({skus, categories, subcategories, posit
   };
 
   const getSkus = () => {
-    if(!filter.apply)
-      return skus;
-    return filter.skus.filter(item => item.checked);
+    let newSkus = [];
+    //console.log(skus)
+    for(let j=0;j<filter.subcategories.length;j++){
+      for(let i=0;i<skus.length;i++){
+        console.log(skus[i])
+        if(skus[i].subcategory.id===filter.subcategories[j].id && filter.subcategories[j].checked){
+          newSkus.push(skus[i])
+        }
+      }
+    }
+    //console.log(newSkus)
+    return (newSkus);
+
+    //if(!filter.apply)
+      //return skus;
+    //return filter.skus.filter(item => item.checked);
   }
 
   const getSubcategories = () => {
-    if(!filter.apply)
-      return subcategories;
+    /*if(!filter.apply)
+      return subcategories;*/
     return filter.subcategories.filter(item=> item.checked);
   }
 
@@ -177,7 +190,7 @@ export default function FullScreenDialog({skus, categories, subcategories, posit
                         }}
                       />
                       
-                      <Divider style={{marginBottom:'.75em'}}/>
+                      {/*<Divider style={{marginBottom:'.75em'}}/>
                       <Typography>
                         Skus
                       </Typography>
@@ -188,7 +201,7 @@ export default function FullScreenDialog({skus, categories, subcategories, posit
                         onChange={(e)=>{
                           setFilter({...filter, skus: e.target.value})
                         }}
-                      />
+                      />*/}
 
                       <Divider style={{marginBottom:'.75em'}}/>
                       <Stack spacing={2} direction="row">
@@ -196,7 +209,7 @@ export default function FullScreenDialog({skus, categories, subcategories, posit
                           primary 
                           variant='contained' 
                           onclick={()=>{
-                            setFilter({...filter, apply:false})
+                            setFilter({...filter, apply:true})
                           }}
                         >
                           Filtrar
