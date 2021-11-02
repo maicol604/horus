@@ -15,7 +15,7 @@ import OpenWithIcon from '@mui/icons-material/OpenWith';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 import Modal from '../Modal';
-import { ConstructionOutlined } from '@mui/icons-material';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,12 +64,18 @@ const datalist = [
 export default function FullScreenDialog({skus, categories, subcategories, position='fixed', children}) {
   const classes = useStyles({position});
   const [open, setOpen] = React.useState(false);
+  const [visible, setVisible] = React.useState(false);
   const [filter, setFilter] = React.useState(
     {
       skus:skus,
       subcategories:subcategories,
       groupers:null,
       apply: false,
+      conf: {
+        skus:skus,
+        subcategories:subcategories,
+        groupers:null,
+      }
     }
   );
 
@@ -82,27 +88,26 @@ export default function FullScreenDialog({skus, categories, subcategories, posit
   };
 
   const getSkus = () => {
+    //console.log(filter)
+    if(!filter.apply){
+      return skus;
+    }
     let newSkus = [];
-    //console.log(skus)
     for(let j=0;j<filter.subcategories.length;j++){
       for(let i=0;i<skus.length;i++){
-        console.log(skus[i])
+        //console.log(skus[i])
         if(skus[i].subcategory.id===filter.subcategories[j].id && filter.subcategories[j].checked){
           newSkus.push(skus[i])
         }
       }
     }
-    //console.log(newSkus)
     return (newSkus);
-
-    //if(!filter.apply)
-      //return skus;
-    //return filter.skus.filter(item => item.checked);
   }
 
   const getSubcategories = () => {
-    /*if(!filter.apply)
-      return subcategories;*/
+    if(!filter.apply){
+      return subcategories;
+    }
     return filter.subcategories.filter(item=> item.checked);
   }
 
@@ -168,8 +173,14 @@ export default function FullScreenDialog({skus, categories, subcategories, posit
                   // </Drawer>
                 }
                 {
+                  <Button onClick={()=>{setVisible(true)}}>
+                    <FilterAltIcon/>
+                  </Button>
+                }
+                {
                   <Modal
-                    visible={false}
+                    visible={visible}
+                    onClose={()=>{setVisible(false)}}
                   >
                     <div>
 
@@ -182,11 +193,11 @@ export default function FullScreenDialog({skus, categories, subcategories, posit
                         Subcategorias
                       </Typography>
                       <CheckboxGroup
-                        items={subcategories}
+                        items={filter.subcategories}
                         title='some'
                         name='subcategories'
                         onChange={(e)=>{
-                          setFilter({...filter, subcategories: e.target.value})
+                          setFilter({...filter, conf:{...filter.conf, subcategories: e.target.value}})
                         }}
                       />
                       
@@ -208,13 +219,20 @@ export default function FullScreenDialog({skus, categories, subcategories, posit
                         <Button 
                           primary 
                           variant='contained' 
-                          onclick={()=>{
-                            setFilter({...filter, apply:true})
+                          onClick={()=>{
+                            setFilter({...filter, apply:true, subcategories: filter.conf.subcategories});
+                            setVisible(false);
                           }}
                         >
                           Filtrar
                         </Button>
-                        <Button primary variant='outlined'>
+                        <Button 
+                          primary 
+                          variant='outlined'
+                          onClick={()=>{
+                            setFilter({...filter, apply:false})
+                          }}
+                        >
                           Limpiar filtros
                         </Button>
                       </Stack>

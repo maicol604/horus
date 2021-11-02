@@ -13,19 +13,16 @@ const style = {
     p: 4,
 };
 
-export default ({children}) => {
+export default ({children, visible=true, onClose}) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
     <>
-      <Button onClick={handleOpen}>
-        Filtrar
-      </Button>
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={visible}
+        onClose={onClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >

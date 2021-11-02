@@ -24,7 +24,7 @@ export default function CheckboxGroup({items=[], title='', onChange, name}) {
     const [itemList, setItemList] = React.useState([]);
     const classes = useStyles();
     const handleChange = (index) => {
-        let aux = itemList.slice();
+        let aux = JSON.parse(JSON.stringify(itemList.slice()));
         aux[index].checked = !aux[index].checked;
         setItemList(aux);
         if(onChange)
@@ -32,7 +32,14 @@ export default function CheckboxGroup({items=[], title='', onChange, name}) {
     };
 
     React.useEffect(()=>{
-        setItemList(items.map(data=>({ ...data, checked:false })));
+        let flag = false;
+        for(let i=0;i<items.length;i++){
+            if(items[i].checked)
+                flag = true;
+        }
+        setItemList(items); 
+        if(!flag)
+            setItemList(items.map(data=>({ ...data, checked:false })));
     },[])
 
 
