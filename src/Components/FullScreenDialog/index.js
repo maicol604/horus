@@ -79,6 +79,12 @@ export default function FullScreenDialog({skus, categories, subcategories, posit
     }
   );
 
+  React.useEffect(()=>{
+    if(subcategories.length>0){
+      setFilter({...filter, subcategories, conf:{...filter.conf, subcategories:subcategories}})
+    }
+  },[subcategories])
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -192,8 +198,11 @@ export default function FullScreenDialog({skus, categories, subcategories, posit
                       <Typography>
                         Subcategorias
                       </Typography>
+                      {
+                        //console.log(subcategories)
+                      }
                       <CheckboxGroup
-                        items={filter.subcategories}
+                        items={filter.conf.subcategories}
                         title='some'
                         name='subcategories'
                         onChange={(e)=>{

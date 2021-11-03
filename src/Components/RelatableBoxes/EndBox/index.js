@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { makeStyles } from '@mui/styles';
+import Avatar from '@mui/material/Avatar';
 
 import DeleteNode from './DeleteNode';
 
@@ -13,6 +14,8 @@ const useStyles = makeStyles((theme)=>({
         position: 'relative',
         overflow: 'hidden',
         color: '#727272',
+        display:'flex', 
+        alignItems:'center',
         //backgroundColor: '#F0F0F0',
         "&:hover": {
             borderWidth: '2px'
@@ -106,10 +109,27 @@ const EndBox = ({data, id, onEnter, onExit, related=false, onEnterDelete, onExit
                 onMouseLeave={handleExit}
             />
                 <div className={classes.borderColor}/>
-                <div className={classes.title}>
-                    {data.name}
-                </div>
+                               
+                <span style={{marginRight:'1em'}}>
+                    {
+                    data.img?
+                            <Avatar
+                                alt=""
+                                src={data.img}
+                                sx={{ width: 50, height: 50 }}
+                            />
+                    :
+                        <Avatar
+                            sx={{ width: 50, height: 50, bgcolor: data.grouper.color }}
+                        >
+                            {data.name.toUpperCase().charAt(0)}
+                        </Avatar>
+                    }
+                </span>
                 <div className={classes.dataContainer}>
+                    <div className={classes.title}>
+                        {data.name}
+                    </div>
                     <div style={{display: 'flex', alignItems: 'center'}}>
                         {/*<div className={classes.grouperCircle}/> */}
                         <span style={{textTransform: 'uppercase'}}>

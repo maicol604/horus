@@ -32,6 +32,7 @@ export default function CheckboxGroup({items=[], title='', onChange, name}) {
     };
 
     React.useEffect(()=>{
+        //console.log(items)
         let flag = false;
         for(let i=0;i<items.length;i++){
             if(items[i].checked)

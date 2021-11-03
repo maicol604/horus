@@ -39,17 +39,17 @@
 
 .relationship-line {
   /*stroke: #2B9982;*/
-  stroke-width: 2px;
+  stroke-width: 3px;
 }
 .relationship-line-selected {
   stroke: #2B9982;
   stroke-dasharray:5,5;
-  stroke-width: 2px;
+  stroke-width: 3px;
 }
 .relationship-line-delete {
   /*transition: all .5s;*/
   stroke: #C72C1C;
-  stroke-width: 2px;
+  stroke-width: 3px;
   filter: drop-shadow(1px 1px 2px #C72C1C);
 }
 .bezier-line{

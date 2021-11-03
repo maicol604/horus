@@ -20,6 +20,9 @@ import RadioGropupGroupers from './RadioGropupGroupers';
 import Stack from '@mui/material/Stack';
 import Modal from '@mui/material/Modal';
 import Paper from '@mui/material/Paper';
+import Avatar from '@mui/material/Avatar';
+
+import UploadImage from '../../../Components/UploadImage';
 
 const initialValue = {
     name:'',
@@ -27,7 +30,8 @@ const initialValue = {
     unit: null,
     grouper:null,
     subcategory:null,
-    presentation:''
+    presentation:'',
+    img:null
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -68,6 +72,10 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, re
         ...initialValue
     })
 
+    const [filter, setFilter] = React.useState({
+        subcategory:null
+    })
+
     const [openEditSku, setOpenEditSku] = React.useState(false);
     const [editSku, setEditSku] = React.useState({});
 
@@ -75,14 +83,40 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, re
         ////console.log('useffect',groupers,skus)
     },[skus])
 
-    const getSkus = () => {
+    const getSkus = (filterData) => {
+        let newSkus;
+        if(filterData){
+            newSkus = skus.filter(item=>(item.subcategory.id===filterData.id));
+        }
+        else{
+            newSkus = skus;
+        }
+        //console.log(newSkus)
         return (
-            skus.map((data, index) => 
+            newSkus.map((data, index) => 
                 <React.Fragment>
                     <Grid item xs={3}>
-                        <Typography align='left'>
-                            {data.name}
-                        </Typography>
+                        <div style={{display:'flex', alignItems:'center'}}>
+                            <span style={{marginRight:'1em'}}>
+                                {
+                                data.img?
+                                        <Avatar
+                                            alt=""
+                                            src={data.img}
+                                            sx={{ width: 50, height: 50 }}
+                                        />
+                                :
+                                    <Avatar
+                                        sx={{ width: 50, height: 50, bgcolor: data.grouper.color }}
+                                    >
+                                        {data.name.toUpperCase().charAt(0)}
+                                    </Avatar>
+                                }
+                            </span>
+                            <Typography align='left'>
+                                {data.name}
+                            </Typography>
+                        </div>
                     </Grid>
                     <Grid item xs={2}>
                         <Typography align='left'>
@@ -154,6 +188,10 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, re
             removeSku(index);
     }
 
+    const handleFilter = (e) => {
+        setFilter({...filter, subcategory:e.target.value})
+    }
+
     return (
         <React.Fragment>
             <Grid container alignItems='center' spacing={3}>
@@ -187,13 +225,29 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, re
                 <Grid item xs={3}>
                     <Typography variant="subtitle1" align="left">Marcas</Typography>
                 </Grid>
-                <Grid item xs={3}>
-                    <Typography variant="subtitle1" align="left">Subcategoria</Typography>
+                <Grid item xs={2}>
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Subcategorias</InputLabel>
+                        <Select
+                            //value={age}
+                            name={'subcategory'}
+                            label="Subcategoria"
+                            value={filter.subcategory}
+                            onChange={handleFilter}
+                        >
+                            <MenuItem value={null}>Subcategorias</MenuItem>
+                            {
+                                subcategories.map((data, index)=>
+                                    <MenuItem value={JSON.stringify(data)} key={index}>{data.name}</MenuItem>
+                                )
+                            }
+                        </Select>
+                    </FormControl>
                 </Grid>
                 <Grid item xs={1}>
                     
                 </Grid>
-                { getSkus() }
+                { getSkus(JSON.parse(filter.subcategory)) }
                 <Grid item xs={3}>
                     <TextField 
                         id="" 
@@ -249,6 +303,15 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, re
                                 onChange={handleInputSku}
                                 value={sku.presentation}
                                 required
+                            />
+                        </div>
+                        <div style={{marginTop:'.5em', display:'block'}}>
+                            <UploadImage
+                                title={'Subir imagen'}
+                                variant="outlined"
+                                onChange={handleInputSku}
+                                name='img'
+                                value={sku.img}
                             />
                         </div>
                     </div>
@@ -352,7 +415,7 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, re
                                         </Select>
                                     </FormControl>
                                 </div>
-                                <div>
+                                <div style={{marginTop:'.5em'}}>
                                     <TextField 
                                         id=""
                                         label="Presentación" 
@@ -361,9 +424,22 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, re
                                         multiline
                                         name='presentation'
                                         //rows={2}
-                                        onChange={handleInputSku}
+                                        onChange={(e)=>{
+                                            setEditSku({...editSku, [e.target.name]:e.target.value})
+                                        }}
                                         value={editSku.presentation}
                                         required
+                                    />
+                                </div>
+                                <div style={{marginTop:'.5em', display:'block'}}>
+                                    <UploadImage
+                                        title={'Subir imagen'}
+                                        variant="outlined"
+                                        name='img'
+                                        onChange={(e)=>{
+                                            setEditSku({...editSku, [e.target.name]:e.target.value})
+                                        }}
+                                        value={editSku.img}
                                     />
                                 </div>
                             </div>

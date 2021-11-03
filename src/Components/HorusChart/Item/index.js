@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@mui/styles';
 import Grid from '@mui/material/Grid';
+import Avatar from '@mui/material/Avatar';
 
 import Variable from './Variable';
 
@@ -15,6 +16,8 @@ const useStyles = makeStyles((theme)=>({
         padding: '.25em 1.5em',
         overflow: 'hidden',
         zIndex: 1,
+        display:'flex', 
+        alignItems:'center'
         //border: '1px solid #E6EBF1'
     },
     groupersContainer: {
@@ -122,6 +125,25 @@ const Item = ({id, style, title='', variant='', groupers=[], vars=[], data=null}
 
     return ( 
         <div id={id} className={classes.container} style={{...style}}>
+            {variant==='sku'?                    
+            <span style={{marginRight:'1em'}}>
+                {
+                data.img?
+                        <Avatar
+                            alt=""
+                            src={data.img}
+                            sx={{ width: 50, height: 50 }}
+                        />
+                :
+                    <Avatar
+                        sx={{ width: 50, height: 50, bgcolor: data.grouper.color }}
+                    >
+                        {data.name.toUpperCase().charAt(0)}
+                    </Avatar>
+                }
+            </span>
+            :
+            <></>}
             <Grid container alignItems='center' spacing={3}>
                 <Grid item xs={12}>
                     <span style={{textTransform:'uppercase'}}>

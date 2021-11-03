@@ -53,7 +53,8 @@ const HorusChart = ({categories=[], subcategories=[], skus=[]}) => {
             lineClasses = {
                 ...lineClasses, 
                 [".subcategory-color-"+(`${data[i].id}`.split('.').join(""))]:{
-                    stroke:`${data[i].color}`
+                    stroke:`${data[i].color}`,
+                    strokeWidth: '3px',
                 }
             };
         }
