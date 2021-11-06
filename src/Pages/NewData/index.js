@@ -926,9 +926,9 @@ const NewData = ({onUpdate, onFinish}) => {
     return (
         <WrapperDiv classes={getClasses()}>
             <Grid container alignItems='flex-start' spacing={3}>
-                <Grid item xs={4}>
+                <Grid item xs={12}>
                     <div className={classes.root}>
-                        <Stepper activeStep={activeStep} orientation="vertical">
+                        <Stepper activeStep={activeStep} orientation="horizontal" alternativeLabel>
                             {steps.map((label, index) => (
                             <Step key={label}>
                                 <StepLabel>{label}</StepLabel>
@@ -970,7 +970,7 @@ const NewData = ({onUpdate, onFinish}) => {
                         }
                     </div>
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={12}>
                     <Card className={classes.root}>
                         <CardContent>
                             <Grid container alignItems='center' spacing={3}>
@@ -988,9 +988,10 @@ const NewData = ({onUpdate, onFinish}) => {
                                         {
                                             activeStep<3?
                                                 <FullScreenDialog
-                                                    skus={sortSkus( state.subcategories, state.skus)}
+                                                    skus={sortSkus( state.subcategories, state.skus, state.groupers)}
                                                     categories={[state.category]}
                                                     subcategories={sortSubcategories( [state.category], state.subcategories)}
+                                                    brands={state.groupers}
                                                 />
                                             :
                                                 <></>

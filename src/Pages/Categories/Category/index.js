@@ -15,18 +15,29 @@ const Category = ({data}) => {
     const [open, setOpen] = React.useState(false);
 
     const handleClick = () => {
-        console.log('test')
+        //console.log('test')
         setOpen(!open);
     }
-
-    const sortSkus = (base, sorted) => {
+ 
+    const sortSkus = (base, sorted, brands) => {
         let aux = [];
+        let skus = [];
 
-        for(let j=0;j<base.length;j++){
+        //console.log(brands, sorted)
+        for(let j=0;j<brands.length;j++){
             for(let i=0;i<sorted.length;i++){
+                if(`${brands[j].id}`===`${sorted[i].grouper.id}`){
+                    skus.push(sorted[i])
+                }
+            }
+        }
+
+        //console.log(skus)
+        for(let j=0;j<base.length;j++){
+            for(let i=0;i<skus.length;i++){
                 ////console.log(`${base[j].id}`+`${sorted[i].subcategory}`)
-                if(`${base[j].id}`===`${sorted[i].subcategory.id}`){
-                    aux.push(sorted[i])
+                if(`${base[j].id}`===`${skus[i].subcategory.id}`){
+                    aux.push(skus[i])
                 }
             }
         }
@@ -74,9 +85,10 @@ const Category = ({data}) => {
                                 </Grid>
                                 <Grid item xs={12} align='left'>
                                     <FullScreenDialog
-                                        skus={sortSkus( data.subcategories, data.skus)}
+                                        skus={sortSkus( data.subcategories, data.skus, data.groupers)}
                                         categories={[data.category]}
                                         subcategories={sortSubcategories( [data.category], data.subcategories)}
+                                        brands={data.groupers}
                                         position='relative'
                                     >
                                         <Button variant="outlined">

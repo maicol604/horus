@@ -61,7 +61,7 @@ const datalist = [
   }
 ]
 
-export default function FullScreenDialog({skus, categories, subcategories, position='fixed', children}) {
+export default function FullScreenDialog({skus, categories, subcategories, position='fixed', children, brands=[]}) {
   const classes = useStyles({position});
   const [open, setOpen] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
@@ -252,6 +252,7 @@ export default function FullScreenDialog({skus, categories, subcategories, posit
                   categories={[...categories]}
                   subcategories={getSubcategories()}
                   skus={getSkus()}
+                  brands={brands}
                 />
               </div>
             </div>

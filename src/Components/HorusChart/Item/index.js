@@ -7,7 +7,7 @@ import Variable from './Variable';
 
 const useStyles = makeStyles((theme)=>({
     container: {
-        width: '15em',
+        //width: '15em',
         //height: '5em',
         position: 'relative',
         marginBottom: '2em',
@@ -108,6 +108,26 @@ const Item = ({id, style, title='', variant='', groupers=[], vars=[], data=null}
                     <>
                         <div className={classes.description}>
                             {data.description}
+                        </div>  
+                        <div className={classes.variablesContainerBottom}>
+                            {
+                                vars.map((data,index)=>
+                                    <Variable key={index} color={data.color} style={{marginRight: '.25em'}}/>
+                                )
+                            }
+                        </div>
+                    </>
+                )
+            case 'grouper':
+                //console.log(data)
+                return (
+                    <>
+                        <div className={classes.borderColor} style={{backgroundColor:data.color}}/>
+                        <div style={{postition: 'relative', width: '100%'}}>
+                            <div className={classes.borderColor}/>
+                        </div>
+                        <div className={classes.description}>
+                            {data.maker}
                         </div>  
                         <div className={classes.variablesContainerBottom}>
                             {

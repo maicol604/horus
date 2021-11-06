@@ -17,10 +17,11 @@ const useStyles = makeStyles((theme)=>({
         backgroundColor: 'red'
     },
     chartRow: {
-        width: '30vw',
+        width: '25vw',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
+        marginRight: '5em'
     }
 }));
 
@@ -41,12 +42,12 @@ const useStyles = makeStyles((theme)=>({
   }
 */
 
-const HorusChart = ({categories=[], subcategories=[], skus=[]}) => {
+const HorusChart = ({categories=[], subcategories=[], skus=[], brands=[]}) => {
 
     const classes = useStyles();
     const [settings, setSettings] = React.useState([]);
 
-    const getClasses = (data) => {
+    const getClasses = (data, b) => {
         let lineClasses = {};
 
         for(let i=0;i<data.length;i++){
@@ -58,8 +59,36 @@ const HorusChart = ({categories=[], subcategories=[], skus=[]}) => {
                 }
             };
         }
+        for(let i=0;i<b.length;i++){
+            lineClasses = {
+                ...lineClasses, 
+                [".brand-color-"+(`${b[i].id}`.split('.').join(""))]:{
+                    stroke:`${b[i].color}`,
+                    strokeWidth: '3px',
+                }
+            };
+        }
         //console.log(lineClasses)
         return lineClasses;
+    }
+
+    const getBrands = () => {
+        let brands = [];
+        let flag;
+        for(let i=0;i<subcategories.length;i++){
+            brands[i] = [];
+            for(let j=0;j<skus.length;j++){
+                flag = true;
+                for(let k=0;k<brands[i].length;k++){
+                    if(brands[i][k].brand.id===(skus[j].grouper.id+'new'+i+subcategories[i]))
+                        flag=false;
+                }
+                if(skus[j].subcategory.id===subcategories[i].id && flag)
+                    brands[i].push({brand:{...skus[j].grouper, oldId: skus[j].grouper.id, id:skus[j].grouper.id+'new'+i+subcategories[i]}, subcategory: subcategories[i]})
+            }
+        }
+        //console.log(brands)
+        return brands;
     }
 
     React.useEffect(()=>{
@@ -90,12 +119,40 @@ const HorusChart = ({categories=[], subcategories=[], skus=[]}) => {
         //console.log(newSettings)
         ////console.log('sub',subcategories)
         ////console.log('skus',skus)
-        for(let i=0;i<subcategories.length;i++){
+        
+        // for(let i=0;i<subcategories.length;i++){
+        //     for(let j=0;j<skus.length;j++){
+        //         if(`${subcategories[i].id}`===`${skus[j].subcategory.id}`){
+        //             newSettings.push(
+        //                 {
+        //                     from: "subcategory-"+(`${subcategories[i].id}`.split('.').join("")),
+        //                     to: "sku-"+(`${skus[j].id}`.split('.').join("")),
+        //                     positions: {
+        //                         start: {
+        //                         side: "right",
+        //                         indent: 20
+        //                         },
+        //                         end: {
+        //                             side: "left",
+        //                         },
+        //                     },
+        //                     style: "subcategory-color-"+(`${subcategories[i].id}`.split('.').join("")),
+        //                 }
+        //             )
+        //         }
+        //     }
+        // }
+
+        let b = [];
+        b = joinBrands();
+
+        for(let i=0;i<b.length;i++){
             for(let j=0;j<skus.length;j++){
-                if(`${subcategories[i].id}`===`${skus[j].subcategory.id}`){
+                //console.log(b[i],skus[j])
+                if(`${b[i].brand.oldId}`===`${skus[j].grouper.id}` && b[i].subcategory.id===`${skus[j].subcategory.id}`){
                     newSettings.push(
                         {
-                            from: "subcategory-"+(`${subcategories[i].id}`.split('.').join("")),
+                            from: "grouper-"+(`${b[i].brand.id}`.split('.').join("")),
                             to: "sku-"+(`${skus[j].id}`.split('.').join("")),
                             positions: {
                                 start: {
@@ -106,12 +163,42 @@ const HorusChart = ({categories=[], subcategories=[], skus=[]}) => {
                                     side: "left",
                                 },
                             },
-                            style: "subcategory-color-"+(`${subcategories[i].id}`.split('.').join("")),
+                            style: "brand-color-"+(`${b[i].brand.oldId}`.split('.').join("")),
                         }
                     )
+                    continue;
                 }
             }
         }
+
+        for(let i=0;i<b.length;i++){
+            //for(let j=0;j<skus.length;j++){
+                // if(b[i].brand.id===skus[j].grouper.id)
+                //     console.log(b[i],skus[j])
+                //if(b[i].brand.id===skus[j].grouper.id){
+                    newSettings.push(
+                        {
+                            from: "subcategory-"+(`${b[i].subcategory.id}`.split('.').join("")),
+                            to: "grouper-"+(`${b[i].brand.id}`.split('.').join("")),
+                            positions: {
+                                start: {
+                                side: "right",
+                                indent: 20
+                                },
+                                end: {
+                                    side: "left",
+                                },
+                            },
+                            style: "subcategory-color-"+(`${b[i].subcategory.id}`.split('.').join("")),
+                        }
+                    )
+                //}
+            //}
+        }
+
+
+
+
         ////console.log(newSettings)
         setSettings(newSettings);
     },[categories, subcategories, skus])
@@ -132,8 +219,18 @@ const HorusChart = ({categories=[], subcategories=[], skus=[]}) => {
         )
     }
 
+    const joinBrands = () => {
+        let b = getBrands();
+        let newBrands = [];
+        for(let i=0;i<b.length;i++){
+            newBrands = [...newBrands, ...b[i]];
+        }
+        //console.log(b)
+        return newBrands;
+    }
+
     return (
-        <WrapperDiv style={{padding: '5em'}} classes={getClasses(subcategories)}>
+        <WrapperDiv style={{padding: '5em'}} classes={getClasses(subcategories, brands)}>
             <ReactBezier settings={settings}>
                 <div style={{display:'flex'}}>
                     <div className={classes.chartRow}>
@@ -150,6 +247,15 @@ const HorusChart = ({categories=[], subcategories=[], skus=[]}) => {
                             subcategories.map((data, index)=>
                                 <span key={index}>
                                     {getItem(data, 'subcategory')}
+                                </span>
+                            )
+                        }
+                    </div>
+                    <div className={classes.chartRow}>
+                        {
+                            joinBrands().map((data, index)=>
+                                <span key={index}>
+                                    {getItem(data.brand, 'grouper')}
                                 </span>
                             )
                         }
