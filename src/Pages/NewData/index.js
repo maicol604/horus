@@ -289,14 +289,25 @@ const NewData = ({onUpdate, onFinish}) => {
         return aux;
     }
 
-    const sortSkus = (base, sorted) => {
+    const sortSkus = (base, sorted, brands) => {
         let aux = [];
+        let skus = [];
 
-        for(let j=0;j<base.length;j++){
+        //console.log(brands, sorted)
+        for(let j=0;j<brands.length;j++){
             for(let i=0;i<sorted.length;i++){
+                if(`${brands[j].id}`===`${sorted[i].grouper.id}`){
+                    skus.push(sorted[i])
+                }
+            }
+        }
+
+        //console.log(skus)
+        for(let j=0;j<base.length;j++){
+            for(let i=0;i<skus.length;i++){
                 ////console.log(`${base[j].id}`+`${sorted[i].subcategory}`)
-                if(`${base[j].id}`===`${sorted[i].subcategory.id}`){
-                    aux.push(sorted[i])
+                if(`${base[j].id}`===`${skus[i].subcategory.id}`){
+                    aux.push(skus[i])
                 }
             }
         }
@@ -655,7 +666,15 @@ const NewData = ({onUpdate, onFinish}) => {
                                     pushGrouper={pushGrouper}
                                     updateGroupers={(data)=>{
                                         //console.log('upating groupers', data)
-                                        setState({...state, groupers:data});
+                                        let newSkus = JSON.parse(JSON.stringify(state.skus));
+                                        for(let i=0;i<newSkus.length;i++){
+                                            for(let j=0;j<data.length;j++){
+                                                if(newSkus[i].grouper.id===data[j].id){
+                                                    newSkus[i].grouper=data[j];
+                                                }
+                                            }
+                                        }
+                                        setState({...state, groupers:data, skus:newSkus});
                                     }}
                                     removeGrouper={handleRemoveGrouper}
                                 />
@@ -918,6 +937,7 @@ const NewData = ({onUpdate, onFinish}) => {
             //             </div>
             //         </>
             //     );
+            
             default:
                 return 'Unknown step';
         }
@@ -971,39 +991,37 @@ const NewData = ({onUpdate, onFinish}) => {
                     </div>
                 </Grid>
                 <Grid item xs={12}>
-                    <Card className={classes.root}>
-                        <CardContent>
-                            <Grid container alignItems='center' spacing={3}>
-                                <Grid item xs={12}>
-                                    <LinearProgress variant="determinate" value={activeStep*33.333} />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <div>
-                                        {
-                                            getStepContent(activeStep)
-                                        }
-                                        {
-                                            ////console.log(state.groupers,'groupers')
-                                        }
-                                        {
-                                            activeStep<3?
-                                                <FullScreenDialog
-                                                    skus={sortSkus( state.subcategories, state.skus, state.groupers)}
-                                                    categories={[state.category]}
-                                                    subcategories={sortSubcategories( [state.category], state.subcategories)}
-                                                    brands={state.groupers}
-                                                />
-                                            :
-                                                <></>
-                                        }
-                                    </div>
-                                </Grid>
+                    <Paper 
+                        variant="outlined"
+                        style={{padding:'1em'}}
+                    >
+                        <Grid container alignItems='center' spacing={3}>
+                            <Grid item xs={12}>
+                                <LinearProgress variant="determinate" value={activeStep*33.333} />
                             </Grid>
-                        </CardContent>
-                        {/*<CardActions>
-                            <Button variant='contained'>Learn More</Button>
-                        </CardActions>*/}
-                    </Card>
+                            <Grid item xs={12}>
+                                <div>
+                                    {
+                                        getStepContent(activeStep)
+                                    }
+                                    {
+                                        ////console.log(state.groupers,'groupers')
+                                    }
+                                    {
+                                        activeStep<3?
+                                            <FullScreenDialog
+                                                skus={sortSkus( state.subcategories, state.skus, state.groupers)}
+                                                categories={[state.category]}
+                                                subcategories={sortSubcategories( [state.category], state.subcategories)}
+                                                brands={state.groupers}
+                                            />
+                                        :
+                                            <></>
+                                    }
+                                </div>
+                            </Grid>
+                        </Grid>
+                    </Paper>
                 </Grid>
             </Grid>
         </WrapperDiv>

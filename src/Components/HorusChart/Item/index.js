@@ -91,6 +91,7 @@ const Item = ({id, style, title='', variant='', groupers=[], vars=[], data=null}
             case 'subcategory':
                 return (
                     <>
+                        <div className={classes.borderColor} style={{backgroundColor:data.color}}/>
                         <div className={classes.description}>
                             {data.description}
                         </div>  

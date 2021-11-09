@@ -102,7 +102,7 @@ const Category = ({data}) => {
                             </Grid>
                             <Collapse in={open} timeout="auto" unmountOnExit>
                                 <Grid container alignItems='center' spacing={3} alignItems="stretch">
-                                    <Grid item xs={4} style={{display: 'flex'}}>
+                                    <Grid item xs={12} style={{display: 'flex'}}>
                                         <Paper 
                                             variant="outlined"
                                             style={{padding:'1em', width: '100%'}}
@@ -121,6 +121,7 @@ const Category = ({data}) => {
                                                         return (
                                                             <div key={index} style={{display:'flex', flexDirection:'column'}}>
                                                                 <Typography variant='body2' align='left' display='flex' alignItems='center'>
+                                                                    <div style={{width:'1em', height:'1em', backgroundColor:data.color, marginRight:'.5em', borderRadius: '50%'}}/>
                                                                     {data.name}
                                                                 </Typography>
                                                                 <Typography variant='caption' align='left' display='flex' alignItems='center'>
@@ -135,7 +136,7 @@ const Category = ({data}) => {
                                         </Paper>
                                     </Grid>
                                     
-                                    <Grid item xs={4} style={{display: 'flex'}}>
+                                    <Grid item xs={12} style={{display: 'flex'}}>
                                         <Paper 
                                             variant="outlined"
                                             style={{padding:'1em', width: '100%'}}
@@ -168,7 +169,7 @@ const Category = ({data}) => {
                                             </div>
                                         </Paper>
                                     </Grid>
-                                    <Grid item xs={4} style={{display: 'flex'}}>
+                                    <Grid item xs={12} style={{display: 'flex'}}>
                                         <Paper 
                                             variant="outlined"
                                             style={{padding:'1em', width: '100%'}}
