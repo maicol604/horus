@@ -16,6 +16,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import RadioGroup from '../../../Components/RadioGroup';
+import CheckboxGroup from '../../../Components/CheckboxGroup';
 import RadioGropupGroupers from './RadioGropupGroupers';
 import Stack from '@mui/material/Stack';
 import Modal from '@mui/material/Modal';
@@ -176,11 +177,23 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, re
 
     const handleSaveSku = () => {
         ////console.log(sku)
+
         let cpy = JSON.stringify(sku);
         if(pushSku){
-            pushSku(JSON.parse(cpy));
+            let aux = JSON.parse(cpy);
+            let newSkus = [];
+                //console.log(aux.grouper)
+            for(let i=0;i<aux.grouper.length;i++){
+                if(aux.grouper[i].checked){
+                    newSkus.push({...aux, grouper:aux.grouper[i]});
+                }
+                //console.log(newSku)
+            }
+            pushSku(newSkus);
+            //pushSku();
         }   
         setSku({...initialValue})
+
     }
 
     const handleRemoveSku = (index) => {
@@ -305,7 +318,7 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, re
                                 required
                             />
                         </div>
-                        <div style={{marginTop:'.5em', display:'block'}}>
+                        {/*<div style={{marginTop:'.5em', display:'block'}}>
                             <UploadImage
                                 title={'Subir imagen'}
                                 variant="outlined"
@@ -313,12 +326,18 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, re
                                 name='img'
                                 value={sku.img}
                             />
-                        </div>
+                        </div>*/}
                     </div>
                 </Grid>
                 <Grid item xs={3}>
                     <div style={{display:'flex'}}>
-                        <RadioGropupGroupers
+                        {/*<RadioGropupGroupers
+                            name = 'grouper'
+                            items = {[...groupers]}
+                            onChange={handleInputSku}
+                            value={sku.grouper}
+                        />*/}
+                        <CheckboxGroup
                             name = 'grouper'
                             items = {[...groupers]}
                             onChange={handleInputSku}
@@ -431,29 +450,31 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, re
                                         required
                                     />
                                 </div>
-                                <div style={{marginTop:'.5em', display:'block'}}>
-                                    <UploadImage
-                                        title={'Subir imagen'}
-                                        variant="outlined"
-                                        name='img'
-                                        onChange={(e)=>{
-                                            setEditSku({...editSku, [e.target.name]:e.target.value})
-                                        }}
-                                        value={editSku.img}
-                                    />
-                                </div>
+                                {
+                                // <div style={{marginTop:'.5em', display:'block'}}>
+                                //     <UploadImage
+                                //         title={'Subir imagen'}
+                                //         variant="outlined"
+                                //         name='img'
+                                //         onChange={(e)=>{
+                                //             setEditSku({...editSku, [e.target.name]:e.target.value})
+                                //         }}
+                                //         value={editSku.img}
+                                //     />
+                                // </div>
+                                }
                             </div>
                         </Grid>
                         <Grid item xs={4}>
                             <div style={{display:'flex'}}>
                                 <RadioGropupGroupers
                                     name = 'grouper'
-                                    items = {[...groupers]}
+                                    items = {[...groupers.map(item=>({...item, checked:true}))]}
                                     onChange={(e)=>{
                                         setEditSku({...editSku, [e.target.name]:e.target.value})
                                     }}
-                                    value={editSku.grouper}
-                                />
+                                    value={{...editSku.grouper}}
+                                />  
                             </div>
                         </Grid>
                         <Grid item xs={3}>

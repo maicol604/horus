@@ -103,7 +103,6 @@ const useStyles = makeStyles((theme)=>({
     },
 }));
 
-
 function getSteps() {
     return ['Carga tus categorias y subcategorias', 'Carga tus marcas y SKU', 'Relaciona tus SKUs con los de la competencia'];
 }
@@ -267,10 +266,21 @@ const NewData = ({onUpdate, onFinish}) => {
     }
 
     const pushSku = (data) => {
+        let newSkus = JSON.parse(JSON.stringify(data));
+        for(let i=0;i<newSkus.length;i++){
+            newSkus[i] = {...newSkus[i], id:getid()};
+            delete newSkus[i]['checked'];
+        }
+        newSkus = [...state.skus, ...newSkus];
+        
         setState({
             ...state,
-            skus:[...state.skus, {...data, id:getid()}],
+            skus:[...newSkus],
         });
+        /*setState({
+            ...state,
+            skus:[...state.skus, {...data, id:getid()}],
+        });*/
     }
 
     const sortSubcategories = (base, sorted) => {
@@ -821,6 +831,7 @@ const NewData = ({onUpdate, onFinish}) => {
                     </div>
                 </>
             );
+            {
             // case 3:
             //     return (
             //         <>
@@ -937,7 +948,7 @@ const NewData = ({onUpdate, onFinish}) => {
             //             </div>
             //         </>
             //     );
-            
+            }
             default:
                 return 'Unknown step';
         }

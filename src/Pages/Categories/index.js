@@ -15,33 +15,43 @@ const Categories = () => {
     return (
         <Grid container alignItems='flex-start' spacing={3}>
             <Grid item xs={3}>
-                <div style={{backgroundColor:'', height:'100vh', overflow:'auto', padding:'1.5em', boxSizing:'border-box', borderRight:'1px solid rgba(0, 0, 0, 0.12)'}}>
+                <div style={{display: 'flex', flexDirection: 'column', position:'relative', height:'calc(100vh - 4em)', borderRight:'1px solid rgba(0, 0, 0, 0.12)', justifyContent: 'space-between'}}>
                     {
-                        categories.map((state, index)=>{
-                            return (
-                            <div key={index} style={{marginBottom:'1em'}}>
-                                <Category
-                                    data={state}
-                                />
-                            </div>
-                            );
-                        })
+                    //<div style={{position: 'relative', maxHeight:'calc(100vh - 8.6em)', height:'calc(100vh - 4em)', overflow:'auto', padding:'1.5em', boxSizing:'border-box', borderRight:'1px solid rgba(0, 0, 0, 0.12)', }}>
                     }
-                    <Stack spacing={2}>
-                        <Button
-                            variant='contained'
-                            color='primary'
-                            onClick={()=>{
-            
-                            }}
-                            disabled={categories.length===0}
-                        >
-                            Finalizar
-                        </Button>
-                    </Stack>
+                    <div style={{position: 'relative', maxHeight:'calc(100vh - 8em)', overflow:'auto', boxSizing:'border-box', padding:'1.5em'}}>
+                        {
+                            categories.map((state, index)=>{
+                                return (
+                                <div key={index} style={{marginBottom:'1em'}}>
+                                    <Category
+                                        data={state}
+                                    />
+                                </div>
+                                );
+                            })
+                        }
+                    </div>
+                    {
+                    //<div style={{position:'absolute', left:0, bottom:0, backgroundColor: '#fff', width:'100%', padding:'1em', boxSizing:'border-box', borderTop:'1px solid rgba(0, 0, 0, 0.12)'}}>
+                    }
+                    <div style={{padding:'1em', boxSizing:'border-box', borderTop:'1px solid rgba(0, 0, 0, 0.12)'}}>
+                        <Stack spacing={2}>
+                            <Button
+                                variant='contained'
+                                color='primary'
+                                onClick={()=>{
+                
+                                }}
+                                disabled={categories.length===0}
+                            >
+                                Finalizar
+                            </Button>
+                        </Stack>
+                    </div>
                 </div>
             </Grid>
-            <Grid item xs={9} style={{padding:'1.5em'}}>
+            <Grid item xs={9} style={{padding:'1.5em', overflow:'auto', maxHeight: 'calc(100vh - 4em)'}}>
                 {waiting?
                     <div
                         style={{

@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function CheckboxGroup({items=[], title='', onChange, name}) {
+export default function CheckboxGroup({items=[], title='', onChange, name, value=null}) {
     const [itemList, setItemList] = React.useState([]);
     const classes = useStyles();
     const handleChange = (index) => {
@@ -39,10 +39,14 @@ export default function CheckboxGroup({items=[], title='', onChange, name}) {
                 flag = true;
         }
         setItemList(items); 
-        if(!flag)
+        if(!flag || value===null)
             setItemList(items.map(data=>({ ...data, checked:false })));
     },[])
 
+    React.useEffect(()=>{
+        if(value===null)
+            setItemList(items.map(data=>({ ...data, checked:false })));
+    },[value])
 
     return (
         <FormGroup row onChange={onchange}>

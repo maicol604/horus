@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { SketchPicker } from 'react-color';
-import { makeStyles } from '@mui/styles';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
     colorSquare: {
