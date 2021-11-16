@@ -258,7 +258,7 @@ const Step2 = ({ groupers=[], pushGrouper, updateGroupers, removeGrouper }) => {
                             </Typography>
                         </Grid>
                         
-                        <Grid item xs={3}>
+                        <Grid item xs={5}>
                             <TextField 
                                 id="" 
                                 label="Marca" 
@@ -272,7 +272,7 @@ const Step2 = ({ groupers=[], pushGrouper, updateGroupers, removeGrouper }) => {
                                 required
                             />
                         </Grid>
-                        <Grid item xs={3}>
+                        <Grid item xs={5}>
                             <TextField 
                                 id="" 
                                 label="Fabricante" 
@@ -298,22 +298,24 @@ const Step2 = ({ groupers=[], pushGrouper, updateGroupers, removeGrouper }) => {
                                 value={editGrouper.color}
                             />
                         </Grid>
-                        <Grid item xs={4}>
-                            <TextField 
-                                id="" 
-                                label="Presentación" 
-                                variant="outlined" 
-                                fullWidth
-                                multiline
-                                name='presentation'
-                                //rows={2}
-                                onChange={(e)=>{
-                                    setEditGrouper({...editGrouper, presentation:e.target.value})
-                                }}
-                                value={editGrouper.presentation}
-                                required
-                            />
-                        </Grid>
+                        {
+                            // <Grid item xs={4}>
+                            //     <TextField 
+                            //         id="" 
+                            //         label="Presentación" 
+                            //         variant="outlined" 
+                            //         fullWidth
+                            //         multiline
+                            //         name='presentation'
+                            //         //rows={2}
+                            //         onChange={(e)=>{
+                            //             setEditGrouper({...editGrouper, presentation:e.target.value})
+                            //         }}
+                            //         value={editGrouper.presentation}
+                            //         required
+                            //     />
+                            // </Grid>
+                        }
 
                         <Grid item xs={12}>
                             <Stack spacing={2} direction="row">
@@ -336,7 +338,7 @@ const Step2 = ({ groupers=[], pushGrouper, updateGroupers, removeGrouper }) => {
                                         }
                                         setOpenEditGrouper(!openEditGrouper)
                                     }}
-                                    disabled={editGrouper.name==='' || editGrouper.maker==='' || editGrouper.presentation===''}
+                                    disabled={editGrouper.name==='' || editGrouper.maker===''}
                                 >
                                     Actualizar
                                 </Button>

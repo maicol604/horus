@@ -1,9 +1,6 @@
 import React from 'react';
 
 import { makeStyles } from '@mui/styles';
-import Card from '@mui/material/Card';
-//import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
@@ -725,6 +722,9 @@ const NewData = ({onUpdate, onFinish}) => {
                                         setState({...state, skus: data})
                                     }}
                                     removeSku={handleRemoveSku}
+                                    onFilter={(data)=>{
+                                        setState({...state, filter: data})
+                                    }}
                                 />
                                 <div
                                     style={{
@@ -1025,6 +1025,9 @@ const NewData = ({onUpdate, onFinish}) => {
                                                 categories={[state.category]}
                                                 subcategories={sortSubcategories( [state.category], state.subcategories)}
                                                 brands={state.groupers}
+                                                filters={
+                                                    state.filter
+                                                }
                                             />
                                         :
                                             <></>

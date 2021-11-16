@@ -23,8 +23,6 @@ import Modal from '@mui/material/Modal';
 import Paper from '@mui/material/Paper';
 import Avatar from '@mui/material/Avatar';
 
-import UploadImage from '../../../Components/UploadImage';
-
 const initialValue = {
     name:'',
     content:'',
@@ -66,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, removeSku }) => {
+const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, removeSku, onFilter }) => {
 
     const classes = useStyles();
     const [sku, setSku] = React.useState({
@@ -202,6 +200,9 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, re
     }
 
     const handleFilter = (e) => {
+        if(onFilter){
+            onFilter(JSON.parse(e.target.value))
+        }
         setFilter({...filter, subcategory:e.target.value})
     }
 

@@ -61,7 +61,7 @@ const datalist = [
   }
 ]
 
-export default function FullScreenDialog({skus, categories, subcategories, position='fixed', children, brands=[]}) {
+export default function FullScreenDialog({skus, categories, subcategories, position='fixed', children, brands=[], filters}) {
   const classes = useStyles({position});
   const [open, setOpen] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
@@ -84,6 +84,13 @@ export default function FullScreenDialog({skus, categories, subcategories, posit
       setFilter({...filter, subcategories, conf:{...filter.conf, subcategories:subcategories}})
     }
   },[subcategories])
+
+  React.useEffect(()=>{
+    //console.log('test')
+    //console.log('filter',{...filter, apply:true, subcategories, conf:{...filter.conf, subcategories:[...subcategories.map(d=>({...d, checked:filters.id===d.id?true:false}))]}})
+    //setFilter({...filter, apply:true, subcategories, conf:{...filter.conf, subcategories:[...subcategories.map(d=>({...d, checked:filters.id===d.id?true:false}))]}})
+    setFilter({...filter, apply:true, subcategories:[...subcategories.map(d=>({...d, checked:filters.id===d.id?true:false}))], conf:{...filter.conf, subcategories:[...subcategories.map(d=>({...d, checked:filters.id===d.id?true:false}))]}})
+  },[filters])
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -206,6 +213,7 @@ export default function FullScreenDialog({skus, categories, subcategories, posit
                         title='some'
                         name='subcategories'
                         onChange={(e)=>{
+                          //console.log(e.target.value)
                           setFilter({...filter, conf:{...filter.conf, subcategories: e.target.value}})
                         }}
                       />
@@ -229,6 +237,7 @@ export default function FullScreenDialog({skus, categories, subcategories, posit
                           primary 
                           variant='contained' 
                           onClick={()=>{
+                            //console.log({...filter, apply:true, subcategories: filter.conf.subcategories})
                             setFilter({...filter, apply:true, subcategories: filter.conf.subcategories});
                             setVisible(false);
                           }}
