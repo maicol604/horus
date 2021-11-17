@@ -89,7 +89,8 @@ export default function FullScreenDialog({skus, categories, subcategories, posit
     //console.log('test')
     //console.log('filter',{...filter, apply:true, subcategories, conf:{...filter.conf, subcategories:[...subcategories.map(d=>({...d, checked:filters.id===d.id?true:false}))]}})
     //setFilter({...filter, apply:true, subcategories, conf:{...filter.conf, subcategories:[...subcategories.map(d=>({...d, checked:filters.id===d.id?true:false}))]}})
-    setFilter({...filter, apply:true, subcategories:[...subcategories.map(d=>({...d, checked:filters.id===d.id?true:false}))], conf:{...filter.conf, subcategories:[...subcategories.map(d=>({...d, checked:filters.id===d.id?true:false}))]}})
+    if(filters)
+      setFilter({...filter, apply:true, subcategories:[...subcategories.map(d=>({...d, checked:filters.id===d.id?true:false}))], conf:{...filter.conf, subcategories:[...subcategories.map(d=>({...d, checked:filters.id===d.id?true:false}))]}})
   },[filters])
 
   const handleClickOpen = () => {

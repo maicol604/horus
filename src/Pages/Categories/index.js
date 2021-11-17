@@ -45,7 +45,7 @@ const Categories = () => {
                                 }}
                                 disabled={categories.length===0}
                             >
-                                Finalizar
+                                Continuar
                             </Button>
                         </Stack>
                     </div>

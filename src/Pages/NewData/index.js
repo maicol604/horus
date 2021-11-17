@@ -635,10 +635,18 @@ const NewData = ({onUpdate, onFinish}) => {
                                                         variant='contained'
                                                         color='primary'
                                                         onClick={()=>{
+                                                            //updatesubcategories
                                                             let aux = state.subcategories.slice();
+                                                            let auxSkus = state.skus.slice();
                                                             aux[editSubcategory.index] = editSubcategory;
-                                                            setState({...state, subcategories: aux});
-                                                            setOpenEditSubcategory(!openEditSubcategory)
+                                                            setOpenEditSubcategory(!openEditSubcategory);
+                                                            //console.log(state.skus)
+                                                            for(let i=0;i<auxSkus.length;i++){
+                                                                if(auxSkus[i].subcategory.id===editSubcategory.id){
+                                                                    auxSkus[i].subcategory=editSubcategory;
+                                                                }
+                                                            }
+                                                            setState({...state, subcategories: aux, skus: auxSkus});
                                                         }}
                                                         disabled={editSubcategory.name===''}
                                                     >
