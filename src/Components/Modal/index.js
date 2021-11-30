@@ -11,6 +11,8 @@ const style = {
     width: 400,
     boxShadow: 24,
     p: 4,
+    maxHeight: '80vh',
+    overflow:'auto'
 };
 
 export default ({children, visible=true, onClose}) => {

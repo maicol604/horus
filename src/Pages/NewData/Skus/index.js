@@ -368,6 +368,7 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, re
                     </div>
                 </Grid>
             </Grid>
+            agregar costo skus / subcategoria venta en kilos y venta en valor / 
             <Modal
                 open={openEditSku}
                 onClose={()=>{setOpenEditSku(!openEditSku)}}

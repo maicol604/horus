@@ -27,6 +27,7 @@ import FullScreenDialog from '../../Components/FullScreenDialog';
 
 import Groupers from './Groupers';
 import Skus from './Skus';
+import Variables from './Variables';
 
 //temporal
 import RelatableBoxes from '../../Components/RelatableBoxes';
@@ -101,7 +102,7 @@ const useStyles = makeStyles((theme)=>({
 }));
 
 function getSteps() {
-    return ['Carga tus categorias y subcategorias', 'Carga tus marcas y SKU', 'Relaciona tus SKUs con los de la competencia'];
+    return ['Carga tus categorias y subcategorias', 'Carga tus marcas y SKU', 'Relaciona tus SKUs con los de la competencia', 'Carga tus variables'];
 }
 
 const NewData = ({onUpdate, onFinish}) => {
@@ -829,134 +830,58 @@ const NewData = ({onUpdate, onFinish}) => {
                                 color='primary'
                                 onClick={()=>{
                                     setActiveStep(3)
-                                    onUpdate(state);
-                                    onFinish();
+                                    //onUpdate(state);
+                                    //onFinish();
                                 }}
                             >
-                                Guardar categoria
+                                Siguiente
                             </Button>
                         </Stack>
                     </div>
                 </>
             );
-            {
-            // case 3:
-            //     return (
-            //         <>
-            //             <Grid container alignItems='center' spacing={3}>
-            //                 <Grid item xs={12}>
-            //                     <Typography
-            //                         variant='h6'
-            //                         align='left'
-            //                     >
-            //                         Categoria {state.category.name} creada con exito
-            //                     </Typography>
-            //                 </Grid>
-            //                 <Grid item xs={12}>
-            //                     <Paper 
-            //                         variant="outlined"
-            //                         style={{padding:'1em'}}
-            //                     >
-            //                         <div>
-                                        
-            //                         <Grid container alignItems='center' spacing={3} alignItems="stretch">
-            //                             <Grid item xs={12}>
-            //                                 <Typography 
-            //                                     variant='subtitle1'
-            //                                     align='left'
-            //                                     style={{textTransform:'capitalize'}}
-            //                                 >
-            //                                     {state.category.name}
-            //                                 </Typography>
-            //                                 <Typography variant='body2' align='left' display='flex' alignItems='center'>
-            //                                     {state.category.description}
-            //                                 </Typography>
-            //                             </Grid>
-            //                             <Grid item xs={6} style={{display: 'flex'}}>
-            //                                 <Paper 
-            //                                     variant="outlined"
-            //                                     style={{padding:'1em', width: '100%'}}
-            //                                 >
-            //                                     <Typography 
-            //                                         variant='subtitle2'
-            //                                         align='left'
-            //                                         style={{textTransform:'capitalize'}}
-            //                                     >
-            //                                         Marcas
-            //                                     </Typography>
-            //                                     <Divider light style={{marginBottom: '.5em'}}/>
-            //                                     <div>
-            //                                         {
-            //                                             state.groupers.map((data, index)=>{
-            //                                                 return (
-            //                                                     <Typography key={index} variant='body2' align='left' display='flex' alignItems='center'>
-            //                                                         <div style={{width:'1em', height:'1em', backgroundColor:data.color, marginRight:'.5em', borderRadius: '50%'}}/>{data.name}
-            //                                                     </Typography>
-            //                                                 )
-            //                                             })
-            //                                         }
-            //                                     </div>
-            //                                 </Paper>
-            //                             </Grid>
-            //                             <Grid item xs={6} style={{display: 'flex'}}>
-            //                                 <Paper 
-            //                                     variant="outlined"
-            //                                     style={{padding:'1em', width: '100%'}}
-            //                                 >
-            //                                     <Typography 
-            //                                         variant='subtitle2'
-            //                                         align='left'
-            //                                         style={{textTransform:'capitalize'}}
-            //                                     >
-            //                                         SKUs
-            //                                     </Typography>
-            //                                     <Divider light style={{marginBottom: '.5em'}}/>
-            //                                     <div>
-            //                                         {
-            //                                             state.skus.map((data, index)=>{
-            //                                                 return (
-            //                                                     <Typography key={index} variant='body2' align='left'>
-            //                                                         {data.name}
-            //                                                     </Typography>
-            //                                                 )
-            //                                             })
-            //                                         }
-            //                                     </div>
-            //                                 </Paper>
-            //                             </Grid>
-            //                         </Grid>
-            //                         </div>
-            //                     </Paper>
-            //                 </Grid>
-            //             </Grid>
-            //             <div
-            //                 style={{
-            //                     marginTop: '1em'
-            //                 }}
-            //             >
-            //                 <Stack spacing={2} direction="row">
-            //                     <Button
-            //                         variant='contained'
-            //                         onClick={()=>{}}
-            //                     >
-            //                         Agregar otra categoria
-            //                     </Button>
-            //                     <Button
-            //                         variant='contained'
-            //                         color='primary'
-            //                         onClick={()=>{
-            //                             if(onFinish){
-            //                                 onFinish();
-            //                             }
-            //                         }}
-            //                     >
-            //                         Finalizar
-            //                     </Button>
-            //                 </Stack>
-            //             </div>
-            //         </>
-            //     );
-            }
+            case 3:
+                return (
+                    <>
+                    <Grid container alignItems='center' spacing={3}>
+                        <Grid item xs={12}>
+                            <Variables
+                                subcategories={state.subcategories}
+                                skus={state.skus}
+                                brands={state.groupers}
+                                category={state.category}
+                            />
+                        </Grid>
+                    </Grid>
+                    <div
+                        style={{
+                            marginTop: '1em'
+                        }}
+                    >
+                        <Stack spacing={2} direction="row">
+                            <Button
+                                variant='contained'
+                                onClick={()=>{setActiveStep(2)}}
+                                disabled={subStep.step===0}
+                            >
+                                Volver
+                            </Button>
+                            <Button
+                                variant='contained'
+                                color='primary'
+                                onClick={()=>{
+                                    setActiveStep(3)
+                                    //onUpdate(state);
+                                    //onFinish();
+                                }}
+                            >
+                                Siguiente
+                            </Button>
+                        </Stack>
+                    </div>
+                    </>
+                );
+            
             default:
                 return 'Unknown step';
         }
