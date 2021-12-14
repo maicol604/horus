@@ -1,6 +1,7 @@
 import React from 'react';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
+import { makeStyles } from '@mui/styles';
 
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -17,10 +18,25 @@ import Button from '@mui/material/Button';
 
 import CheckboxGroup from '../../../Components/CheckboxGroup';
 import CustomDatePicker from '../../../Components/CustomDatePicker';
-import Modal from '../../../Components/Modal';
+import Modal from '@mui/material/Modal';
 import SpreadSheetVariables from '../../../Components/SpreadSheetVariables';
 
+const useStyles = makeStyles((theme)=>({
+    modal: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '50%',
+        padding:'1em',
+        p: 4,
+        maxHeight:'80vh',
+        overflow: 'auto',
+    },
+}));
+
 const Variables = ({category=null, subcategories=[], skus=[], brands=[]}) => {
+    const classes = useStyles();
 
     const [openModal, setOpenModal] = React.useState(false);
 
@@ -206,7 +222,7 @@ const Variables = ({category=null, subcategories=[], skus=[], brands=[]}) => {
                                 variant='contained'
                                 color='primary'
                                 onClick={()=>{
-                
+                                    setOpenModal(!openModal)
                                 }}
                             >
                                 Agregar serie de datos
@@ -225,16 +241,22 @@ const Variables = ({category=null, subcategories=[], skus=[], brands=[]}) => {
                 </Grid>
             </Grid>
             {
-            // <Modal
-            //     open={openModal}
-            //     onClose={()=>{
-            //         setOpenModal(false);
-            //     }}
-            // >
-            //     <SpreadSheetVariables
-                    
-            //     />
-            // </Modal>
+                // console.log(openModal)
+            }
+            {
+            <Modal
+                open={openModal}
+                onClose={()=>{setOpenModal(!openModal)}}
+            >
+                <Paper 
+                    className={classes.modal}
+                    variant="outlined"
+                >
+                    <SpreadSheetVariables
+                        
+                    />
+                </Paper>
+            </Modal>
             }
         </div>
     )

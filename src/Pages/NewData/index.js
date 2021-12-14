@@ -36,6 +36,10 @@ import Stack from '@mui/material/Stack';
 import Modal from '@mui/material/Modal';
 import ColorPicker from '../../Components/ColorPicker';
 import Tabs from '../../Components/Tabs';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
 
 const WrapperDiv = styled.div`
     ${props => props.classes}
@@ -127,6 +131,9 @@ const NewData = ({onUpdate, onFinish}) => {
     const [subcategory, setSubcategory] = React.useState({
         name:'',
         description:'',
+        totalSale:'',
+        totalSaleValue:'',
+        totalSaleUnit:'',
         category:null,
         color:randomColor()
     });
@@ -134,6 +141,9 @@ const NewData = ({onUpdate, onFinish}) => {
     const [editSubcategory, setEditSubcategory] = React.useState({
         name:'',
         description:'',
+        totalSale:'',
+        totalSaleValue:'',
+        totalSaleUnit:'',
         category:null,
     });
 
@@ -180,7 +190,7 @@ const NewData = ({onUpdate, onFinish}) => {
             ...state,
             subcategories:[...state.subcategories, {...data, id:getid(), category: state.category}],
         });
-        setSubcategory({name:'',description:'', category:'', color:randomColor()});
+        setSubcategory({name:'',description:'', category:'', totalSale: '', totalSaleValue: '', totalSaleUnit:'', color:randomColor()});
     }
 
     const handleRemoveSubcategory = (index) => {
@@ -522,7 +532,7 @@ const NewData = ({onUpdate, onFinish}) => {
                                             value={subcategory.description}
                                         />
                                     </Grid>
-                                    <Grid item xs={2}>
+                                    <Grid item xs={4}>
                                         <ColorPicker
                                             onChangeComplete={handleInputChangeSubcategories}
                                             name='color'
@@ -530,7 +540,50 @@ const NewData = ({onUpdate, onFinish}) => {
                                         />
                                     </Grid>
                                     <Grid item xs={2}>
-                                        <div style={{height: '100%', display: 'flex', justifyContent: 'center', alignItems:'center'}}>
+                                        <TextField 
+                                            id="" 
+                                            label="Venta total" 
+                                            variant="outlined" 
+                                            fullWidth
+                                            multiline
+                                            name='totalSale'
+                                            //rows={2}
+                                            onChange={handleInputChangeSubcategories}
+                                            value={subcategory.totalSale}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={2}>
+                                        <FormControl fullWidth>
+                                            <InputLabel>Unidad *</InputLabel>
+                                            <Select
+                                                //value={age}
+                                                name={'totalSaleUnit'}
+                                                label="Unidad *"
+                                                value={subcategory.totalSaleUnit}
+                                                onChange={handleInputChangeSubcategories}
+                                            >
+                                                <MenuItem value={'Kg'}>Kg</MenuItem>
+                                                <MenuItem value={'Lib'}>Lib</MenuItem>
+                                                <MenuItem value={'Gr'}>Gr</MenuItem>
+                                                <MenuItem value={'T'}>T</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={4}>
+                                        <TextField 
+                                            id="" 
+                                            label="Total de ventas $" 
+                                            variant="outlined" 
+                                            fullWidth
+                                            multiline
+                                            name='totalSaleValue'
+                                            //rows={2}
+                                            onChange={handleInputChangeSubcategories}
+                                            value={subcategory.totalSaleValue}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <div style={{height: '100%', display: 'flex', justifyContent: 'left', alignItems:'center'}}>
                                             {/*<DeleteIcon/>*/}
                                             <Button
                                                 variant='contained'
@@ -621,6 +674,58 @@ const NewData = ({onUpdate, onFinish}) => {
                                                     }}
                                                     name='color'
                                                     value={editSubcategory.color}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={3}>
+                                                <TextField 
+                                                    id="" 
+                                                    label="Venta total" 
+                                                    variant="outlined" 
+                                                    fullWidth
+                                                    multiline
+                                                    name='totalSale'
+                                                    //rows={2}
+                                                    onChange={(e)=>{
+                                                        //console.log(e)
+                                                        setEditSubcategory({...editSubcategory, totalSale:e.target.value})
+                                                    }}
+                                                    value={editSubcategory.totalSale}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={2}>
+                                                <FormControl fullWidth>
+                                                    <InputLabel>Unidad *</InputLabel>
+                                                    <Select
+                                                        //value={age}
+                                                        name={'totalSaleUnit'}
+                                                        label="Unidad *"
+                                                        value={editSubcategory.totalSaleUnit}
+                                                        onChange={(e)=>{
+                                                            //console.log(e)
+                                                            setEditSubcategory({...editSubcategory, totalSaleUnit:e.target.value})
+                                                        }}
+                                                    >
+                                                        <MenuItem value={'Kg'}>Kg</MenuItem>
+                                                        <MenuItem value={'Lib'}>Lib</MenuItem>
+                                                        <MenuItem value={'Gr'}>Gr</MenuItem>
+                                                        <MenuItem value={'T'}>T</MenuItem>
+                                                    </Select>
+                                                </FormControl>
+                                            </Grid>
+                                            <Grid item xs={5}>
+                                                <TextField 
+                                                    id="" 
+                                                    label="Total de ventas $" 
+                                                    variant="outlined" 
+                                                    fullWidth
+                                                    multiline
+                                                    name='totalSaleValue'
+                                                    //rows={2}
+                                                    onChange={(e)=>{
+                                                        //console.log(e)
+                                                        setEditSubcategory({...editSubcategory, totalSaleValue:e.target.value})
+                                                    }}
+                                                    value={editSubcategory.totalSaleValue}
                                                 />
                                             </Grid>
                                             <Grid item xs={12}>

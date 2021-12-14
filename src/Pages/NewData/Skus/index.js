@@ -30,6 +30,7 @@ const initialValue = {
     grouper:null,
     subcategory:null,
     presentation:'',
+    value:'',
     img:null
 }
 
@@ -319,6 +320,20 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, re
                                 required
                             />
                         </div>
+                        <div style={{marginTop:'.5em'}}>
+                            <TextField 
+                                id="" 
+                                label="Valor $" 
+                                variant="outlined" 
+                                fullWidth
+                                multiline
+                                name='value'
+                                //rows={2}
+                                onChange={handleInputSku}
+                                value={sku.value}
+                                required
+                            />
+                        </div>
                         {/*<div style={{marginTop:'.5em', display:'block'}}>
                             <UploadImage
                                 title={'Subir imagen'}
@@ -368,7 +383,6 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, re
                     </div>
                 </Grid>
             </Grid>
-            agregar costo skus / subcategoria venta en kilos y venta en valor / 
             <Modal
                 open={openEditSku}
                 onClose={()=>{setOpenEditSku(!openEditSku)}}
@@ -449,6 +463,22 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, re
                                             setEditSku({...editSku, [e.target.name]:e.target.value})
                                         }}
                                         value={editSku.presentation}
+                                        required
+                                    />
+                                </div>
+                                <div style={{marginTop:'.5em'}}>
+                                    <TextField 
+                                        id=""
+                                        label="Valor $" 
+                                        variant="outlined" 
+                                        fullWidth
+                                        multiline
+                                        name='value'
+                                        //rows={2}
+                                        onChange={(e)=>{
+                                            setEditSku({...editSku, [e.target.name]:e.target.value})
+                                        }}
+                                        value={editSku.value}
                                         required
                                     />
                                 </div>

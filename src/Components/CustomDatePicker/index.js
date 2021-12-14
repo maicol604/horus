@@ -4,8 +4,6 @@ import EventIcon from '@mui/icons-material/Event';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
 //import DatePicker from '@mui/lab/DatePicker';
 
 import DatePicker from "react-datepicker";
@@ -16,7 +14,6 @@ const DatePickerContainer = styled('div')(({ theme }) => ({
     position:'relative',
     '.react-datepicker__day--selected, .react-datepicker__day--in-selecting-range, .react-datepicker__day--in-range, .react-datepicker__month-text--selected, .react-datepicker__month-text--in-selecting-range, .react-datepicker__month-text--in-range, .react-datepicker__quarter-text--selected, .react-datepicker__quarter-text--in-selecting-range, .react-datepicker__quarter-text--in-range, .react-datepicker__year-text--selected, .react-datepicker__year-text--in-selecting-range, .react-datepicker__year-text--in-range':{
         backgroundColor:theme.palette.primary.main,
-        //borderRadius: '50%'
     },
     '.react-datepicker__day--keyboard-selected, .react-datepicker__month-text--keyboard-selected, .react-datepicker__quarter-text--keyboard-selected, .react-datepicker__year-text--keyboard-selected':{
         backgroundColor:theme.palette.primary.main,
@@ -41,6 +38,7 @@ const DatePickerContainer = styled('div')(({ theme }) => ({
 
     }
 }));
+
 const gridItemStyles = {
     cursor: 'pointer',
     padding: '1em',
@@ -251,7 +249,7 @@ export default ({periodicity='weekly'}) => {
 
     return (
         <DatePickerContainer>
-            <TextField 
+            <TextField
                 fullWidth 
                 label="Fecha de la primera medicion" 
                 variant="outlined" 
@@ -259,7 +257,7 @@ export default ({periodicity='weekly'}) => {
                 onFocus={()=>{
                     setVisible(true)
                 }}
-                value={`${date.getDate()}/${date.getMonth()}/${date.getYear()+1900}`}
+                value={`${date.getDate()}/${date.getMonth()+1}/${date.getYear()+1900}`}
             />
             <div className='datepicker-container'>
                 {
