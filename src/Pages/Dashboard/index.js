@@ -73,7 +73,8 @@ export default class GridPropertyLayout extends React.PureComponent {
 
   render() {
     return (
-      <Plot/>
+      <div style={{height: '50vh', display: 'flex', width: '50vw'}}><Plot/></div>
+      
       // <Wrapper>
       //   <ReactGridLayout onLayoutChange={this.onLayoutChange} {...this.props}>
       //     {this.generateDOM()}

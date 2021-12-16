@@ -10,6 +10,7 @@ import Header from './Containers/Header';
 
 import Categories from './Pages/Categories';
 import Dashboard from './Pages/Dashboard';
+import Simulator from './Pages/Simulator';
 
 const theme = createTheme({
   palette: {
@@ -36,6 +37,7 @@ function App() {
           <Routes>
             <Route path="categories" element={<Categories />} />
             <Route path="dashboard" element={<Dashboard />} />
+            <Route path="horus" element={<Simulator />} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>
