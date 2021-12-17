@@ -1,24 +1,24 @@
 {
   "files": {
     "main.css": "/horus/static/css/main.587178ed.chunk.css",
-    "main.js": "/horus/static/js/main.2116e93a.chunk.js",
-    "main.js.map": "/horus/static/js/main.2116e93a.chunk.js.map",
+    "main.js": "/horus/static/js/main.4102d74e.chunk.js",
+    "main.js.map": "/horus/static/js/main.4102d74e.chunk.js.map",
     "runtime-main.js": "/horus/static/js/runtime-main.383c57fd.js",
     "runtime-main.js.map": "/horus/static/js/runtime-main.383c57fd.js.map",
     "static/css/2.82102eae.chunk.css": "/horus/static/css/2.82102eae.chunk.css",
-    "static/js/2.1f35ab16.chunk.js": "/horus/static/js/2.1f35ab16.chunk.js",
-    "static/js/2.1f35ab16.chunk.js.map": "/horus/static/js/2.1f35ab16.chunk.js.map",
+    "static/js/2.b1c8351b.chunk.js": "/horus/static/js/2.b1c8351b.chunk.js",
+    "static/js/2.b1c8351b.chunk.js.map": "/horus/static/js/2.b1c8351b.chunk.js.map",
     "index.html": "/horus/index.html",
     "static/css/2.82102eae.chunk.css.map": "/horus/static/css/2.82102eae.chunk.css.map",
     "static/css/main.587178ed.chunk.css.map": "/horus/static/css/main.587178ed.chunk.css.map",
-    "static/js/2.1f35ab16.chunk.js.LICENSE.txt": "/horus/static/js/2.1f35ab16.chunk.js.LICENSE.txt",
+    "static/js/2.b1c8351b.chunk.js.LICENSE.txt": "/horus/static/js/2.b1c8351b.chunk.js.LICENSE.txt",
     "static/media/horus.a67137fc.svg": "/horus/static/media/horus.a67137fc.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.383c57fd.js",
     "static/css/2.82102eae.chunk.css",
-    "static/js/2.1f35ab16.chunk.js",
+    "static/js/2.b1c8351b.chunk.js",
     "static/css/main.587178ed.chunk.css",
-    "static/js/main.2116e93a.chunk.js"
+    "static/js/main.4102d74e.chunk.js"
   ]
 }
