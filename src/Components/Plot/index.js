@@ -193,102 +193,66 @@ const sample = [[6.4,3807.36085151104],
   [15.8000000000001,3816.2142348685],];
 
 
-export default () => {
+export default ({points, xAxis, yAxis}) => {
 
     React.useEffect(()=>{
         functionPlot({
             target: '#test',
             data: [
-                /*{
-                    fn: 'sqrt(.01^2-(x-1)^2)+1',
-                    closed: true,
-                    range: [1, 2]
-                    skipTip: true,
-                },
-                {
-                    fn: '-sqrt(.01^2-(x-1)^2)+1',
-                    closed: true,
-                    skipTip: true,
-                },
                 {
                     points: [
-                        [1,1]
-                    ],
-                    fnType: 'points',
-                    graphType: 'scatter',
-                    color: 'blue'
-                },*/
-                {
-                    points: [
-                        ...sample.map(item=>(item.reverse()))
+                        ...points
                     ],
                     fnType: 'points',
                     graphType: 'scatter',
                     //graphType: 'polyline',
                     color: 'blue'
                 },
-                {
-                    points: [
-                        [8.56,7681.87].reverse()
-                    ],
-                    fnType: 'points',
-                    graphType: 'scatter',
-                    //graphType: 'polyline',
-                    color: 'purple'
-                },
-                {
-                    points: [
-                        [10.22,9075.34].reverse()
-                    ],
-                    fnType: 'points',
-                    graphType: 'scatter',
-                    //graphType: 'polyline',
-                    color: 'orange'
-                },
-                {
-                    points: [
-                        [11.06,9255.13].reverse()
-                    ],
-                    fnType: 'points',
-                    graphType: 'scatter',
-                    //graphType: 'polyline',
-                    color: 'green'
-                }
+                // {
+                //     points: [
+                //         [8.56,7681.87].reverse()
+                //     ],
+                //     fnType: 'points',
+                //     graphType: 'scatter',
+                //     //graphType: 'polyline',
+                //     color: 'purple'
+                // },
+                // {
+                //     points: [
+                //         [10.22,9075.34].reverse()
+                //     ],
+                //     fnType: 'points',
+                //     graphType: 'scatter',
+                //     //graphType: 'polyline',
+                //     color: 'orange'
+                // },
+                // {
+                //     points: [
+                //         [11.06,9255.13].reverse()
+                //     ],
+                //     fnType: 'points',
+                //     graphType: 'scatter',
+                //     //graphType: 'polyline',
+                //     color: 'green'
+                // }
             ],
-            yAxis: {domain: [5, 17]},
-            xAxis: {domain: [3000,10000]},
+            // yAxis: {domain: [5, 17]},
+            // xAxis: {domain: [3000,10000]},
+            yAxis: yAxis,
+            xAxis: xAxis,
             annotations: [
-                /*{
-                    x: -1
-                }, 
-                {
-                    x: 2,
-                    text: 'precio optimo 10'
-                }, */
-                {
-                    y: 8.56,
-                    text: 'MAXIMUM VALUE SALES = 8.56',
-                },
-                {
-                    y: 10.22,
-                    text: 'OPTIMUM = 10.22'
-                },
-                {
-                    y: 11.06,
-                    text: 'MAXIMUM GROSS PROFIT = 11.06'
-                },/*
-                {
-                    x: 9255.13,
-                    text: ''
-                },
-                {
-                    x: 9075.34,
-                    text: ''
-                },
-                {
-                    x: 7681.87,
-                    text: ''
-                }*/
+                // {
+                //     y: 8.56,
+                //     text: 'MAXIMUM VALUE SALES = 8.56',
+                // },
+                // {
+                //     y: 10.22,
+                //     text: 'OPTIMUM = 10.22'
+                // },
+                // {
+                //     y: 11.06,
+                //     text: 'MAXIMUM GROSS PROFIT = 11.06'
+                // },
             ]
         })
     },[])
