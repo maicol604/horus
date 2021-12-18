@@ -21,8 +21,12 @@ function createData(name, calories, fat, carbs, protein) {
 
 export default ({rows=[], heads=[], data=[]}) => {
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+    <Paper 
+      variant="outlined"
+      style={{padding:'1em'}}
+    >
+    <TableContainer>
+      <Table sx={{ minWidth: '100%' }} aria-label="simple table" size="small">
         <TableHead>
           <TableRow>
               {
@@ -71,5 +75,6 @@ export default ({rows=[], heads=[], data=[]}) => {
         </TableBody>
       </Table>
     </TableContainer>
+    </Paper>
   );
 }

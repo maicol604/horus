@@ -12,9 +12,13 @@ import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 
+import ReactLoading from "react-loading";
+
 import Plot from '../../Components/Plot';
 import Chart from '../../Components/Chart';
 import Table from '../../Components/Table';
+
+import img from '../../Assets/Img/chart-illustration.jpg';
 
 const options = [
   {
@@ -57,8 +61,11 @@ export default () => {
     simulation: null,
     price:'',
     curve:'price_profit', 
-    points:[]
+    points:[],
+    sku:null
   })
+
+  const [loading, setLoading] = React.useState(false);
 
   const [update, setUpdate] = React.useState(1)
 
@@ -79,14 +86,23 @@ export default () => {
       .catch(error => console.log('error2', error));
   } 
 
+  const findDomain = (nums) => {
+    //let max=-1000000000, min=1000000000000000;
+    /*for(let i=0;i<data.length;i++){
+      if(data[i]>max)
+        max=data[i];
+    }*/
+    return [Math.min(...nums),Math.max(...nums)];
+  }
+
   const getCurve = () => {
-    let url = `https://pricing.demo4to.com/api/pricing.sku/29?access-token=${auth.access_token}&method=get_table&price=${data.price}`;
+    let url = `https://pricing.demo4to.com/api/pricing.sku/${data.sku}?access-token=${auth.access_token}&method=get_table&price=${data.price}`;
     let requestOptions = {
       method: 'GET',
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*'
     };
-
+    setLoading(true);
     fetch(url, requestOptions)
     .then(response => response.json())
     .then(result => {
@@ -99,11 +115,18 @@ export default () => {
        // price_profit.push([result.data.table.profit[i], result.data.table.value[i]]);
         price_quantity.push([result.data.table.price[i], result.data.table.quantity[i]]);
         price_value.push([result.data.table.price[i], result.data.table.value[i]]);
-
       }
-      setData({...data, ...result.data, simulation: {...result.data, price_profit, price_quantity, price_value, points:price_quantity, xAxis: result.data.limits.price, yAxis: result.data.limits.quantity}})
+      setTimeout(() => {
+        setLoading(false);
+        setData({...data, ...result.data, simulation: {...result.data, price_profit, price_quantity, price_value, points:price_quantity}})
+      }, 3000);
     })
-    .catch(error => console.log('error', error));
+    .catch(error => {
+      console.log('error', error);
+      setTimeout(() => {
+        setLoading(false);
+      }, 3000);
+    });
   }
 
   React.useEffect(()=>{
@@ -130,6 +153,10 @@ export default () => {
     if(data.simulation)
       setUpdate(update+1);
   },[data.simulation]);
+
+  const truncateNumber = (number) => {
+    return (number+'').toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
+  }
 
   const getContent = () => {
     switch(option){
@@ -879,13 +906,15 @@ export default () => {
                 <Select
                   //name={'totalSaleUnit'}
                   label="Agrupacion de tiempo"
-                  /*value={subcategory.totalSaleUnit}
-                  onChange={handleInputChangeSubcategories}*/
+                  /*value={subcategory.totalSaleUnit}*/
+                  onChange={(e)=>{
+                    setData({...data, sku:e.target.value});
+                  }}
                 >
                   {
                     data.skus.map((item, index)=>{
                       return (
-                        <MenuItem value={'Rolling Year'} key={index}>{item[1]}</MenuItem>
+                        <MenuItem value={item[0]} key={index}>{item[1]}</MenuItem>
                       )
                     })
                   }
@@ -917,13 +946,13 @@ export default () => {
                   onChange={(e)=>{
                     //console.log(e.target.value)
                     if(e.target.value==='price_profit'){
-                      setData({...data, simulation: {...data.simulation, points:data.simulation.price_profit, xAxis: data.limits.price, yAxis: data.limits.profit}});
+                      setData({...data, simulation: {...data.simulation, points:data.simulation.price_profit}});
                     }
                     if(e.target.value==='price_quantity'){
-                      setData({...data,  simulation: {...data.simulation, points:data.simulation.price_quantity, xAxis: data.limits.price, yAxis: data.limits.quantity}});
+                      setData({...data,  simulation: {...data.simulation, points:data.simulation.price_quantity}});
                     }
                     if(e.target.value==='price_value'){
-                      setData({...data,  simulation: {...data.simulation, points:data.simulation.price_value, xAxis: data.limits.price, yAxis: data.limits.value}});
+                      setData({...data,  simulation: {...data.simulation, points:data.simulation.price_value}});
                     }
                   }}
                 >
@@ -933,7 +962,7 @@ export default () => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={2}>
               <FormControl fullWidth>
                 <InputLabel>Mes</InputLabel>
                 <Select
@@ -950,7 +979,7 @@ export default () => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={2}>
               <FormControl fullWidth>
                 <InputLabel>Año</InputLabel>
                 <Select
@@ -967,25 +996,26 @@ export default () => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={4}>
-                <Button onClick={()=>{getCurve()}} color='primary' variant='contained'>
+            <Grid item xs={4} style={{display: 'flex'}}>
+                <Button onClick={()=>{getCurve()}} color='primary' variant='contained' size="large">
                   Simular
                 </Button>
             </Grid>
+            {
+            data.simulation?
+            <>
             <Grid item xs={6}>
-              <Table
-                heads={['Precio competidor', 'Distribucion', 'Inflacion', 'Pandemia']}
-              />
-              {
-                data.simulation?//data.simulation.optimals.price, data.simulation.optimals.quantity, data.simulation.optimals.value, data.simulation.optimals.profit
-                  <Table
-                    heads={['Precio', 'Cantidad', 'Venta', 'Rentabilidad']}
-                    data={[0,1,2].map((i)=>[data.simulation.optimals.price[i], data.simulation.optimals.quantity[i], data.simulation.optimals.value[i], data.simulation.optimals.profit[i]])}
-                  />
-                :
-                  <></>
-              }
-              {data.simulation?
+              <div style={{marginBottom:'1em'}}>
+                <Table
+                  heads={['Precio competidor', 'Distribucion', 'Inflacion', 'Pandemia']}
+                />
+              </div>
+              <div style={{marginBottom:'1em'}}>
+                <Table
+                  heads={['Precio', 'Cantidad', 'Venta', 'Rentabilidad']}
+                  data={[0,1,2].map((i)=>[truncateNumber(data.simulation.optimals.price[i]), truncateNumber(data.simulation.optimals.quantity[i]), truncateNumber(data.simulation.optimals.value[i]), truncateNumber(data.simulation.optimals.profit[i])])}
+                />
+              </div>
               <div>
                 <TextField 
                     id="" 
@@ -1004,29 +1034,39 @@ export default () => {
                 <p>quantity: {data.simulation.user_point.quantity}</p>
                 <p>value: {data.simulation.user_point.value}</p>
               </div>
-              :
-              <></>
-              }
             </Grid>
             <Grid item xs={6} style={{textAlign:'center'}}>
               <Paper 
                 variant="outlined"
                 style={{padding:'1em'}}
               >
-                {
-                  data.simulation?
-                    <div key={update}>
-                      <Plot
-                        points={data.simulation.points}
-                        xAxis={{domain: [...data.simulation.xAxis]}}
-                        yAxis={{domain: [...data.simulation.yAxis]}}
-                      />
-                    </div>
-                  :
-                    <>cargando</>
-                }
+                <div key={update}>
+                  <Plot
+                    points={data.simulation.points}
+                    xAxis={{domain: [...findDomain(data.simulation.points.map(i=>i[0]))]}}
+                    yAxis={{domain: [...findDomain(data.simulation.points.map(i=>i[1]))]}}
+                    optimals={data.optimals}
+                  />
+                </div>
               </Paper>
             </Grid>
+            </>
+            :
+            <>
+              {
+              loading?
+                <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '20vh'}}>
+                  <ReactLoading type={'bars'} color="#fff" />
+                </Grid>
+              :
+              <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '20vh'}}>
+                <div style={{width:'30vw'}}>
+                  <img src={img} alt='' style={{width:'100%'}}/>
+                </div>
+              </Grid>
+              }
+            </>
+            }
           </Grid>
         )
       case 8:
@@ -1118,7 +1158,7 @@ export default () => {
   }
 
   return (
-    <div style={{padding:'1em'}}>
+    <div style={{padding:'1em', paddingTop:'2em'}}>
       <Grid container alignItems='flex-start' spacing={3}>
         <Grid item xs={2} style={{height:'100vh',  borderRight:'1px solid rgba(0, 0, 0, 0.12)'}}>
           <MenuList style={{width:'100%'}}>
