@@ -17,6 +17,7 @@ import ReactLoading from "react-loading";
 import Plot from '../../Components/Plot';
 import Chart from '../../Components/Chart';
 import Table from '../../Components/Table';
+import CustomDatePicker from '../../Components/CustomDatePicker';
 
 import img from '../../Assets/Img/chart-illustration.jpg';
 
@@ -87,11 +88,6 @@ export default () => {
   } 
 
   const findDomain = (nums) => {
-    //let max=-1000000000, min=1000000000000000;
-    /*for(let i=0;i<data.length;i++){
-      if(data[i]>max)
-        max=data[i];
-    }*/
     return [Math.min(...nums),Math.max(...nums)];
   }
 
@@ -103,6 +99,7 @@ export default () => {
       'Access-Control-Allow-Origin': '*'
     };
     setLoading(true);
+    setData({...data, simulation:null});
     fetch(url, requestOptions)
     .then(response => response.json())
     .then(result => {
@@ -110,22 +107,24 @@ export default () => {
       let price_profit = [];
       let price_quantity = [];
       let price_value = [];
+      let profit_value = [];
       for(let i=0;i<result.data.table.price.length;i++){
         price_profit.push([result.data.table.price[i], result.data.table.profit[i]]);
        // price_profit.push([result.data.table.profit[i], result.data.table.value[i]]);
         price_quantity.push([result.data.table.price[i], result.data.table.quantity[i]]);
         price_value.push([result.data.table.price[i], result.data.table.value[i]]);
+        profit_value.push([result.data.table.profit[i], result.data.table.value[i]]);
       }
       setTimeout(() => {
         setLoading(false);
-        setData({...data, ...result.data, simulation: {...result.data, price_profit, price_quantity, price_value, points:price_quantity}})
-      }, 3000);
+        setData({...data, ...result.data, simulation: {...result.data, price_profit, price_quantity, price_value, profit_value, points:price_quantity}})
+      }, 2000);
     })
     .catch(error => {
       console.log('error', error);
       setTimeout(() => {
         setLoading(false);
-      }, 3000);
+      }, 2000);
     });
   }
 
@@ -156,6 +155,24 @@ export default () => {
 
   const truncateNumber = (number) => {
     return (number+'').toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
+  }
+
+  const getPoints = (option) => {
+    switch(option){
+      case 'price_profit':
+        //setData({...data, simulation:{...data.simulation, points:[...data.simulation.price_profit]}})
+        return ([...data.simulation.price_profit]);
+      case 'price_quantity':
+        //setData({...data, simulation:{...data.simulation, points:[...data.simulation.price_quantity]}})
+        return ([...data.simulation.price_quantity]);
+      case 'price_value':
+        //setData({...data, simulation:{...data.simulation, points:[...data.simulation.price_value]}})
+        return ([...data.simulation.price_value]);
+      case 'profit_value':
+        //setData({...data, simulation:{...data.simulation, points:[...data.simulation.profit_value]}})
+        return ([...data.simulation.profit_value]);
+    }
+    return [];
   }
 
   const getContent = () => {
@@ -942,62 +959,29 @@ export default () => {
                 <Select
                   //name={'totalSaleUnit'}
                   label="Tipo de curva"
-                  /*value={subcategory.totalSaleUnit}*/
+                  value={data.curve}
                   onChange={(e)=>{
-                    //console.log(e.target.value)
-                    if(e.target.value==='price_profit'){
-                      setData({...data, simulation: {...data.simulation, points:data.simulation.price_profit}});
-                    }
-                    if(e.target.value==='price_quantity'){
-                      setData({...data,  simulation: {...data.simulation, points:data.simulation.price_quantity}});
-                    }
-                    if(e.target.value==='price_value'){
-                      setData({...data,  simulation: {...data.simulation, points:data.simulation.price_value}});
-                    }
+                    setUpdate(update+1);
+                    setData({...data, curve:e.target.value});
                   }}
+                  defaultValue="price_profit"
                 >
                   <MenuItem value={'price_profit'}>Precio rentabilidad</MenuItem>
                   <MenuItem value={'price_quantity'}>Precio cantidad</MenuItem>
                   <MenuItem value={'price_value'}>Precio valor</MenuItem>
+                  <MenuItem value={'profit_value'}>Rentabilidad valor</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={2}>
-              <FormControl fullWidth>
-                <InputLabel>Mes</InputLabel>
-                <Select
-                  //name={'totalSaleUnit'}
-                  label="Mes"
-                  /*value={subcategory.totalSaleUnit}
-                  onChange={handleInputChangeSubcategories}*/
-                >
-                  <MenuItem value={'Rolling Year'}>Rolling Year</MenuItem>
-                  <MenuItem value={'Full Year'}>Full Year</MenuItem>
-                  <MenuItem value={'Mensual'}>Mensual</MenuItem>
-                  <MenuItem value={'Semestral'}>Semestral</MenuItem>
-                  <MenuItem value={'Trimestral'}>Trimestral</MenuItem>
-                </Select>
-              </FormControl>
+            <Grid item xs={4}>
+              <CustomDatePicker
+                periodicity={'monthly'}
+                label='Mes a estudiar'
+              />
             </Grid>
-            <Grid item xs={2}>
-              <FormControl fullWidth>
-                <InputLabel>Año</InputLabel>
-                <Select
-                  //name={'totalSaleUnit'}
-                  label="Año"
-                  /*value={subcategory.totalSaleUnit}
-                  onChange={handleInputChangeSubcategories}*/
-                >
-                  <MenuItem value={'Rolling Year'}>Rolling Year</MenuItem>
-                  <MenuItem value={'Full Year'}>Full Year</MenuItem>
-                  <MenuItem value={'Mensual'}>Mensual</MenuItem>
-                  <MenuItem value={'Semestral'}>Semestral</MenuItem>
-                  <MenuItem value={'Trimestral'}>Trimestral</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
+            
             <Grid item xs={4} style={{display: 'flex'}}>
-                <Button onClick={()=>{getCurve()}} color='primary' variant='contained' size="large">
+                <Button onClick={()=>{getCurve()}} color='primary' variant='contained' size="large" disabled={!data.sku}>
                   Simular
                 </Button>
             </Grid>
@@ -1042,9 +1026,9 @@ export default () => {
               >
                 <div key={update}>
                   <Plot
-                    points={data.simulation.points}
-                    xAxis={{domain: [...findDomain(data.simulation.points.map(i=>i[0]))]}}
-                    yAxis={{domain: [...findDomain(data.simulation.points.map(i=>i[1]))]}}
+                    points={getPoints(data.curve)}
+                    xAxis={{domain: [...findDomain(getPoints(data.curve).map(i=>i[0]))]}}
+                    yAxis={{domain: [...findDomain(getPoints(data.curve).map(i=>i[1]))]}}
                     optimals={data.optimals}
                   />
                 </div>

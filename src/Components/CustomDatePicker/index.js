@@ -48,7 +48,7 @@ const gridItemStyles = {
 
 
 
-export default ({periodicity='weekly'}) => {
+export default ({periodicity='weekly', label="Fecha de la primera medicion" }) => {
 
     const [date, setDate] = React.useState(new Date);
     const [visible, setVisible] = React.useState(false)
@@ -251,7 +251,7 @@ export default ({periodicity='weekly'}) => {
         <DatePickerContainer>
             <TextField
                 fullWidth 
-                label="Fecha de la primera medicion" 
+                label={label}
                 variant="outlined" 
                 required
                 onFocus={()=>{
