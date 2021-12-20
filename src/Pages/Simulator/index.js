@@ -12,8 +12,15 @@ import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import BarChartIcon from '@mui/icons-material/BarChart';
+
 import ReactLoading from "react-loading";
 
+import Plot2 from '../../Components/Plot2';
 import Plot from '../../Components/Plot';
 import Chart from '../../Components/Chart';
 import Table from '../../Components/Table';
@@ -39,9 +46,6 @@ const options = [
   },
   {
     title:6//'Gráficas'//(mensuales, trimestrales, semestrales, RY, YTD)
-  },
-  {
-    title:7//'Curvas de precios y simulador'
   },
   {
     title:'Simulador'//'Simulador con tendencia'
@@ -171,6 +175,56 @@ export default () => {
       case 'profit_value':
         //setData({...data, simulation:{...data.simulation, points:[...data.simulation.profit_value]}})
         return ([...data.simulation.profit_value]);
+    }
+    return [];
+  }
+
+  const getAnnotations = (option) => {
+    switch(option){
+      /*case 'price_profit':
+        return ([
+          {
+            y: data.optimals,
+            text: 'MAXIMUM VALUE SALES = 8.56',
+          }
+        ]);
+      case 'price_quantity':
+        return ([...data.simulation.price_quantity]);
+      case 'price_value':
+        return ([...data.simulation.price_value]);*/
+      case 'profit_value':
+        return ([
+          {
+            y: data.optimals.profit[0],
+            x: data.optimals.value[0],
+            text: 'MV = '+truncateNumber(data.optimals.profit[0]),
+          },
+          {
+            y: data.optimals.profit[1],
+            x: data.optimals.value[1],
+            text: 'Optimo = '+truncateNumber(data.optimals.profit[1]),
+          },
+          {
+            y: data.optimals.profit[2],
+            x: data.optimals.value[2],
+            text: 'MR = '+truncateNumber(data.optimals.profit[2]),
+          },
+        ]);
+      default:
+        return ([
+          {
+            y: data.optimals.price[0],
+            text: 'MV = '+truncateNumber(data.optimals.price[0]),
+          },
+          {
+            y: data.optimals.price[1],
+            text: 'Optimo = '+truncateNumber(data.optimals.price[1]),
+          },
+          {
+            y: data.optimals.price[2],
+            text: 'MR = '+truncateNumber(data.optimals.price[2]),
+          },
+        ])
     }
     return [];
   }
@@ -813,112 +867,6 @@ export default () => {
           <Grid container alignItems='flex-start' spacing={3}>
             <Grid item xs={4}>
               <FormControl fullWidth>
-                <InputLabel>Agrupacion de tiempo</InputLabel>
-                <Select
-                  //name={'totalSaleUnit'}
-                  label="Agrupacion de tiempo"
-                  /*value={subcategory.totalSaleUnit}
-                  onChange={handleInputChangeSubcategories}*/
-                >
-                  <MenuItem value={'Rolling Year'}>Rolling Year</MenuItem>
-                  <MenuItem value={'Full Year'}>Full Year</MenuItem>
-                  <MenuItem value={'Mensual'}>Mensual</MenuItem>
-                  <MenuItem value={'Semestral'}>Semestral</MenuItem>
-                  <MenuItem value={'Trimestral'}>Trimestral</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={4}>
-              <FormControl fullWidth>
-                <InputLabel>Seleccionar subcategoria</InputLabel>
-                <Select
-                  //name={'totalSaleUnit'}
-                  label="Seleccionar subcategoria"
-                  /*value={subcategory.totalSaleUnit}
-                  onChange={handleInputChangeSubcategories}*/
-                >
-                  <MenuItem value={'Rolling Year'}>Rolling Year</MenuItem>
-                  <MenuItem value={'Full Year'}>Full Year</MenuItem>
-                  <MenuItem value={'Mensual'}>Mensual</MenuItem>
-                  <MenuItem value={'Semestral'}>Semestral</MenuItem>
-                  <MenuItem value={'Trimestral'}>Trimestral</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={4}>
-              <FormControl fullWidth>
-                <InputLabel>Seleccionar SKU</InputLabel>
-                <Select
-                  //name={'totalSaleUnit'}
-                  label="Seleccionar SKU"
-                  /*value={subcategory.totalSaleUnit}
-                  onChange={handleInputChangeSubcategories}*/
-                >
-                  <MenuItem value={'Rolling Year'}>Rolling Year</MenuItem>
-                  <MenuItem value={'Full Year'}>Full Year</MenuItem>
-                  <MenuItem value={'Mensual'}>Mensual</MenuItem>
-                  <MenuItem value={'Semestral'}>Semestral</MenuItem>
-                  <MenuItem value={'Trimestral'}>Trimestral</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={4}>
-              <FormControl fullWidth>
-                <InputLabel>Seleccionar Variables</InputLabel>
-                <Select
-                  //name={'totalSaleUnit'}
-                  label="Seleccionar Variables"
-                  /*value={subcategory.totalSaleUnit}
-                  onChange={handleInputChangeSubcategories}*/
-                >
-                  <MenuItem value={'Rolling Year'}>Rolling Year</MenuItem>
-                  <MenuItem value={'Full Year'}>Full Year</MenuItem>
-                  <MenuItem value={'Mensual'}>Mensual</MenuItem>
-                  <MenuItem value={'Semestral'}>Semestral</MenuItem>
-                  <MenuItem value={'Trimestral'}>Trimestral</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={4}>
-              <FormControl fullWidth>
-                <InputLabel>Variables calculadas</InputLabel>
-                <Select
-                  //name={'totalSaleUnit'}
-                  label="Variables calculadas"
-                  /*value={subcategory.totalSaleUnit}
-                  onChange={handleInputChangeSubcategories}*/
-                >
-                  <MenuItem value={'Rolling Year'}>Rolling Year</MenuItem>
-                  <MenuItem value={'Full Year'}>Full Year</MenuItem>
-                  <MenuItem value={'Mensual'}>Mensual</MenuItem>
-                  <MenuItem value={'Semestral'}>Semestral</MenuItem>
-                  <MenuItem value={'Trimestral'}>Trimestral</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} style={{textAlign:'center'}}>
-              <Paper 
-                variant="outlined"
-                style={{padding:'1em', display:'flex', height:'40vh'}}
-              >
-                <Chart type='bar'/>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} style={{textAlign:'center'}}>
-              <Paper 
-                variant="outlined"
-                style={{padding:'1em', display:'flex', height:'40vh'}}
-              >
-                <Chart type='bar'/>
-              </Paper>
-            </Grid>
-          </Grid>
-        )
-      case 7:
-        return (
-          <Grid container alignItems='flex-start' spacing={3}>
-            <Grid item xs={4}>
-              <FormControl fullWidth>
                 <InputLabel>Selecciona SKU</InputLabel>
                 <Select
                   //name={'totalSaleUnit'}
@@ -981,7 +929,7 @@ export default () => {
             </Grid>
             
             <Grid item xs={4} style={{display: 'flex'}}>
-                <Button onClick={()=>{getCurve()}} color='primary' variant='contained' size="large" disabled={!data.sku}>
+                <Button onClick={()=>{getCurve()}} color='primary' variant='contained' size="large" disabled={!data.sku} style={{height:'3.5em'}}>
                   Simular
                 </Button>
             </Grid>
@@ -1030,6 +978,23 @@ export default () => {
                     xAxis={{domain: [...findDomain(getPoints(data.curve).map(i=>i[0]))]}}
                     yAxis={{domain: [...findDomain(getPoints(data.curve).map(i=>i[1]))]}}
                     optimals={data.optimals}
+                    annotations={getAnnotations(data.curve)}
+                  />
+                </div>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} style={{textAlign:'center'}}>
+              <Paper 
+                variant="outlined"
+                style={{padding:'1em'}}
+              >
+                <div key={update}>
+                  <Plot2
+                    points={getPoints(data.curve)}
+                    optimals={null}
+                    annotations={getAnnotations(data.curve)}
+                    name={data.curve}
+                    title={''}
                   />
                 </div>
               </Paper>
@@ -1044,7 +1009,7 @@ export default () => {
                 </Grid>
               :
               <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '20vh'}}>
-                <div style={{width:'30vw'}}>
+                <div style={{width:'30vw', filter: 'saturate(0)', opacity:'.5'}}>
                   <img src={img} alt='' style={{width:'100%'}}/>
                 </div>
               </Grid>
@@ -1053,7 +1018,7 @@ export default () => {
             }
           </Grid>
         )
-      case 8:
+      case 7:
         return (
           <Grid container alignItems='flex-start' spacing={3}>
             <Grid item xs={4}>
@@ -1145,6 +1110,30 @@ export default () => {
     <div style={{padding:'1em', paddingTop:'2em'}}>
       <Grid container alignItems='flex-start' spacing={3}>
         <Grid item xs={2} style={{height:'100vh',  borderRight:'1px solid rgba(0, 0, 0, 0.12)'}}>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <div>
+                <BarChartIcon/> Graficas
+              </div>
+            </AccordionSummary>
+            <AccordionDetails>
+              <MenuList style={{width:'100%'}}>
+                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(1)}>
+                  2 ejes
+                </MenuItem>
+                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(1)}>
+                  3 ejes
+                </MenuItem>
+                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(1)}>
+                  Historica
+                </MenuItem>
+              </MenuList>
+            </AccordionDetails>
+          </Accordion>
           <MenuList style={{width:'100%'}}>
             {
               options.map((data, index)=>
@@ -1164,3 +1153,20 @@ export default () => {
     </div>
   )
 }
+
+/*
+  MV maxima venta
+  Optimo
+  MR maxima rentabilidad
+*/
+
+/*
+  tablas comparatibas
+  t historicas
+  pie y barras
+  graficas 2 ejes
+  graficas 3 ejes
+  grafica historica
+  simulador puntual 
+  simulador tendencia
+*/

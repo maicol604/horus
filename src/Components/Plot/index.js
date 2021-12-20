@@ -193,7 +193,7 @@ const sample = [[6.4,3807.36085151104],
   [15.8000000000001,3816.2142348685],];
 
 
-export default ({points, xAxis, yAxis}) => {
+export default ({points, xAxis, yAxis, annotations}) => {
 
     React.useEffect(()=>{
         functionPlot({
@@ -241,18 +241,7 @@ export default ({points, xAxis, yAxis}) => {
             yAxis: yAxis,
             xAxis: xAxis,
             annotations: [
-                // {
-                //     y: 8.56,
-                //     text: 'MAXIMUM VALUE SALES = 8.56',
-                // },
-                // {
-                //     y: 10.22,
-                //     text: 'OPTIMUM = 10.22'
-                // },
-                // {
-                //     y: 11.06,
-                //     text: 'MAXIMUM GROSS PROFIT = 11.06'
-                // },
+                ...annotations
             ]
         })
     },[])
