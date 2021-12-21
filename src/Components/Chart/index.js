@@ -195,7 +195,7 @@ import { Chart } from 'react-chartjs-2';
   const max = [null,null,null,null,null,8.56]
 
 
-export default ({type='bar', datasets=[], legend=true}) => {
+export default ({datasets=[], legend=true}) => {
     React.useEffect(()=>{
         //console.log('as',sample.map(i=>i[0]))        
     },[])
@@ -209,6 +209,7 @@ export default ({type='bar', datasets=[], legend=true}) => {
                 datasets: [
                     ...datasets
                 ],
+                labels: [1,2,3,4,5]
             }}
             height={400}
             width={600}

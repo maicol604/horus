@@ -39,6 +39,7 @@ import CustomDatePicker from '../../Components/CustomDatePicker';
 
 import bg1 from '../../Assets/Img/1.svg';
 import bg2 from '../../Assets/Img/3.svg';
+import bg3 from '../../Assets/Img/5.svg';
 
 const options = [
   {
@@ -696,7 +697,23 @@ export default () => {
                 variant="outlined"
                 style={{padding:'1em'}}
               >
-                <Chart type='pie'/>
+                <Chart
+                  legend={false}
+                  datasets={[
+                    {
+                      type: 'pie',
+                      data: [15,50,23,69,78],
+                      label: 'Skus',
+                      backgroundColor: [
+                        '#2ecc71',
+                        '#3498db',
+                        '#9b59b6',
+                        '#f1c40f',
+                        '#34495e'
+                      ],
+                    }
+                  ]}
+                />
               </Paper>
             </Grid>
             <Grid item xs={6} style={{textAlign:'center'}}>
@@ -704,7 +721,23 @@ export default () => {
                 variant="outlined"
                 style={{padding:'1em'}}
               >
-                <Chart type='bar'/>
+                <Chart
+                  legend={false}
+                  datasets={[
+                    {
+                      type: 'bar',
+                      data: [15,50,23,69,78],
+                      label: 'Skus',
+                      backgroundColor: [
+                        '#2ecc71',
+                        '#3498db',
+                        '#9b59b6',
+                        '#f1c40f',
+                        '#34495e'
+                      ],
+                    }
+                  ]}
+                />
               </Paper>
             </Grid>
           </Grid>
@@ -877,7 +910,7 @@ export default () => {
                       }],
                       label: i.name,
                       backgroundColor: [
-                        randomColor(),
+                        i.color?i.color:randomColor(),
                       ],
                     }
                   ))]}
@@ -1275,6 +1308,16 @@ export default () => {
             </Grid>
           </Grid>
         )
+      default:
+        return (
+          <Grid container alignItems='flex-start' spacing={3}>
+            <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '10vh'}}>
+              <div style={{width:'40vw', filter: 'saturate(1)', opacity:'1'}}>
+                <img src={bg3} alt='' style={{width:'100%'}}/>
+              </div>
+            </Grid>
+          </Grid>
+        )
     }
   }
   
@@ -1298,10 +1341,10 @@ export default () => {
             </AccordionSummary>
             <AccordionDetails>
               <MenuList style={{width:'100%'}}>
-                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(1)}>
+                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(2)}>
                   Pie y barras
                 </MenuItem>
-                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(1)}>
+                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(10)}>
                   Graficas 2 ejes
                 </MenuItem>
                 <MenuItem style={{width:'100%'}} onClick={()=>handleOption(4)}>
@@ -1323,10 +1366,10 @@ export default () => {
             </AccordionSummary>
             <AccordionDetails>
               <MenuList style={{width:'100%'}}>
-                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(1)}>
+                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(10)}>
                   Comparatibas
                 </MenuItem>
-                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(1)}>
+                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(10)}>
                   Historicas
                 </MenuItem>
               </MenuList>
@@ -1348,7 +1391,7 @@ export default () => {
                 <MenuItem style={{width:'100%'}} onClick={()=>handleOption(6)}>
                   Puntual
                 </MenuItem>
-                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(1)}>
+                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(10)}>
                   Tendencia
                 </MenuItem>
               </MenuList>

@@ -30,18 +30,31 @@ const theme = createTheme({
 
 function App() {
 
+  const [render, setRender] = React.useState('1')
+
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
-        <Header/>
+        <Header
+          onChange={(value)=>{
+            console.log(value)
+            setRender(value)
+          }}
+        />
         <CustomCursor/>
-        <BrowserRouter>
+          {
+            render==='1'?
+            <Categories />
+            :
+            <Simulator />
+          }
+        {/* {<BrowserRouter>
           <Routes>
             <Route path="categories" element={<Categories />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="horus" element={<Simulator />} />
           </Routes>
-        </BrowserRouter>
+        </BrowserRouter>} */}
       </ThemeProvider>
     </div>
   );
