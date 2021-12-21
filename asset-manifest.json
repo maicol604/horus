@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/horus/static/css/main.bae49aea.chunk.css",
-    "main.js": "/horus/static/js/main.c270ee02.chunk.js",
-    "main.js.map": "/horus/static/js/main.c270ee02.chunk.js.map",
+    "main.js": "/horus/static/js/main.c1d0229d.chunk.js",
+    "main.js.map": "/horus/static/js/main.c1d0229d.chunk.js.map",
     "runtime-main.js": "/horus/static/js/runtime-main.5f6482d4.js",
     "runtime-main.js.map": "/horus/static/js/runtime-main.5f6482d4.js.map",
     "static/css/2.b065e2c3.chunk.css": "/horus/static/css/2.b065e2c3.chunk.css",
-    "static/js/2.0f8de910.chunk.js": "/horus/static/js/2.0f8de910.chunk.js",
-    "static/js/2.0f8de910.chunk.js.map": "/horus/static/js/2.0f8de910.chunk.js.map",
+    "static/js/2.c1c998e3.chunk.js": "/horus/static/js/2.c1c998e3.chunk.js",
+    "static/js/2.c1c998e3.chunk.js.map": "/horus/static/js/2.c1c998e3.chunk.js.map",
     "index.html": "/horus/index.html",
     "static/css/2.b065e2c3.chunk.css.map": "/horus/static/css/2.b065e2c3.chunk.css.map",
     "static/css/main.bae49aea.chunk.css.map": "/horus/static/css/main.bae49aea.chunk.css.map",
-    "static/js/2.0f8de910.chunk.js.LICENSE.txt": "/horus/static/js/2.0f8de910.chunk.js.LICENSE.txt",
+    "static/js/2.c1c998e3.chunk.js.LICENSE.txt": "/horus/static/js/2.c1c998e3.chunk.js.LICENSE.txt",
     "static/media/chart-illustration.53eb3457.jpg": "/horus/static/media/chart-illustration.53eb3457.jpg",
     "static/media/horus.a67137fc.svg": "/horus/static/media/horus.a67137fc.svg",
     "static/media/loreal-logo.f6e9cdea.svg": "/horus/static/media/loreal-logo.f6e9cdea.svg"
@@ -19,8 +19,8 @@
   "entrypoints": [
     "static/js/runtime-main.5f6482d4.js",
     "static/css/2.b065e2c3.chunk.css",
-    "static/js/2.0f8de910.chunk.js",
+    "static/js/2.c1c998e3.chunk.js",
     "static/css/main.bae49aea.chunk.css",
-    "static/js/main.c270ee02.chunk.js"
+    "static/js/main.c1d0229d.chunk.js"
   ]
 }
