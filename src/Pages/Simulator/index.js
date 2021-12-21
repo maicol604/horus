@@ -50,7 +50,7 @@ const options = [
     title:4//'Gráficas 2D'
   },
   {
-    title:5//'Gráficas de burbujas'
+    title:'Gráficas de burbujas'
   },
   {
     title:6//'Gráficas'//(mensuales, trimestrales, semestrales, RY, YTD)
@@ -76,6 +76,16 @@ export default () => {
     curve:'price_profit', 
     points:[],
     sku:null
+  });
+
+  const [bubbleData, setBubbleData] = React.useState({
+    data: null,
+    loading: false,
+  });
+
+  const [subcategories, setSubcategories] = React.useState({
+    data:[],
+    selected:null
   })
 
   const [loading, setLoading] = React.useState(false);
@@ -99,9 +109,20 @@ export default () => {
       .catch(error => console.log('error2', error));
   } 
 
-  const findDomain = (nums) => {
-    return [Math.min(...nums),Math.max(...nums)];
-  }
+  const getSubcategories = (token, cb) => {
+    
+    fetch("https://pricing.demo4to.com/api/pricing.sku.subcategory/name_search?access-token="+token, {
+      'Access-Control-Allow-Origin': '*',
+      "Content-Type": "application/json",
+      method: "GET"
+    })   
+    .then(response => response.json())
+    .then(result => {
+      //console.log('error sub',result);
+      setSubcategories({...subcategories, data: result.data})
+    })
+    .catch(error => console.log('error sub', error));
+}
 
   const getCurve = (price) => {
     let url = `https://pricing.demo4to.com/api/pricing.sku/${data.sku}?access-token=${auth.access_token}&method=get_table&price=${price}`;
@@ -140,8 +161,8 @@ export default () => {
     });
   }
   
-  const getBubles = (t, s) => {
-    let url = `https://pricing.demo4to.com/api/pricing.sku/get_historic_data?access-token=${t}&x_axis=sale_values&ids=${s.map(i=>i[0]).join(',')}`;
+  const getBubles = (t) => {
+    let url = `https://pricing.demo4to.com/api/pricing.sku.subcategory/${subcategories.selected}/get_historic_data?access-token=${t}&x_axis=sale_values&y_axis=distribution&z_axis=price_units`;
     //console.log(url, s)
     let requestOptions = {
       method: 'GET',
@@ -154,7 +175,8 @@ export default () => {
     .then(response => response.json())
     .then(result => {
       console.log('bubples',result)
-      
+      setBubbleData({...bubbleData, data:result.data.filter((element, index) => index < result.data.length - 1)});
+
       setTimeout(() => {
         setLoading(false);
       }, 2000);
@@ -179,10 +201,12 @@ export default () => {
     .then(response => response.json())
     .then(result => {
       setAuth(result);
+      
+      getSubcategories(result.access_token)
+
       getSkus(result.access_token, (r)=>{
         setData({...data, skus: r.data})
         //console.log(r.data)
-        getBubles(result.access_token, r.data);
       })
     })
     .catch(error => console.log('error', error));
@@ -775,48 +799,42 @@ export default () => {
       case 4:
         return (
           <Grid container alignItems='flex-start' spacing={3}>
-            <Grid item xs={4}>
-              <FormControl fullWidth>
-                <InputLabel>Agrupacion de tiempo</InputLabel>
-                <Select
-                  //name={'totalSaleUnit'}
-                  label="Agrupacion de tiempo"
-                  /*value={subcategory.totalSaleUnit}
-                  onChange={handleInputChangeSubcategories}*/
-                >
-                  <MenuItem value={'Rolling Year'}>Rolling Year</MenuItem>
-                  <MenuItem value={'Full Year'}>Full Year</MenuItem>
-                  <MenuItem value={'Mensual'}>Mensual</MenuItem>
-                  <MenuItem value={'Semestral'}>Semestral</MenuItem>
-                  <MenuItem value={'Trimestral'}>Trimestral</MenuItem>
-                </Select>
-              </FormControl>
+            <Grid item xs={12}>
+              <Paper 
+                variant="outlined"
+                style={{padding:'1em', display:'flex'}}
+              >
+                <FormControl fullWidth>
+                  <InputLabel>Seleccionar subcategoria</InputLabel>
+                  <Select
+                    //name={'totalSaleUnit'}
+                    label="Seleccionar subcategoria"
+                    value={subcategories.selected}
+                    onChange={(e)=>{
+                      setSubcategories({...subcategories, selected:e.target.value})
+                    }}
+                  >
+                    {
+                      subcategories.data.map((item, index)=>
+                        <MenuItem value={item[0]} key={index}>{item[1]}</MenuItem>
+                      )
+                    }
+                  </Select>
+                </FormControl>
+                
+                <Button onClick={()=>{ getBubles(auth.access_token) }} color='primary' variant='contained' size="large" disabled={!subcategories.selected} style={{height:'3.5em', marginLeft:'1em'}}>
+                  Visualizar
+                </Button>
+              </Paper>
             </Grid>
-            <Grid item xs={4}>
-              <FormControl fullWidth>
-                <InputLabel>Seleccionar subcategoria</InputLabel>
-                <Select
-                  //name={'totalSaleUnit'}
-                  label="Seleccionar subcategoria"
-                  /*value={subcategory.totalSaleUnit}
-                  onChange={handleInputChangeSubcategories}*/
-                >
-                  <MenuItem value={'Rolling Year'}>Rolling Year</MenuItem>
-                  <MenuItem value={'Full Year'}>Full Year</MenuItem>
-                  <MenuItem value={'Mensual'}>Mensual</MenuItem>
-                  <MenuItem value={'Semestral'}>Semestral</MenuItem>
-                  <MenuItem value={'Trimestral'}>Trimestral</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={4}>
+            {/* {<Grid item xs={4}>
               <FormControl fullWidth>
                 <InputLabel>Seleccionar SKU</InputLabel>
                 <Select
                   //name={'totalSaleUnit'}
                   label="Seleccionar SKU"
-                  /*value={subcategory.totalSaleUnit}
-                  onChange={handleInputChangeSubcategories}*/
+                  value={subcategory.totalSaleUnit}
+                  onChange={handleInputChangeSubcategories}
                 >
                   <MenuItem value={'Rolling Year'}>Rolling Year</MenuItem>
                   <MenuItem value={'Full Year'}>Full Year</MenuItem>
@@ -825,41 +843,8 @@ export default () => {
                   <MenuItem value={'Trimestral'}>Trimestral</MenuItem>
                 </Select>
               </FormControl>
-            </Grid>
-            <Grid item xs={4}>
-              <FormControl fullWidth>
-                <InputLabel>Seleccionar Variables</InputLabel>
-                <Select
-                  //name={'totalSaleUnit'}
-                  label="Seleccionar Variables"
-                  /*value={subcategory.totalSaleUnit}
-                  onChange={handleInputChangeSubcategories}*/
-                >
-                  <MenuItem value={'Rolling Year'}>Rolling Year</MenuItem>
-                  <MenuItem value={'Full Year'}>Full Year</MenuItem>
-                  <MenuItem value={'Mensual'}>Mensual</MenuItem>
-                  <MenuItem value={'Semestral'}>Semestral</MenuItem>
-                  <MenuItem value={'Trimestral'}>Trimestral</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={4}>
-              <FormControl fullWidth>
-                <InputLabel>Variables calculadas</InputLabel>
-                <Select
-                  //name={'totalSaleUnit'}
-                  label="Variables calculadas"
-                  /*value={subcategory.totalSaleUnit}
-                  onChange={handleInputChangeSubcategories}*/
-                >
-                  <MenuItem value={'Rolling Year'}>Rolling Year</MenuItem>
-                  <MenuItem value={'Full Year'}>Full Year</MenuItem>
-                  <MenuItem value={'Mensual'}>Mensual</MenuItem>
-                  <MenuItem value={'Semestral'}>Semestral</MenuItem>
-                  <MenuItem value={'Trimestral'}>Trimestral</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
+            </Grid>} */}
+            {bubbleData.data?
             <Grid item xs={12} style={{textAlign:'center'}}>
               <Paper 
                 variant="outlined"
@@ -867,10 +852,27 @@ export default () => {
               >
                 <Chart 
                   type='bubble'
-
+                  legend={false}
+                  datasets={[...bubbleData.data.map(i=>(
+                    {
+                      type: 'bubble',
+                      data: [{
+                        x:truncateNumber(i.x),
+                        y:truncateNumber(i.y), 
+                        r:truncateNumber(i.z),
+                      }],
+                      label: i.name,
+                      backgroundColor: [
+                        'rgba(50, 200, 100, .5)',
+                      ],
+                    }
+                  ))]}
                 />
               </Paper>
             </Grid>
+            :
+            <></>
+            }
           </Grid>
         )
       case 5:

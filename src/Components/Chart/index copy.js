@@ -195,7 +195,7 @@ import { Chart } from 'react-chartjs-2';
   const max = [null,null,null,null,null,8.56]
 
 
-export default ({type='bar', datasets=[], legend=true}) => {
+export default ({type='bar', data=[]}) => {
     React.useEffect(()=>{
         //console.log('as',sample.map(i=>i[0]))        
     },[])
@@ -206,10 +206,52 @@ export default ({type='bar', datasets=[], legend=true}) => {
         }
         <Chart
             data={{
+                //labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
                 datasets: [
-                    ...datasets
+                    {
+                        type: type,
+                        //fill: false,
+                        //backgroundColor:'red',
+                        //borderColor:'blue',
+                        data: [...data],
+                        label: 'sample 2',
+                        backgroundColor: [
+                            'rgba(50, 200, 100, .5)',
+                        ],
+                    },
+                    /*{
+                        type: 'line',
+                        //fill: false,
+                        //backgroundColor:'red',
+                        //borderColor:'blue',
+                        data: [...sample.map(i=>i[1])],
+                        label: 'sample legend',
+                        color:'red',
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 1)',
+                        ],
+                        // This binds the dataset to the left y axis
+                        yAxisID: 'left-y-axis'
+                    }, */
+                    // {
+                    //     type: 'bar',
+                    //     data: [0.1, 0.5, 1.0, 2.0, 1.5, 0],
+                    //     label: 'Right dataset',
+                    //     backgroundColor: [
+                    //         'rgba(50, 200, 100, .5)',
+                    //         'rgba(54, 162, 235, 1)',
+                    //         'rgba(255, 206, 86, 1)',
+                    //         'rgba(75, 192, 192, 1)',
+                    //         'rgba(153, 102, 255, 1)',
+                    //         'rgba(255, 159, 64, 1)',
+                    //     ],
+                    //     // This binds the dataset to the right y axis
+                    //     yAxisID: 'right-y-axis'
+                    // }
                 ],
-            }}
+                //labels: [1,2,3,4,5]
+                }
+            }
             height={400}
             width={600}
             options={{
@@ -223,9 +265,9 @@ export default ({type='bar', datasets=[], legend=true}) => {
                     },
                     ],
                 },
-                plugins: {
-                    legend: {
-                        display: legend,
+                legend: {
+                    labels: {
+                        fontSize: 25,
                     },
                 },
             }}
