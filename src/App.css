@@ -89,3 +89,22 @@
 .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
 	text-align: left;
 }
+
+.js-plotly-plot .plotly .modebar{
+  position: absolute;
+  left: 10em;
+}
+.modebar-group:last-child .modebar-btn.plotlyjsicon.modebar-btn--logo{
+  width: 5em;
+  background-color: red;
+  display: none;
+  /*logo plotty*/
+}
+.legend{
+  position: absolute;
+  transform: translate(0,0);
+}
+
+.MuiSelect-select.MuiSelect-outlined.MuiOutlinedInput-input.MuiInputBase-input.css-qiwgdb{
+  text-align: left;
+}
