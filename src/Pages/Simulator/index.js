@@ -15,8 +15,6 @@ import TextField from '@mui/material/TextField';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import BarChartIcon from '@mui/icons-material/BarChart';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -24,6 +22,11 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+
+import TableChartIcon from '@mui/icons-material/TableChart';
+import PsychologyIcon from '@mui/icons-material/Psychology';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import BarChartIcon from '@mui/icons-material/BarChart';
 
 import ReactLoading from "react-loading";
 
@@ -34,7 +37,8 @@ import TableComp from '../../Components/Table';
 import SnackBar from '../../Components/SnackBar';
 import CustomDatePicker from '../../Components/CustomDatePicker';
 
-import img from '../../Assets/Img/chart-illustration.jpg';
+import bg1 from '../../Assets/Img/1.svg';
+import bg2 from '../../Assets/Img/3.svg';
 
 const options = [
   {
@@ -62,6 +66,16 @@ const options = [
     title:9//'Simulador con tendencia'
   },
 ]
+
+const randomColor = () => {
+  var trans = '0.5'; // 50% transparency
+  var color = 'rgba(';
+  for (var i = 0; i < 3; i++) {
+    color += Math.floor(Math.random() * 255) + ',';
+  }
+  color += trans + ')'; // add the transparency
+  return color;
+}
 
 export default () => {
 
@@ -169,16 +183,16 @@ export default () => {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*'
     };
-    setLoading(true);
-    //setData({...data, simulation:null});
+    
+    setBubbleData({...bubbleData, loading: true, data:null});
+
     fetch(url, requestOptions)
     .then(response => response.json())
     .then(result => {
       console.log('bubples',result)
-      setBubbleData({...bubbleData, data:result.data.filter((element, index) => index < result.data.length - 1)});
 
       setTimeout(() => {
-        setLoading(false);
+        setBubbleData({...bubbleData, loading: false, data:result.data.filter((element, index) => index < result.data.length - 1)});
       }, 2000);
     })
     .catch(error => {
@@ -863,7 +877,7 @@ export default () => {
                       }],
                       label: i.name,
                       backgroundColor: [
-                        'rgba(50, 200, 100, .5)',
+                        randomColor(),
                       ],
                     }
                   ))]}
@@ -871,7 +885,20 @@ export default () => {
               </Paper>
             </Grid>
             :
-            <></>
+            <>
+              {
+                bubbleData.loading?
+                  <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '20vh'}}>
+                    <ReactLoading type={'bars'} color="#fff" />
+                  </Grid>
+                  :
+                  <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '5vh'}}>
+                    <div style={{width:'40vw', filter: 'saturate(1)', opacity:'1'}}>
+                      <img src={bg1} alt='' style={{width:'100%'}}/>
+                    </div>
+                  </Grid>
+              }
+            </>
             }
           </Grid>
         )
@@ -1042,12 +1069,13 @@ export default () => {
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid item xs={4}>
+
+                {/* {<Grid item xs={4}>
                   <CustomDatePicker
                     periodicity={'monthly'}
                     label='Mes a estudiar'
                   />
-                </Grid>
+                </Grid>} */}
                 
                 <Grid item xs={4} style={{display: 'flex'}}>
                     <Button onClick={()=>{getCurve('')}} color='primary' variant='contained' size="large" disabled={!data.sku} style={{height:'3.5em'}}>
@@ -1156,11 +1184,11 @@ export default () => {
                   <ReactLoading type={'bars'} color="#fff" />
                 </Grid>
               :
-              <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '20vh'}}>
-                <div style={{width:'30vw', filter: 'saturate(0)', opacity:'.5'}}>
-                  <img src={img} alt='' style={{width:'100%'}}/>
-                </div>
-              </Grid>
+                <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '5vh'}}>
+                  <div style={{width:'30vw', filter: 'saturate(1)', opacity:'1'}}>
+                    <img src={bg2} alt='' style={{width:'100%'}}/>
+                  </div>
+                </Grid>
               }
             </>
             }
@@ -1264,25 +1292,70 @@ export default () => {
               aria-controls="panel1a-content"
               id="panel1a-header"
             >
-              <div>
-                <BarChartIcon/> Graficas
+              <div style={{display:'flex', alignItems:'center'}}>
+                <BarChartIcon/><span style={{marginLeft:'1em'}}>Graficas</span>
               </div>
             </AccordionSummary>
             <AccordionDetails>
               <MenuList style={{width:'100%'}}>
                 <MenuItem style={{width:'100%'}} onClick={()=>handleOption(1)}>
-                  2 ejes
+                  Pie y barras
                 </MenuItem>
                 <MenuItem style={{width:'100%'}} onClick={()=>handleOption(1)}>
-                  3 ejes
+                  Graficas 2 ejes
                 </MenuItem>
-                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(1)}>
-                  Historica
+                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(4)}>
+                  Graficas 3   ejes
                 </MenuItem>
               </MenuList>
             </AccordionDetails>
           </Accordion>
-          <MenuList style={{width:'100%'}}>
+
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <div style={{display:'flex', alignItems:'center'}}>
+                <TableChartIcon/><span style={{marginLeft:'1em'}}>Tablas</span>
+              </div>
+            </AccordionSummary>
+            <AccordionDetails>
+              <MenuList style={{width:'100%'}}>
+                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(1)}>
+                  Comparatibas
+                </MenuItem>
+                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(1)}>
+                  Historicas
+                </MenuItem>
+              </MenuList>
+            </AccordionDetails>
+          </Accordion>
+
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              <div style={{display:'flex', alignItems:'center'}}>
+                <PsychologyIcon/><span style={{marginLeft:'1em'}}>Simulador</span>
+              </div>
+            </AccordionSummary>
+            <AccordionDetails>
+              <MenuList style={{width:'100%'}}>
+                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(6)}>
+                  Puntual
+                </MenuItem>
+                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(1)}>
+                  Tendencia
+                </MenuItem>
+              </MenuList>
+            </AccordionDetails>
+          </Accordion>
+
+          {/* {<MenuList style={{width:'100%'}}>
             {
               options.map((data, index)=>
                 <MenuItem style={{width:'100%'}} key={index} onClick={()=>handleOption(index)}>
@@ -1290,7 +1363,8 @@ export default () => {
                 </MenuItem>
               )
             }
-          </MenuList>
+          </MenuList>} */}
+
         </Grid>
         <Grid item xs={10} style={{paddingTop: '3em', paddingRight:'1.5em'}}>
           {
