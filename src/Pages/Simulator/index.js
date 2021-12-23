@@ -86,6 +86,7 @@ export default () => {
 
   const [data, setData] = React.useState({
     skus: [],
+    subcategories:[],
     simulation: null,
     price:'',
     curve:'price_profit', 
@@ -124,6 +125,20 @@ export default () => {
       .catch(error => console.log('error2', error));
   } 
 
+  const getSkusBySubcategory = (subcategory, token, cb) => {
+    
+    fetch("https://pricing.demo4to.com/api/pricing.sku.subcategory/"+subcategory+"/sku_ids?access-token="+token+"&method=name_search", {
+      'Access-Control-Allow-Origin': '*',
+      "Content-Type": "application/json",
+      method: "GET"
+    })   
+    .then(response => response.json())
+    .then(result => {
+      cb(result);
+    })
+    .catch(error => console.log('error2', error));
+} 
+
   const getSubcategories = (token, cb) => {
     
     fetch("https://pricing.demo4to.com/api/pricing.sku.subcategory/name_search?access-token="+token, {
@@ -133,11 +148,11 @@ export default () => {
     })   
     .then(response => response.json())
     .then(result => {
-      //console.log('error sub',result);
+      //console.log('sub',result);
       setSubcategories({...subcategories, data: result.data})
     })
     .catch(error => console.log('error sub', error));
-}
+  }
 
   const getCurve = (price) => {
     let url = `https://pricing.demo4to.com/api/pricing.sku/${data.sku}?access-token=${auth.access_token}&method=get_table&price=${price}`;
@@ -217,12 +232,8 @@ export default () => {
     .then(result => {
       setAuth(result);
       
-      getSubcategories(result.access_token)
+      getSubcategories(result.access_token);
 
-      getSkus(result.access_token, (r)=>{
-        setData({...data, skus: r.data})
-        //console.log(r.data)
-      })
     })
     .catch(error => console.log('error', error));
 
@@ -285,7 +296,7 @@ export default () => {
           {
             x: truncateNumber(data.user_point.price),
             y: truncateNumber(data.user_point.profit),
-            text: 'Punto usuario = '+truncateNumber(data.optimals.price),
+            text: 'Punto usuario = '+truncateNumber(data.user_point.price),
             color: '#3498db'
           },
         ]);
@@ -312,7 +323,7 @@ export default () => {
           {
             x: truncateNumber(data.user_point.price),
             y: truncateNumber(data.user_point.quantity),
-            text: 'Punto usuario = '+truncateNumber(data.optimals.price),
+            text: 'Punto usuario = '+truncateNumber(data.user_point.price),
             color: '#3498db'
           },
         ]);
@@ -339,7 +350,7 @@ export default () => {
           {
             x: truncateNumber(data.user_point.price),
             y: truncateNumber(data.user_point.value),
-            text: 'Punto usuario = '+truncateNumber(data.optimals.price),
+            text: 'Punto usuario = '+truncateNumber(data.user_point.price),
             color: '#3498db'
           },
         ]);
@@ -366,7 +377,7 @@ export default () => {
           {
             x: truncateNumber(data.user_point.profit),
             y: truncateNumber(data.user_point.value),
-            text: 'Punto usuario = '+truncateNumber(data.optimals.profit),
+            text: 'Punto usuario = '+truncateNumber(data.user_point.profit),
             color: '#3498db'
           },
         ]);
@@ -1043,6 +1054,33 @@ export default () => {
                 style={{padding:'1em'}}
               >
                 <Grid container alignItems='flex-start' spacing={3}>
+
+                <Grid item xs={4}>
+                  <FormControl fullWidth>
+                    <InputLabel>Selecciona subcategoria</InputLabel>
+                    <Select
+                      label="Seleccionar subcategoria"
+                      value={subcategories.selected}
+                      onChange={(e)=>{
+                        setSubcategories({...subcategories, selected:e.target.value});
+                        setData({...data, skus: []});
+                        getSkusBySubcategory(e.target.value, auth.access_token, (r)=>{
+                          console.log(r)
+                          setData({...data, skus: r.data})
+                        })
+                      }}
+                    >
+                      {
+                        subcategories.data.map((item, index)=>{
+                          return (
+                            <MenuItem value={item[0]} key={index}>{item[1]}</MenuItem>
+                          )
+                        })
+                      }
+                    </Select>
+                  </FormControl>
+                </Grid>
+
                 <Grid item xs={4}>
                   <FormControl fullWidth>
                     <InputLabel>Selecciona SKU</InputLabel>
@@ -1122,14 +1160,13 @@ export default () => {
               {
               data.simulation?
               <>
+              <Grid item xs={12}>
+                <TableComp
+                  heads={data.simulation.env_values.map(i=>i.name)}
+                  data={[data.simulation.env_values.map(i=>({text:i.value}))]}
+                />
+              </Grid>
               <Grid item xs={6}>
-                {
-                // <div style={{marginBottom:'1em'}}>
-                //   <Table
-                //     heads={['Precio competidor', 'Distribucion', 'Inflacion', 'Pandemia']}
-                //   />
-                // </div>
-                }
                 <div style={{marginBottom:'1em'}}>
                   <TableComp
                     heads={['','Precio', 'Cantidad', 'Venta', 'Rentabilidad']}
@@ -1345,10 +1382,10 @@ export default () => {
                   Pie y barras
                 </MenuItem>
                 <MenuItem style={{width:'100%'}} onClick={()=>handleOption(10)}>
-                  Graficas 2 ejes
+                  Gráficas 2 ejes
                 </MenuItem>
                 <MenuItem style={{width:'100%'}} onClick={()=>handleOption(4)}>
-                  Graficas 3   ejes
+                  Gráficas 3   ejes
                 </MenuItem>
               </MenuList>
             </AccordionDetails>
@@ -1367,7 +1404,7 @@ export default () => {
             <AccordionDetails>
               <MenuList style={{width:'100%'}}>
                 <MenuItem style={{width:'100%'}} onClick={()=>handleOption(10)}>
-                  Comparatibas
+                  Comparativas
                 </MenuItem>
                 <MenuItem style={{width:'100%'}} onClick={()=>handleOption(10)}>
                   Historicas
@@ -1420,18 +1457,12 @@ export default () => {
 }
 
 /*
-  MV maxima venta
-  Optimo
-  MR maxima rentabilidad
-*/
+  loader
+  seleccionar subcategoria y luego skus
+  valores del entorno
 
-/*
-  tablas comparatibas
-  t historicas
-  pie y barras
-  graficas 2 ejes
-  graficas 3 ejes
-  grafica historica
-  simulador puntual 
-  simulador tendencia
+  resolucion y grafica
+  guardar escenario
+
+  burbujas graficas con nombres
 */

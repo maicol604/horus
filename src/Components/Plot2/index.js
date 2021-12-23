@@ -8,7 +8,7 @@ import Plot from 'react-plotly.js';
 
 export default ({ points, annotations, name, title, xaxisTitle='', yaxisTitle='' }) => {
 
-    console.log(...annotations.map(i=>({x:[i.x], y:[i.y], name:i.text, mode: 'markers', marker: { size: [10],}})))
+    //console.log(...annotations.map(i=>({x:[i.x], y:[i.y], name:i.text, mode: 'markers', marker: { size: [10],}})))
 
     return (
         <Plot
