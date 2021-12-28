@@ -12,6 +12,8 @@ import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 
+import Typography from '@mui/material/Typography';
+
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -31,7 +33,7 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import ReactLoading from "react-loading";
 
 import Plot2 from '../../Components/Plot2';
-import Plot from '../../Components/Plot';
+import ApexChart from '../../Components/ApexChart';
 import Chart from '../../Components/Chart';
 import TableComp from '../../Components/Table';
 import SnackBar from '../../Components/SnackBar';
@@ -908,7 +910,22 @@ export default () => {
                 variant="outlined"
                 style={{padding:'1em'}}
               >
-                <Chart 
+                <ApexChart
+                  datasets={{
+                    series: [...bubbleData.data.map(i=>(
+                      {
+                        data:[[
+                          parseFloat(truncateNumber(i.x)),
+                          parseFloat(truncateNumber(i.y)),
+                          parseFloat(truncateNumber(i.z))
+                        ]],
+                        color: i.color,
+                        name: i.name
+                      }
+                    ))]
+                  }}
+                />
+                {/* {<Chart 
                   type='bubble'
                   legend={false}
                   datasets={[...bubbleData.data.map(i=>(
@@ -917,7 +934,7 @@ export default () => {
                       data: [{
                         x:truncateNumber(i.x),
                         y:truncateNumber(i.y), 
-                        r:truncateNumber(i.z),
+                        r:truncateNumber(i.z*3),
                       }],
                       label: i.name,
                       backgroundColor: [
@@ -925,7 +942,7 @@ export default () => {
                       ],
                     }
                   ))]}
-                />
+                />} */}
               </Paper>
             </Grid>
             :
@@ -1149,9 +1166,9 @@ export default () => {
                 </Grid>} */}
                 
                 <Grid item xs={4} style={{display: 'flex'}}>
-                    <Button onClick={()=>{getCurve('')}} color='primary' variant='contained' size="large" disabled={!data.sku} style={{height:'3.5em'}}>
-                      Simular
-                    </Button>
+                  <Button onClick={()=>{getCurve('')}} color='primary' variant='contained' size="large" disabled={!data.sku} style={{height:'3.5em'}}>
+                    Ejecutar
+                  </Button>
                 </Grid>
                 </Grid>
               </Paper>
@@ -1161,10 +1178,25 @@ export default () => {
               data.simulation?
               <>
               <Grid item xs={12}>
-                <TableComp
-                  heads={data.simulation.env_values.map(i=>i.name)}
-                  data={[data.simulation.env_values.map(i=>({text:i.value}))]}
-                />
+                
+                <Paper 
+                  variant="outlined"
+                  style={{padding:'1em'}}
+                >
+                  <Typography varian='h4' align='left' style={{marginBottom:'1em'}}>
+                    Variables del entorno
+                  </Typography>
+                  <TableComp
+                    heads={data.simulation.env_values.map(i=>i.name)}
+                    data={[data.simulation.env_values.map(i=>({text:truncateNumber(i.value), editable:true, key:i.key}))]}
+                    onChange={(e)=>{
+                      //console.log(data.simulation.env_values, e)
+                      let copy = data.simulation.env_values.slice();
+                      copy[e.j] = e.value;
+                      setData({...data, simulation:{...data.simulation, env_values:copy}})
+                    }}
+                  />
+                </Paper>
               </Grid>
               <Grid item xs={6}>
                 <div style={{marginBottom:'1em'}}>
@@ -1458,8 +1490,6 @@ export default () => {
 
 /*
   loader
-  seleccionar subcategoria y luego skus
-  valores del entorno
 
   resolucion y grafica
   guardar escenario
