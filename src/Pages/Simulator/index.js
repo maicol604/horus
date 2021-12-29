@@ -92,6 +92,7 @@ export default () => {
     simulation: null,
     price:'',
     curve:'price_profit', 
+    fun:'lineal',
     points:[],
     sku:null
   });
@@ -156,8 +157,71 @@ export default () => {
     .catch(error => console.log('error sub', error));
   }
 
-  const getCurve = (price) => {
-    let url = `https://pricing.demo4to.com/api/pricing.sku/${data.sku}?access-token=${auth.access_token}&method=get_table&price=${price}`;
+  const generateCurve = (data, option) => {
+    
+    let price_profit = [];
+    let price_quantity = [];
+    let price_value = [];
+    let profit_value = [];
+    let user_point;
+    let optimals;
+
+    switch(option){
+      case 'lineal':
+        for(let i=0;i<data.lineal.table.price.length;i++){
+          // price_profit.push([data.table.profit[i], data.table.value[i]]);
+           price_profit.push([truncateNumber(data.lineal.table.price[i]), truncateNumber(data.lineal.table.profit[i])]);
+           price_quantity.push([truncateNumber(data.lineal.table.price[i]), truncateNumber(data.lineal.table.quantity[i])]);
+           price_value.push([truncateNumber(data.lineal.table.price[i]), truncateNumber(data.lineal.table.value[i])]);
+           profit_value.push([truncateNumber(data.lineal.table.profit[i]), truncateNumber(data.lineal.table.value[i])]);
+        }
+        user_point = data.lineal.user_point;
+        optimals = data.lineal.optimals;
+      break;
+      case 'polynomial':
+        for(let i=0;i<data.polynomial.table.price.length;i++){
+           price_profit.push([truncateNumber(data.polynomial.table.price[i]), truncateNumber(data.polynomial.table.profit[i])]);
+           price_quantity.push([truncateNumber(data.polynomial.table.price[i]), truncateNumber(data.polynomial.table.quantity[i])]);
+           price_value.push([truncateNumber(data.polynomial.table.price[i]), truncateNumber(data.polynomial.table.value[i])]);
+           profit_value.push([truncateNumber(data.polynomial.table.profit[i]), truncateNumber(data.polynomial.table.value[i])]);
+        }
+        user_point = data.polynomial.user_point;
+        optimals = data.polynomial.optimals;
+      break;
+      case 'logarithmic':
+        for(let i=0;i<data.logarithmic.table.price.length;i++){
+           price_profit.push([truncateNumber(data.logarithmic.table.price[i]), truncateNumber(data.logarithmic.table.profit[i])]);
+           price_quantity.push([truncateNumber(data.logarithmic.table.price[i]), truncateNumber(data.logarithmic.table.quantity[i])]);
+           price_value.push([truncateNumber(data.logarithmic.table.price[i]), truncateNumber(data.logarithmic.table.value[i])]);
+           profit_value.push([truncateNumber(data.logarithmic.table.profit[i]), truncateNumber(data.logarithmic.table.value[i])]);
+        }
+        user_point = data.logarithmic.user_point;
+        optimals = data.logarithmic.optimals;
+      break;
+      default: 
+        return {};
+    }
+    return ({
+      price_profit,
+      price_quantity,
+      price_value,
+      profit_value,
+      user_point,
+      optimals,
+    })
+  }
+
+  const getCurve = (price, values) => {
+    let val;
+    try {
+      //console.log('{'+values.map(i=>(`${[i.key]}:${i.value}`)).join(',')+'}')
+      val = '{'+values.map(i=>(`${[i.key]}:${i.value}`)).join(',')+'}';
+      console.log(val)
+    } catch (error) {
+      val = '';
+    }
+    //let url = `https://pricing.demo4to.com/api/pricing.sku/${data.sku}?access-token=${auth.access_token}&method=get_table&price=${price}&values=${''}`;
+    let url = `https://pricing.demo4to.com/api/pricing.sku/${data.sku}?access-token=${auth.access_token}&method=get_table&price=${price}${val!==''?'&values='+val:''}`;
     let requestOptions = {
       method: 'GET',
       'Content-Type': 'application/json',
@@ -168,21 +232,14 @@ export default () => {
     fetch(url, requestOptions)
     .then(response => response.json())
     .then(result => {
-      console.log(result)
-      let price_profit = [];
-      let price_quantity = [];
-      let price_value = [];
-      let profit_value = [];
-      for(let i=0;i<result.data.table.price.length;i++){
-       // price_profit.push([result.data.table.profit[i], result.data.table.value[i]]);
-        price_profit.push([truncateNumber(result.data.table.price[i]), truncateNumber(result.data.table.profit[i])]);
-        price_quantity.push([truncateNumber(result.data.table.price[i]), truncateNumber(result.data.table.quantity[i])]);
-        price_value.push([truncateNumber(result.data.table.price[i]), truncateNumber(result.data.table.value[i])]);
-        profit_value.push([truncateNumber(result.data.table.profit[i]), truncateNumber(result.data.table.value[i])]);
-      }
+      //console.log(result)
+
+      let curve = generateCurve(result.data, data.fun);
+      //console.log(curve)
+
       setTimeout(() => {
         setLoading(false);
-        setData({...data, ...result.data, price: result.data.user_point.price, simulation: {...result.data, price_profit, price_quantity, price_value, profit_value, points:price_quantity}})
+        setData({...data, ...result.data, price: curve.user_point.price, optimals:curve.optimals, user_point: curve.user_point, simulation: {...result.data, user_point: curve.user_point, optimals:curve.optimals ,price_profit:curve.price_profit, price_quantity:curve.price_quantity, price_value:curve.price_value, profit_value:curve.profit_value, points:curve.price_quantity}})
       }, 2000);
     })
     .catch(error => {
@@ -1126,14 +1183,17 @@ export default () => {
                   <FormControl fullWidth>
                     <InputLabel>Tipo de funcion</InputLabel>
                     <Select
-                      //name={'totalSaleUnit'}
                       label="Tipo de funcion"
-                      /*value={subcategory.totalSaleUnit}
-                      onChange={handleInputChangeSubcategories}*/
+                      value={data.fun}
+                      onChange={(e)=>{
+                        //setUpdate(update+1);
+                        let curve = generateCurve(data.simulation, e.target.value);
+                        setData({...data, fun:e.target.value, price: curve.user_point.price, optimals:curve.optimals, user_point: curve.user_point, simulation: {...data.simulation, user_point: curve.user_point, optimals:curve.optimals ,price_profit:curve.price_profit, price_quantity:curve.price_quantity, price_value:curve.price_value, profit_value:curve.profit_value, points:curve.price_quantity}})
+                      }}
                     >
-                      <MenuItem value={'Rolling Year'}>Lineal</MenuItem>
-                      <MenuItem value={'Full Year'}>Polinomial</MenuItem>
-                      <MenuItem value={'Mensual'}>Logarítmica</MenuItem>
+                      <MenuItem value={'lineal'}>Lineal</MenuItem>
+                      <MenuItem value={'polynomial'}>Polinomial</MenuItem>
+                      <MenuItem value={'logarithmic'}>Logarítmica</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
@@ -1166,7 +1226,7 @@ export default () => {
                 </Grid>} */}
                 
                 <Grid item xs={4} style={{display: 'flex'}}>
-                  <Button onClick={()=>{getCurve('')}} color='primary' variant='contained' size="large" disabled={!data.sku} style={{height:'3.5em'}}>
+                  <Button onClick={()=>{getCurve('', '')}} color='primary' variant='contained' size="large" disabled={!data.sku} style={{height:'3.5em'}}>
                     Ejecutar
                   </Button>
                 </Grid>
@@ -1192,7 +1252,7 @@ export default () => {
                     onChange={(e)=>{
                       //console.log(data.simulation.env_values, e)
                       let copy = data.simulation.env_values.slice();
-                      copy[e.j] = e.value;
+                      copy[e.j].value = e.value;
                       setData({...data, simulation:{...data.simulation, env_values:copy}})
                     }}
                   />
@@ -1234,8 +1294,8 @@ export default () => {
                       </Table>
                     </TableContainer>
                     <Stack style={{paddingTop:'2em'}}>
-                      <Button onClick={()=>{getCurve(data.price)}} color='primary' variant='contained' size="large" disabled={!data.sku} style={{height:'3.5em'}}>
-                        Simular con este precio
+                      <Button onClick={()=>{getCurve(data.price, data.simulation.env_values)}} color='primary' variant='contained' size="large" disabled={!data.sku} style={{height:'3.5em'}}>
+                        Simular
                       </Button>
                     </Stack>
                   </Paper>
@@ -1466,17 +1526,6 @@ export default () => {
               </MenuList>
             </AccordionDetails>
           </Accordion>
-
-          {/* {<MenuList style={{width:'100%'}}>
-            {
-              options.map((data, index)=>
-                <MenuItem style={{width:'100%'}} key={index} onClick={()=>handleOption(index)}>
-                  {data.title}
-                </MenuItem>
-              )
-            }
-          </MenuList>} */}
-
         </Grid>
         <Grid item xs={10} style={{paddingTop: '3em', paddingRight:'1.5em'}}>
           {
