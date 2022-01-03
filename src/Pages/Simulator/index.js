@@ -1188,9 +1188,12 @@ export default () => {
                       value={data.fun}
                       onChange={(e)=>{
                         //setUpdate(update+1);
-                        let curve = generateCurve(data.simulation, e.target.value);
-                        setData({...data, fun:e.target.value, price: curve.user_point.price, optimals:curve.optimals, user_point: curve.user_point, simulation: {...data.simulation, user_point: curve.user_point, optimals:curve.optimals ,price_profit:curve.price_profit, price_quantity:curve.price_quantity, price_value:curve.price_value, profit_value:curve.profit_value, points:curve.price_quantity}})
-                      }}
+                        try {
+                          let curve = generateCurve(data.simulation, e.target.value);
+                          setData({...data, fun:e.target.value, price: curve.user_point.price, optimals:curve.optimals, user_point: curve.user_point, simulation: {...data.simulation, user_point: curve.user_point, optimals:curve.optimals ,price_profit:curve.price_profit, price_quantity:curve.price_quantity, price_value:curve.price_value, profit_value:curve.profit_value, points:curve.price_quantity}})
+                        } catch (error) {
+                          setData({...data, fun:e.target.value});
+                        }}}
                     >
                       <MenuItem value={'lineal'}>Lineal</MenuItem>
                       <MenuItem value={'polynomial'}>Polinomial</MenuItem>
