@@ -215,13 +215,13 @@ export default () => {
     let val;
     try {
       //console.log('{'+values.map(i=>(`${[i.key]}:${i.value}`)).join(',')+'}')
-      val = '{'+values.map(i=>(`${[i.key]}:${i.value}`)).join(',')+'}';
+      val = ''+values.map(i=>(`${[i.key]}=${i.value}`)).join('&')+'';
       console.log(val)
     } catch (error) {
       val = '';
     }
     //let url = `https://pricing.demo4to.com/api/pricing.sku/${data.sku}?access-token=${auth.access_token}&method=get_table&price=${price}&values=${''}`;
-    let url = `https://pricing.demo4to.com/api/pricing.sku/${data.sku}?access-token=${auth.access_token}&method=get_table&price=${price}${val!==''?'&values='+val:''}`;
+    let url = `https://pricing.demo4to.com/api/pricing.sku/${data.sku}?access-token=${auth.access_token}&method=get_table&price=${price}${val!==''?'&'+val:''}`;
     let requestOptions = {
       method: 'GET',
       'Content-Type': 'application/json',
@@ -1165,6 +1165,7 @@ export default () => {
                       onChange={(e)=>{
                         setData({...data, sku:e.target.value});
                       }}
+                      disabled={data.skus.length===0}
                     >
                       {
                         //console.log('data.skus',data.skus)
@@ -1265,7 +1266,7 @@ export default () => {
                     data={[0,1,2].map((i)=>[[{text:'MV', color:'#e67e22'},{text:'Optimo', color:'#2ecc71'},{text:'MR', color:'#e74c3c'}][i],{text:truncateNumber(data.simulation.optimals.price[i])}, {text:truncateNumber(data.simulation.optimals.quantity[i])}, {text:truncateNumber(data.simulation.optimals.value[i])}, {text:truncateNumber(data.simulation.optimals.profit[i])}])}
                   />
                 </div>
-                <div>
+                <div style={{marginBottom:'1em'}}>
                   <Paper 
                     variant="outlined"
                     style={{padding:'1em'}}
@@ -1293,7 +1294,14 @@ export default () => {
                         </TableBody>
                       </Table>
                     </TableContainer>
-                    <Stack style={{paddingTop:'2em'}}>
+                  </Paper>
+                </div>
+                <div>
+                  <Paper 
+                    variant="outlined"
+                    style={{padding:'1em'}}
+                  >
+                    <Stack>
                       <Button onClick={()=>{getCurve(data.price, data.simulation.env_values)}} color='primary' variant='contained' size="large" disabled={!data.sku} style={{height:'3.5em'}}>
                         Simular
                       </Button>
