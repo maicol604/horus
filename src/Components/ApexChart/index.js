@@ -65,6 +65,19 @@ export default ({datasets}) => {
               marker: {
                   show: true,
               }
+            },
+            grid: { 
+              padding: {
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0
+              }, 
+            },
+            zoom: {
+              //enabled: true,
+              type: 'x',  
+              autoScaleYaxis: false, 
             }
         },
     })
