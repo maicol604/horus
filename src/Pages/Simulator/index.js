@@ -264,9 +264,10 @@ export default () => {
     fetch(url, requestOptions)
     .then(response => response.json())
     .then(result => {
-      //console.log('bubples',result)
+      console.log('bubples',result)
       //console.log([{color:'', id:'test', name:'', x:-5, y:0, z:0},...result.data.filter((element, index) => index < result.data.length - 1)])
-      let bubbles = result.data.filter((element, index) => index < result.data.length - 1);
+      let bubbles = result.data;
+      bubbles.pop();
       let xmax, xmin, ymax, ymin;
 
       xmax=Math.max(...bubbles.map(i=>i.x));
@@ -275,7 +276,6 @@ export default () => {
       ymin=Math.min(...bubbles.map(i=>i.y));
 
       let bubbleData = [{name:'', color:'', id:'sample1', x:xmax+10, y:ymax+10, z:0},{name:'', color:'', id:'sample2', x:xmin-10, y:ymin-10, z:0},...bubbles];
-      //console.log(bubbleData)
 
       if(result.type!=='Exception')
         setTimeout(() => {

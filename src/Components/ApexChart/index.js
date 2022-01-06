@@ -1,27 +1,27 @@
 import React from "react";
 import Chart from "react-apexcharts";
+import styled from 'styled-components';
 
-const generateData = (baseval, count, yrange) => {
-    var i = 0;
-    var series = [];
-    while (i < count) {
-        //var x =Math.floor(Math.random() * (750 - 1 + 1)) + 1;;
-        var y =
-        Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
-        var z = Math.floor(Math.random() * (75 - 15 + 1)) + 15;
-
-        series.push([baseval, y, z]);
-        baseval += 86400000;
-        i++;
-    }
-    return series;
+const WrapperDiv = styled.div`
+  .apexcharts-pan-icon, .apexcharts-zoomin-icon, .apexcharts-zoomout-icon, .apexcharts-zoom-icon{
+    display: none;
   }
-
+  &>div{
+    display: flex;
+    justify-content: center;
+  }
+`; 
+// .apexcharts-toolbar{
+//     display: none;
+//   }
 
 export default ({datasets}) => {
 
     const [state, setState] = React.useState({
-        options: {
+        options: { 
+            // toolbar: {
+            //   show: false,
+            // },
             chart: {
               height: 350,
               type: "bubble"
@@ -39,6 +39,7 @@ export default ({datasets}) => {
               text: ""
             },
             xaxis: {
+              tickAmount: 12,
               title: {
                 text: "Elasticidad",
               }
@@ -58,9 +59,18 @@ export default ({datasets}) => {
             },
             tooltip: {
               x: {
+                show: false,
                 formatter: function(value, { seriesIndex, dataPointIndex, w }) {
                   return w.config.series[seriesIndex].name// + ":  " + value
                 }
+              },
+              y: {
+                formatter: ()=>'',
+                title: '',
+              },
+              z: {
+                formatter: ()=>'',
+                title: '',
               },
               marker: {
                   show: true,
@@ -74,22 +84,23 @@ export default ({datasets}) => {
                 left: 0
               }, 
             },
-            zoom: {
-              //enabled: true,
-              type: 'x',  
-              autoScaleYaxis: false, 
-            }
+            // zoom: {
+            //   enabled: false,
+            //   type: 'x',  
+            //   autoScaleYaxis: false, 
+            // }
         },
     })
 
     return (
-      <div className="">
+      <WrapperDiv>
           <Chart
               options={state.options}
               series={datasets.series}
               type="bubble"
               width="800"
+              zoom={false}
           />
-      </div>
+      </WrapperDiv>
   );
 }
