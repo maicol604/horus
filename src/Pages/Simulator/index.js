@@ -251,7 +251,8 @@ export default () => {
   }
   
   const getBubles = (t) => {
-    let url = `https://pricing.demo4to.com/api/pricing.sku.subcategory/${subcategories.selected}/get_historic_data?access-token=${t}&x_axis=elasticity&y_axis=distribution&z_axis=price_units`;
+    let bubblesPadding = 2.5;
+    let url = `https://pricing.demo4to.com/api/pricing.sku.subcategory/${subcategories.selected}/get_historic_table?access-token=${t}&x_axis=elasticity&y_axis=distribution&z_axis=price_units&som=som`;
     //console.log(url, s)
     let requestOptions = {
       method: 'GET',
@@ -264,18 +265,20 @@ export default () => {
     fetch(url, requestOptions)
     .then(response => response.json())
     .then(result => {
-      console.log('bubples',result)
+      //console.log('bubples',result)
       //console.log([{color:'', id:'test', name:'', x:-5, y:0, z:0},...result.data.filter((element, index) => index < result.data.length - 1)])
-      let bubbles = result.data;
+      let bubbles = result.data.map(i=>({...i, x:i.x_axis, y:i.y_axis, z:i.z_axis, name:i.name+' (SOM:'+truncateNumber(i.som)+')'}));
       bubbles.pop();
-      let xmax, xmin, ymax, ymin;
+      let xmax, xmin, ymax, ymin, zmax;
+
+      zmax=Math.max(...bubbles.map(i=>i.z));
 
       xmax=Math.max(...bubbles.map(i=>i.x));
       xmin=Math.min(...bubbles.map(i=>i.x));
       ymax=Math.max(...bubbles.map(i=>i.y));
       ymin=Math.min(...bubbles.map(i=>i.y));
 
-      let bubbleData = [{name:'', color:'', id:'sample1', x:xmax+10, y:ymax+10, z:0},{name:'', color:'', id:'sample2', x:xmin-10, y:ymin-10, z:0},...bubbles];
+      let bubbleData = [{name:'', color:'', id:'sample1', x:xmax+bubblesPadding, y:ymax+bubblesPadding, z:0},{name:'', color:'', id:'sample2', x:xmin-bubblesPadding, y:ymin-bubblesPadding, z:0},...bubbles];
 
       if(result.type!=='Exception')
         setTimeout(() => {
