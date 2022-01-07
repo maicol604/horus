@@ -539,6 +539,7 @@ const NewData = ({onUpdate, onFinish}) => {
                                             value={subcategory.color}
                                         />
                                     </Grid>
+                                    {/* 
                                     <Grid item xs={2}>
                                         <TextField 
                                             id="" 
@@ -582,6 +583,7 @@ const NewData = ({onUpdate, onFinish}) => {
                                             value={subcategory.totalSaleValue}
                                         />
                                     </Grid>
+                                    */}
                                     <Grid item xs={12}>
                                         <div style={{height: '100%', display: 'flex', justifyContent: 'left', alignItems:'center'}}>
                                             {/*<DeleteIcon/>*/}
@@ -939,7 +941,7 @@ const NewData = ({onUpdate, onFinish}) => {
                                     //onFinish();
                                 }}
                             >
-                                Siguiente
+                                Guardar
                             </Button>
                         </Stack>
                     </div>
@@ -955,6 +957,9 @@ const NewData = ({onUpdate, onFinish}) => {
                                 skus={state.skus}
                                 brands={state.groupers}
                                 category={state.category}
+                                onChange={(e)=>{
+                                    setState({...state, variables:e})
+                                }}
                             />
                         </Grid>
                     </Grid>
@@ -975,12 +980,12 @@ const NewData = ({onUpdate, onFinish}) => {
                                 variant='contained'
                                 color='primary'
                                 onClick={()=>{
-                                    setActiveStep(3)
-                                    //onUpdate(state);
-                                    //onFinish();
+                                    //setActiveStep(3)
+                                    onUpdate(state);
+                                    onFinish();
                                 }}
                             >
-                                Siguiente
+                                Guardar categoria
                             </Button>
                         </Stack>
                     </div>
@@ -1057,7 +1062,7 @@ const NewData = ({onUpdate, onFinish}) => {
                                         ////console.log(state.groupers,'groupers')
                                     }
                                     {
-                                        activeStep<3?
+                                        activeStep<5?
                                             <FullScreenDialog
                                                 skus={sortSkus( state.subcategories, state.skus, state.groupers)}
                                                 categories={[state.category]}

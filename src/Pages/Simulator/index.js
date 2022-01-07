@@ -94,7 +94,8 @@ export default () => {
     curve:'price_profit', 
     fun:'lineal',
     points:[],
-    sku:null
+    sku:null,
+    month:null,
   });
 
   const [bubbleData, setBubbleData] = React.useState({
@@ -211,8 +212,9 @@ export default () => {
     })
   }
 
-  const getCurve = (price, values) => {
+  const getCurve = (price, values, month) => {
     let val;
+    console.log(month)
     try {
       //console.log('{'+values.map(i=>(`${[i.key]}:${i.value}`)).join(',')+'}')
       val = ''+values.map(i=>(`${[i.key]}=${i.value}`)).join('&')+'';
@@ -221,7 +223,7 @@ export default () => {
       val = '';
     }
     //let url = `https://pricing.demo4to.com/api/pricing.sku/${data.sku}?access-token=${auth.access_token}&method=get_table&price=${price}&values=${''}`;
-    let url = `https://pricing.demo4to.com/api/pricing.sku/${data.sku}?access-token=${auth.access_token}&method=get_table&price=${price}${val!==''?'&'+val:''}`;
+    let url = `https://pricing.demo4to.com/api/pricing.sku/${data.sku}?access-token=${auth.access_token}&method=get_table${price!==''?'&price='+price:''}${val!==''?'&'+val:''}${month?('&month='+month):''}`;
     let requestOptions = {
       method: 'GET',
       'Content-Type': 'application/json',
@@ -250,6 +252,13 @@ export default () => {
     });
   }
   
+  function sort_by_key(array, key){
+    return array.sort(function(a, b){
+      var x = a[key]; var y = b[key];
+      return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+  }
+
   const getBubles = (t) => {
     let bubblesPadding = 2.5;
     let url = `https://pricing.demo4to.com/api/pricing.sku.subcategory/${subcategories.selected}/get_historic_table?access-token=${t}&x_axis=elasticity&y_axis=distribution&z_axis=price_units&som=som`;
@@ -269,6 +278,9 @@ export default () => {
       //console.log([{color:'', id:'test', name:'', x:-5, y:0, z:0},...result.data.filter((element, index) => index < result.data.length - 1)])
       let bubbles = result.data.map(i=>({...i, x:i.x_axis, y:i.y_axis, z:i.z_axis, name:i.name+' (SOM:'+truncateNumber(i.som)+')'}));
       bubbles.pop();
+      //console.log(bubbles)
+      bubbles = sort_by_key(bubbles, 'z').reverse();
+      //console.log(bubbles)
       let xmax, xmin, ymax, ymin, zmax;
 
       zmax=Math.max(...bubbles.map(i=>i.z));
@@ -1237,15 +1249,18 @@ export default () => {
                   </FormControl>
                 </Grid>
 
-                {/* {<Grid item xs={4}>
+                <Grid item xs={4}>
                   <CustomDatePicker
                     periodicity={'monthly'}
                     label='Mes a estudiar'
+                    onChange={(e)=>{
+                      setData({...data, month:e.getMonth()+1});
+                    }}
                   />
-                </Grid>} */}
+                </Grid>
                 
                 <Grid item xs={4} style={{display: 'flex'}}>
-                  <Button onClick={()=>{getCurve('', '')}} color='primary' variant='contained' size="large" disabled={!data.sku} style={{height:'3.5em'}}>
+                  <Button onClick={()=>{getCurve('', '', data.month);}} color='primary' variant='contained' size="large" disabled={!data.sku} style={{height:'3.5em'}}>
                     Ejecutar
                   </Button>
                 </Grid>
@@ -1320,7 +1335,7 @@ export default () => {
                     style={{padding:'1em'}}
                   >
                     <Stack>
-                      <Button onClick={()=>{getCurve(data.price, data.simulation.env_values)}} color='primary' variant='contained' size="large" disabled={!data.sku} style={{height:'3.5em'}}>
+                      <Button onClick={()=>{getCurve(data.price, data.simulation.env_values, data.month)}} color='primary' variant='contained' size="large" disabled={!data.sku} style={{height:'3.5em'}}>
                         Simular
                       </Button>
                     </Stack>
@@ -1564,10 +1579,5 @@ export default () => {
 }
 
 /*
-  loader
-
-  resolucion y grafica
   guardar escenario
-
-  burbujas graficas con nombres
 */

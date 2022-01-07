@@ -33,17 +33,34 @@ const useStyles = makeStyles((theme)=>({
         maxHeight:'80vh',
         overflow: 'auto',
     },
+    variablesItem: {
+        padding: '1em',
+        borderRadius: '.25em',
+        marginBottom: '1em',
+        border: '1px solid rgba(0, 0, 0, 0.12)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start'
+    }
 }));
 
-const Variables = ({category=null, subcategories=[], skus=[], brands=[]}) => {
+const defaultValue = {
+    name:'',
+    level:null,
+    periodicity:null,
+    periodicityName:null, 
+    businessRule: null
+}
+
+const Variables = ({category=null, subcategories=[], skus=[], brands=[], onChange=()=>{}}) => {
     const classes = useStyles();
 
     const [openModal, setOpenModal] = React.useState(false);
 
     const [state, setState] = React.useState({
-        level:null,
-        periodicity:null
+        ...defaultValue
     });
+    const [variables, setVariables] = React.useState([]);
 
     const getLevels = (level) => {
         //console.log(level)
@@ -102,15 +119,37 @@ const Variables = ({category=null, subcategories=[], skus=[], brands=[]}) => {
             }}
         >
             <Grid container alignItems='flex-start' spacing={3} style={{marginBottom:'1.5em'}}>
+                <Grid item xs={12}>
+                    {
+                        variables.map((item, index)=>{
+                            return (
+                                <div key={index} className={classes.variablesItem}>
+                                    <div>
+                                        {item.name}
+                                    </div>
+                                    <div>
+                                        {item.level}
+                                    </div>
+                                    <div>
+                                        {item.periodicityName}
+                                    </div>
+                                    <div>
+                                        {item.businessRule}
+                                    </div>
+                                </div>
+                            )
+                        })
+                    }
+                </Grid>
                 <Grid item xs={6}>
                     <FormControl fullWidth>
                         <InputLabel>Periodicidad</InputLabel>
                         <Select
                             label="Periodicidad"
-                            value={state.periodicity}
+                            value={state.periodicityName}
                             onChange={(event)=>{
                                 //console.log(event)
-                                setState({...state, periodicity:event.target.value})
+                                setState({...state, periodicityName:event.target.value})
                             }}
                         >
                             <MenuItem value={'daily'}>Diaria</MenuItem>
@@ -123,9 +162,12 @@ const Variables = ({category=null, subcategories=[], skus=[], brands=[]}) => {
                     </FormControl>
                 </Grid>
                 <Grid item xs={6}>
-                    {state.periodicity?
+                    {state.periodicityName?
                     <CustomDatePicker
-                        periodicity={state.periodicity}
+                        periodicity={state.periodicityName}
+                        onChange={(e)=>{
+                            setState({...state, periodicity:e})
+                        }}
                     />
                     :
                     <></>
@@ -152,9 +194,11 @@ const Variables = ({category=null, subcategories=[], skus=[], brands=[]}) => {
                                 variant="outlined" 
                                 fullWidth
                                 name='name'
-                                /*onChange={handleInputChangeCategories}
-                                value={category.name}
-                                required*/
+                                onChange={(e)=>{
+                                    setState({...state, name:e.target.value})
+                                }}
+                                value={state.name}
+                                /*required*/
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -162,7 +206,7 @@ const Variables = ({category=null, subcategories=[], skus=[], brands=[]}) => {
                                 <InputLabel>Nivel al que afecta</InputLabel>
                                 <Select
                                     label="Nivel al que afecta"
-                                    //value={age}
+                                    value={state.level}
                                     onChange={(event)=>{
                                         //console.log(event.target.value)
                                         setState({...state, level:event.target.value})
@@ -181,12 +225,14 @@ const Variables = ({category=null, subcategories=[], skus=[], brands=[]}) => {
                                 <InputLabel>Regla de negocio</InputLabel>
                                 <Select
                                     label="Regla de negocio"
-                                    //value={age}
-                                    //onChange={handleChange}
+                                    value={state.businessRule}
+                                    onChange={(event)=>{
+                                        setState({...state, businessRule :event.target.value})
+                                    }}
                                 >
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
+                                    <MenuItem value={10}>Promedio</MenuItem>
+                                    <MenuItem value={20}>Repetir número</MenuItem>
+                                    <MenuItem value={30}>Prorratear</MenuItem>
                                 </Select>
                             </FormControl>
                         </Grid>
@@ -231,7 +277,11 @@ const Variables = ({category=null, subcategories=[], skus=[], brands=[]}) => {
                                 variant='contained'
                                 color='primary'
                                 onClick={()=>{
-                                    
+                                    let aux = variables.slice();
+                                    aux.push(state);
+                                    setState(defaultValue);
+                                    setVariables(aux);
+                                    onChange(aux);
                                 }}
                             >
                                 Guardar variable

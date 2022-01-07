@@ -48,10 +48,16 @@ const gridItemStyles = {
 
 
 
-export default ({periodicity='weekly', label="Fecha de la primera medicion" }) => {
+export default ({periodicity='weekly', label="Fecha de la primera medicion", onChange=()=>{} }) => {
 
     const [date, setDate] = React.useState(new Date);
-    const [visible, setVisible] = React.useState(false)
+    const [visible, setVisible] = React.useState(false);
+
+    React.useEffect(()=>{
+        if(onChange){
+            onChange(date);
+        }
+    },[])
 
     const findWeek = (d) => {
         d = new Date(d);
@@ -87,7 +93,7 @@ export default ({periodicity='weekly', label="Fecha de la primera medicion" }) =
         });
     }
 
-    const getContent = (type) => {
+    const getContent = (type, onChange) => {
         switch(type){
             case 'daily':
                 return (
@@ -102,6 +108,7 @@ export default ({periodicity='weekly', label="Fecha de la primera medicion" }) =
                                     onChange={(date) => { 
                                         //console.log(`${date.getDate()}/${date.getMonth()}/${date.getYear()+1900}`) 
                                         setDate(date);
+                                        onChange(date);
                                     }} 
                                     onClickOutside={()=>{
                                         setVisible(false)
@@ -126,6 +133,7 @@ export default ({periodicity='weekly', label="Fecha de la primera medicion" }) =
 
                                     onChange={(date) => { 
                                         setDate(findWeek(date).monday);
+                                        onChange(findWeek(date).monday);
                                     }} 
                                     onClickOutside={()=>{
                                         setVisible(false)
@@ -148,6 +156,7 @@ export default ({periodicity='weekly', label="Fecha de la primera medicion" }) =
                                     onChange={(date) => { 
                                         //console.log(`${date.getDate()}/${date.getMonth()}/${date.getYear()+1900}`) 
                                         setDate(date);
+                                        onChange(date);
                                     }} 
                                     onClickOutside={()=>{
                                         setVisible(false)
@@ -176,6 +185,7 @@ export default ({periodicity='weekly', label="Fecha de la primera medicion" }) =
                                     onChange={(date) => { 
                                         //console.log(`${date.getDate()}/${date.getMonth()}/${date.getYear()+1900}`) 
                                         setDate(date);
+                                        onChange(date);
                                     }} 
                                     onClickOutside={()=>{
                                         setVisible(false)
@@ -208,6 +218,7 @@ export default ({periodicity='weekly', label="Fecha de la primera medicion" }) =
                                     onChange={(date) => { 
                                         //console.log(`${date.getDate()}/${date.getMonth()}/${date.getYear()+1900}`) 
                                         setDate(date);
+                                        onChange(date);
                                     }} 
                                     onClickOutside={()=>{
                                         setVisible(false)
@@ -233,6 +244,7 @@ export default ({periodicity='weekly', label="Fecha de la primera medicion" }) =
                                     onChange={(date) => { 
                                         //console.log(`${date.getDate()}/${date.getMonth()}/${date.getYear()+1900}`) 
                                         setDate(date);
+                                        onChange(date);
                                     }} 
                                     onClickOutside={()=>{
                                         setVisible(false)
@@ -261,7 +273,7 @@ export default ({periodicity='weekly', label="Fecha de la primera medicion" }) =
             />
             <div className='datepicker-container'>
                 {
-                    getContent(periodicity)
+                    getContent(periodicity, onChange)
                 }
             </div>
         </DatePickerContainer>

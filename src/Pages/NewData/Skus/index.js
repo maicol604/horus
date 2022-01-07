@@ -323,7 +323,7 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, re
                         <div style={{marginTop:'.5em'}}>
                             <TextField 
                                 id="" 
-                                label="Valor $" 
+                                label="Costo por unidad" 
                                 variant="outlined" 
                                 fullWidth
                                 multiline
