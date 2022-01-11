@@ -15,7 +15,7 @@ const WrapperDiv = styled.div`
 //     display: none;
 //   }
 
-export default ({datasets}) => {
+export default ({datasets, type='bubble'}) => {
 
     const [state, setState] = React.useState({
         options: { 
@@ -97,7 +97,7 @@ export default ({datasets}) => {
           <Chart
               options={state.options}
               series={datasets.series}
-              type="bubble"
+              type={type}
               width="800"
               zoom={false}
           />

@@ -103,6 +103,14 @@ export default () => {
     loading: false,
   });
 
+  const [chartData, setChartData] = React.useState({
+    data: null,
+    loading: false,
+    subcategory:null,
+    time:null,
+    xAxis:null
+  });
+
   const [subcategories, setSubcategories] = React.useState({
     data:[],
     selected:null
@@ -301,6 +309,40 @@ export default () => {
       console.log('error', error);
       setTimeout(() => {
         setLoading(false);  
+      }, 2000);
+    });
+  }
+
+  const getChart = (t, subcategory, time, xAxis ) => {
+    let url = `https://pricing.demo4to.com/api/pricing.sku.subcategory/${subcategory}/get_historic_table?access-token=${t}&x_axis=${xAxis}&granularity=${time}`;
+    //console.log(url, s)
+    let requestOptions = {
+      method: 'GET',
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    };
+    
+    setChartData({...chartData, loading: true, data:null});
+
+    fetch(url, requestOptions)
+    .then(response => response.json())
+    .then(result => {
+      //console.log('bubples',result)
+      //console.log([{color:'', id:'test', name:'', x:-5, y:0, z:0},...result.data.filter((element, index) => index < result.data.length - 1)])
+      let chart = result.data.map(i=>({...i, x:i.x_axis}));
+      chart.pop();
+      //console.log(bubbles)
+      //console.log(chart)
+      
+      if(result.type!=='Exception')
+        setTimeout(() => {
+          setChartData({...chartData, loading: false, data:chart});
+        }, 2000);
+    })
+    .catch(error => {
+      console.log('error', error);
+      setTimeout(() => {
+        setChartData({...chartData, loading: false});
       }, 2000);
     });
   }
@@ -1299,7 +1341,7 @@ export default () => {
                     data={[0,1,2].map((i)=>[[{text:'MV', color:'#e67e22'},{text:'Optimo', color:'#2ecc71'},{text:'MR', color:'#e74c3c'}][i],{text:truncateNumber(data.simulation.optimals.price[i])}, {text:truncateNumber(data.simulation.optimals.quantity[i])}, {text:truncateNumber(data.simulation.optimals.value[i])}, {text:truncateNumber(data.simulation.optimals.profit[i])}])}
                   />
                 </div>
-                <div style={{marginBottom:'1em'}}>
+                <div style={{marginBottom:'3.5em'}}>
                   <Paper 
                     variant="outlined"
                     style={{padding:'1em'}}
@@ -1478,6 +1520,282 @@ export default () => {
             </Grid>
           </Grid>
         )
+      case 8:
+        return (
+          <Grid container alignItems='flex-start' spacing={3}>
+            <Grid item xs={12}>
+              <Paper
+                variant="outlined"
+                style={{padding:'1em'}}
+              >
+                <Grid container alignItems='flex-start' spacing={3}>
+                  <Grid item xs={4}>
+                    <FormControl fullWidth>
+                      <InputLabel>Seleccionar subcategoria</InputLabel>
+                      <Select
+                        label="Seleccionar subcategoria"
+                        value={chartData.subcategory}
+                        onChange={(e)=>{
+                          setChartData({...chartData, subcategory:e.target.value})
+                        }}
+                      >
+                        {
+                          subcategories.data.map((item, index)=>{
+                            return (
+                              <MenuItem value={item[0]} key={index}>{item[1]}</MenuItem>
+                            )
+                          })
+                        }
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={4}>
+                  <FormControl fullWidth>
+                    <InputLabel>Agrupacion de tiempo</InputLabel>
+                    <Select
+                      //name={'totalSaleUnit'}
+                      label="Agrupacion de tiempo"
+                      value={chartData.time}
+                      onChange={(e)=>{
+                        setChartData({...chartData, time:e.target.value})
+                      }}
+                    >
+                      <MenuItem value={'month'}>month</MenuItem>
+                      <MenuItem value={'quarter'}>quarter</MenuItem>
+                      <MenuItem value={'bianual'}>bianual</MenuItem>
+                      <MenuItem value={'years'}>years</MenuItem>
+                      <MenuItem value={'rolling_year'}>rolling_year</MenuItem>
+                    </Select>
+                  </FormControl>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <FormControl fullWidth>
+                      <InputLabel>Seleccionar el eje X</InputLabel>
+                      <Select
+                        label="Seleccionar el eje X"
+                        value={chartData.xAxis}
+                        onChange={(e)=>{
+                          setChartData({...chartData, xAxis:e.target.value})
+                        }}
+                      >
+                        <MenuItem value={'distribution'}>distribution</MenuItem>
+                        <MenuItem value={'elasticity'}>elasticity</MenuItem>
+                        <MenuItem value={'sale_values'}>sale_values</MenuItem>
+                        <MenuItem value={'sale_kg'}>sale_kg</MenuItem>
+                        <MenuItem value={'sale_units'}>sale_units</MenuItem> 
+                        <MenuItem value={'price_units'}>price_units</MenuItem>
+                        <MenuItem value={'price_kg'}>price_kg</MenuItem>
+                        <MenuItem value={'som'}>som</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                   {/*<Grid item xs={4}>
+                    {<FormControl fullWidth>
+                      <InputLabel>Eje X</InputLabel>
+                      <Select
+                        label="Seleccionar Variables"
+                        value={subcategory.totalSaleUnit}
+                        onChange={handleInputChangeSubcategories}
+                      >
+                        <MenuItem value={'Rolling Year'}>Rolling Year</MenuItem>
+                        <MenuItem value={'Full Year'}>Full Year</MenuItem>
+                        <MenuItem value={'Mensual'}>Mensual</MenuItem>
+                        <MenuItem value={'Semestral'}>Semestral</MenuItem>
+                        <MenuItem value={'Trimestral'}>Trimestral</MenuItem>
+                      </Select>
+                    </FormControl>}
+                  </Grid> */}
+                  <Grid item xs={4} style={{display: 'flex'}}>
+                    <Button onClick={()=>{getChart(auth.access_token, chartData.subcategory, chartData.time, chartData.xAxis);}} color='primary' variant='contained' size="large" disabled={!chartData.subcategory || !chartData.time || !chartData.xAxis} style={{height:'3.5em'}}>
+                      Ejecutar
+                    </Button>
+                  </Grid>
+                  <Grid item xs={4}>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </Grid>
+
+              {
+                chartData.loading?
+                <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '20vh'}}>
+                  <ReactLoading type={'bars'} color="#fff" />
+                </Grid>
+                :
+                <></>
+              }
+              {
+                chartData.data?
+                  <Grid item xs={12}>
+                    <Paper
+                      variant="outlined"
+                      style={{padding:'1em'}}
+                    >
+                      <Chart
+                        legend={false}
+                        datasets={[
+                          {
+                            type: 'pie',
+                            data: chartData.data.map(i=>(i.x)),
+                            backgroundColor: chartData.data.map(i=>(i.color))
+                          },
+                        ]}
+                        labels={chartData.data.map(i=>(i.name))}
+                      />
+                    </Paper>
+                  </Grid>
+                :
+                (
+                  (!chartData.loading && !chartData.data)?
+                    <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '5vh'}}>
+                      <div style={{width:'30vw', filter: 'saturate(1)', opacity:'1'}}>
+                        <img src={bg2} alt='' style={{width:'100%'}}/>
+                      </div>
+                    </Grid>
+                  :
+                    <></>
+                )
+              }
+          </Grid>
+        )
+      case 9:
+        return (
+          <Grid container alignItems='flex-start' spacing={3}>
+            <Grid item xs={12}>
+              <Paper
+                variant="outlined"
+                style={{padding:'1em'}}
+              >
+                <Grid container alignItems='flex-start' spacing={3}>
+                  <Grid item xs={4}>
+                    <FormControl fullWidth>
+                      <InputLabel>Seleccionar subcategoria</InputLabel>
+                      <Select
+                        label="Seleccionar subcategoria"
+                        value={chartData.subcategory}
+                        onChange={(e)=>{
+                          setChartData({...chartData, subcategory:e.target.value})
+                        }}
+                      >
+                        {
+                          subcategories.data.map((item, index)=>{
+                            return (
+                              <MenuItem value={item[0]} key={index}>{item[1]}</MenuItem>
+                            )
+                          })
+                        }
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={4}>
+                  <FormControl fullWidth>
+                    <InputLabel>Agrupacion de tiempo</InputLabel>
+                    <Select
+                      //name={'totalSaleUnit'}
+                      label="Agrupacion de tiempo"
+                      value={chartData.time}
+                      onChange={(e)=>{
+                        setChartData({...chartData, time:e.target.value})
+                      }}
+                    >
+                      <MenuItem value={'month'}>month</MenuItem>
+                      <MenuItem value={'quarter'}>quarter</MenuItem>
+                      <MenuItem value={'bianual'}>bianual</MenuItem>
+                      <MenuItem value={'years'}>years</MenuItem>
+                      <MenuItem value={'rolling_year'}>rolling_year</MenuItem>
+                    </Select>
+                  </FormControl>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <FormControl fullWidth>
+                      <InputLabel>Seleccionar el eje X</InputLabel>
+                      <Select
+                        label="Seleccionar el eje X"
+                        value={chartData.xAxis}
+                        onChange={(e)=>{
+                          setChartData({...chartData, xAxis:e.target.value})
+                        }}
+                      >
+                        <MenuItem value={'distribution'}>distribution</MenuItem>
+                        <MenuItem value={'elasticity'}>elasticity</MenuItem>
+                        <MenuItem value={'sale_values'}>sale_values</MenuItem>
+                        <MenuItem value={'sale_kg'}>sale_kg</MenuItem>
+                        <MenuItem value={'sale_units'}>sale_units</MenuItem> 
+                        <MenuItem value={'price_units'}>price_units</MenuItem>
+                        <MenuItem value={'price_kg'}>price_kg</MenuItem>
+                        <MenuItem value={'som'}>som</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                    {/*<Grid item xs={4}>
+                    {<FormControl fullWidth>
+                      <InputLabel>Eje X</InputLabel>
+                      <Select
+                        label="Seleccionar Variables"
+                        value={subcategory.totalSaleUnit}
+                        onChange={handleInputChangeSubcategories}
+                      >
+                        <MenuItem value={'Rolling Year'}>Rolling Year</MenuItem>
+                        <MenuItem value={'Full Year'}>Full Year</MenuItem>
+                        <MenuItem value={'Mensual'}>Mensual</MenuItem>
+                        <MenuItem value={'Semestral'}>Semestral</MenuItem>
+                        <MenuItem value={'Trimestral'}>Trimestral</MenuItem>
+                      </Select>
+                    </FormControl>}
+                  </Grid> */}
+                  <Grid item xs={4} style={{display: 'flex'}}>
+                    <Button onClick={()=>{getChart(auth.access_token, chartData.subcategory, chartData.time, chartData.xAxis);}} color='primary' variant='contained' size="large" disabled={!chartData.subcategory || !chartData.time || !chartData.xAxis} style={{height:'3.5em'}}>
+                      Ejecutar
+                    </Button>
+                  </Grid>
+                  <Grid item xs={4}>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </Grid>
+
+              {
+                chartData.loading?
+                <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '20vh'}}>
+                  <ReactLoading type={'bars'} color="#fff" />
+                </Grid>
+                :
+                <></>
+              }
+              {
+                chartData.data?
+                  <Grid item xs={12}>
+                    <Paper
+                      variant="outlined"
+                      style={{padding:'1em'}}
+                    >
+                      <Chart
+                        legend={false}
+                        datasets={[
+                          {
+                            type: 'bar',
+                            data: chartData.data.map(i=>(i.x)),
+                            backgroundColor: chartData.data.map(i=>(i.color))
+                          },
+                        ]}
+                        labels={chartData.data.map(i=>(i.name))}
+                      />
+                    </Paper>
+                  </Grid>
+                :
+                (
+                  (!chartData.loading && !chartData.data)?
+                    <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '5vh'}}>
+                      <div style={{width:'30vw', filter: 'saturate(1)', opacity:'1'}}>
+                        <img src={bg2} alt='' style={{width:'100%'}}/>
+                      </div>
+                    </Grid>
+                  :
+                    <></>
+                )
+              }
+          </Grid>
+        )
       default:
         return (
           <Grid container alignItems='flex-start' spacing={3}>
@@ -1511,8 +1829,11 @@ export default () => {
             </AccordionSummary>
             <AccordionDetails>
               <MenuList style={{width:'100%'}}>
-                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(2)}>
-                  Pie y barras
+                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(8)}>
+                  Pie
+                </MenuItem>
+                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(9)}>
+                  barras
                 </MenuItem>
                 <MenuItem style={{width:'100%'}} onClick={()=>handleOption(10)}>
                   Gráficas 2 ejes

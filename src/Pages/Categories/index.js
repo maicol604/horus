@@ -6,13 +6,25 @@ import Grid from '@mui/material/Grid';
 
 import NewData from '../NewData';
 import Category from './Category';
+import DataInput from '../DataInput';
 
 const Categories = () => {
 
     const [categories, setCategories] = React.useState([]);
     const [waiting, setWaiting] = React.useState(false);
+    const [state, setState] = React.useState({
+        dataInput:false
+    });
 
     return (
+        state.dataInput?
+        (
+        <DataInput
+            categories={categories}
+        />
+        )
+        :
+        (
         <Grid container alignItems='flex-start' spacing={3}>
             <Grid item xs={3}>
                 <div style={{display: 'flex', flexDirection: 'column', position:'relative', height:'calc(100vh - 4em)', borderRight:'1px solid rgba(0, 0, 0, 0.12)', justifyContent: 'space-between'}}>
@@ -35,7 +47,7 @@ const Categories = () => {
                                 variant='contained'
                                 color='primary'
                                 onClick={()=>{
-                
+                                    setState({...state, dataInput:true})
                                 }}
                                 disabled={categories.length===0}
                             >
@@ -81,6 +93,7 @@ const Categories = () => {
                 }
             </Grid>
         </Grid>
+        )
     )
 }
 
