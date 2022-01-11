@@ -1560,11 +1560,11 @@ export default () => {
                         setChartData({...chartData, time:e.target.value})
                       }}
                     >
-                      <MenuItem value={'month'}>month</MenuItem>
-                      <MenuItem value={'quarter'}>quarter</MenuItem>
-                      <MenuItem value={'bianual'}>bianual</MenuItem>
-                      <MenuItem value={'years'}>years</MenuItem>
-                      <MenuItem value={'rolling_year'}>rolling_year</MenuItem>
+                      <MenuItem value={'month'}>Mensual</MenuItem>
+                      <MenuItem value={'quarter'}>Trimestral</MenuItem>
+                      <MenuItem value={'bianual'}>Semestral</MenuItem>
+                      <MenuItem value={'years'}>Anual</MenuItem>
+                      <MenuItem value={'rolling_year'}>Año movil</MenuItem>
                     </Select>
                   </FormControl>
                   </Grid>
@@ -1578,14 +1578,14 @@ export default () => {
                           setChartData({...chartData, xAxis:e.target.value})
                         }}
                       >
-                        <MenuItem value={'distribution'}>distribution</MenuItem>
-                        <MenuItem value={'elasticity'}>elasticity</MenuItem>
-                        <MenuItem value={'sale_values'}>sale_values</MenuItem>
-                        <MenuItem value={'sale_kg'}>sale_kg</MenuItem>
-                        <MenuItem value={'sale_units'}>sale_units</MenuItem> 
-                        <MenuItem value={'price_units'}>price_units</MenuItem>
-                        <MenuItem value={'price_kg'}>price_kg</MenuItem>
-                        <MenuItem value={'som'}>som</MenuItem>
+                        <MenuItem value={'distribution'}>Distribución</MenuItem>
+                        <MenuItem value={'elasticity'}>Elasticidad</MenuItem>
+                        <MenuItem value={'sale_values'}>Venta valor</MenuItem>
+                        <MenuItem value={'sale_kg'}>Venta en Kg</MenuItem>
+                        <MenuItem value={'sale_units'}>Venta en unidades</MenuItem> 
+                        <MenuItem value={'price_units'}>Precio unidad</MenuItem>
+                        <MenuItem value={'price_kg'}>Precio Kg</MenuItem>
+                        <MenuItem value={'som'}>SOM</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
@@ -1632,12 +1632,12 @@ export default () => {
                       style={{padding:'1em'}}
                     >
                       <Chart
-                        legend={false}
+                        type={'pie'}
+                        legend={true}
                         datasets={[
                           {
-                            type: 'pie',
                             data: chartData.data.map(i=>(i.x)),
-                            backgroundColor: chartData.data.map(i=>(i.color))
+                            backgroundColor: chartData.data.map(i=>(i.color)),
                           },
                         ]}
                         labels={chartData.data.map(i=>(i.name))}
@@ -1698,11 +1698,11 @@ export default () => {
                         setChartData({...chartData, time:e.target.value})
                       }}
                     >
-                      <MenuItem value={'month'}>month</MenuItem>
-                      <MenuItem value={'quarter'}>quarter</MenuItem>
-                      <MenuItem value={'bianual'}>bianual</MenuItem>
-                      <MenuItem value={'years'}>years</MenuItem>
-                      <MenuItem value={'rolling_year'}>rolling_year</MenuItem>
+                      <MenuItem value={'month'}>Mensual</MenuItem>
+                      <MenuItem value={'quarter'}>Trimestral</MenuItem>
+                      <MenuItem value={'bianual'}>Semestral</MenuItem>
+                      <MenuItem value={'years'}>Anual</MenuItem>
+                      <MenuItem value={'rolling_year'}>Año movil</MenuItem>
                     </Select>
                   </FormControl>
                   </Grid>
@@ -1716,14 +1716,14 @@ export default () => {
                           setChartData({...chartData, xAxis:e.target.value})
                         }}
                       >
-                        <MenuItem value={'distribution'}>distribution</MenuItem>
-                        <MenuItem value={'elasticity'}>elasticity</MenuItem>
-                        <MenuItem value={'sale_values'}>sale_values</MenuItem>
-                        <MenuItem value={'sale_kg'}>sale_kg</MenuItem>
-                        <MenuItem value={'sale_units'}>sale_units</MenuItem> 
-                        <MenuItem value={'price_units'}>price_units</MenuItem>
-                        <MenuItem value={'price_kg'}>price_kg</MenuItem>
-                        <MenuItem value={'som'}>som</MenuItem>
+                        <MenuItem value={'distribution'}>Distribución</MenuItem>
+                        <MenuItem value={'elasticity'}>Elasticidad</MenuItem>
+                        <MenuItem value={'sale_values'}>Venta valor</MenuItem>
+                        <MenuItem value={'sale_kg'}>Venta en Kg</MenuItem>
+                        <MenuItem value={'sale_units'}>Venta en unidades</MenuItem> 
+                        <MenuItem value={'price_units'}>Precio unidad</MenuItem>
+                        <MenuItem value={'price_kg'}>Precio Kg</MenuItem>
+                        <MenuItem value={'som'}>SOM</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
@@ -1753,7 +1753,6 @@ export default () => {
                 </Grid>
               </Paper>
             </Grid>
-
               {
                 chartData.loading?
                 <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '20vh'}}>
@@ -1770,15 +1769,22 @@ export default () => {
                       style={{padding:'1em'}}
                     >
                       <Chart
-                        legend={false}
+                        type={'bar'}
+                        legend={true}
                         datasets={[
-                          {
+                          /*{
+                            label: 'Something3',
                             type: 'bar',
                             data: chartData.data.map(i=>(i.x)),
                             backgroundColor: chartData.data.map(i=>(i.color))
-                          },
+                          },*/
+                          ...chartData.data.map(i=>({
+                            data:[i.x],
+                            backgroundColor:i.color,
+                            label:i.name
+                          }))
                         ]}
-                        labels={chartData.data.map(i=>(i.name))}
+                        labels={['SKUs']}
                       />
                     </Paper>
                   </Grid>
@@ -1829,10 +1835,44 @@ export default () => {
             </AccordionSummary>
             <AccordionDetails>
               <MenuList style={{width:'100%'}}>
-                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(8)}>
-                  Pie
+                <MenuItem style={{width:'100%'}}>
+                <Accordion>
+
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                  >
+                    <div style={{display:'flex', alignItems:'center'}}>
+                      <span style={{marginLeft:'1em'}}>Pie</span>
+                    </div>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <MenuList style={{width:'100%'}}>
+                      <MenuItem style={{width:'100%'}} onClick={()=>{
+                        setChartData({...chartData, data:null});
+                        handleOption(8);
+                      }}>
+                        Pie
+                      </MenuItem>
+                      <MenuItem style={{width:'100%'}} onClick={()=>{}}>
+                        Pie 2
+                      </MenuItem>
+                      <MenuItem style={{width:'100%'}} onClick={()=>{}}>
+                        Pie 3
+                      </MenuItem>
+                      <MenuItem style={{width:'100%'}} onClick={()=>{}}>
+                        Pie 4
+                      </MenuItem>
+                    </MenuList>
+                  </AccordionDetails>
+                </Accordion>
+
                 </MenuItem>
-                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(9)}>
+                <MenuItem style={{width:'100%'}} onClick={()=>{
+                  setChartData({...chartData, data:null});
+                  handleOption(9);
+                }}>
                   barras
                 </MenuItem>
                 <MenuItem style={{width:'100%'}} onClick={()=>handleOption(10)}>
