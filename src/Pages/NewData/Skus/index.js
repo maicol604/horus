@@ -449,6 +449,8 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, re
                                             <MenuItem value={'Kg'}>Kg</MenuItem>
                                             <MenuItem value={'Lib'}>Lib</MenuItem>
                                             <MenuItem value={'Gr'}>Gr</MenuItem>
+                                    <MenuItem value={'Ml'}>Ml</MenuItem>
+                                    <MenuItem value={'Pza'}>Pza</MenuItem>
                                         </Select>
                                     </FormControl>
                                 </div>
@@ -471,7 +473,7 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, re
                                 <div style={{marginTop:'.5em'}}>
                                     <TextField 
                                         id=""
-                                        label="Valor $" 
+                                        label="Costo por unidad" 
                                         variant="outlined" 
                                         fullWidth
                                         multiline

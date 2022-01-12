@@ -1997,6 +1997,144 @@ export default () => {
               }
           </Grid>
         )
+      case 11:
+        return (
+          <Grid container alignItems='flex-start' spacing={3}>
+            <Grid item xs={12}>
+              <Paper
+                variant="outlined"
+                style={{padding:'1em'}}
+              >
+                <Grid container alignItems='flex-start' spacing={3}>
+                  <Grid item xs={4}>
+                    <FormControl fullWidth>
+                      <InputLabel>Seleccionar subcategoria</InputLabel>
+                      <Select
+                        label="Seleccionar subcategoria"
+                        value={chartData.subcategory}
+                        onChange={(e)=>{
+                          setChartData({...chartData, subcategory:e.target.value})
+                        }}
+                      >
+                        {
+                          subcategories.data.map((item, index)=>{
+                            return (
+                              <MenuItem value={item[0]} key={index}>{item[1]}</MenuItem>
+                            )
+                          })
+                        }
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={4}>
+                  <FormControl fullWidth>
+                    <InputLabel>Periodicidad</InputLabel>
+                    <Select
+                      //name={'totalSaleUnit'}
+                      label="Periodicidad"
+                      value={chartData.time}
+                      onChange={(e)=>{
+                        setChartData({...chartData, time:e.target.value})
+                      }}
+                    >
+                      <MenuItem value={'month'}>Mensual</MenuItem>
+                      <MenuItem value={'quarter'}>Trimestral</MenuItem>
+                      <MenuItem value={'bianual'}>Semestral</MenuItem>
+                      <MenuItem value={'years'}>Anual</MenuItem>
+                      <MenuItem value={'rolling_year'}>Año movil</MenuItem>
+                    </Select>
+                  </FormControl>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <FormControl fullWidth>
+                      <InputLabel>Seleccionar el eje X</InputLabel>
+                      <Select
+                        label="Seleccionar el eje X"
+                        value={chartData.xAxis}
+                        onChange={(e)=>{
+                          setChartData({...chartData, xAxis:e.target.value})
+                        }}
+                      >
+                        <MenuItem value={'distribution'}>Distribución</MenuItem>
+                        <MenuItem value={'elasticity'}>Elasticidad</MenuItem>
+                        <MenuItem value={'sale_values'}>Venta valor</MenuItem>
+                        <MenuItem value={'sale_kg'}>Venta en Kg</MenuItem>
+                        <MenuItem value={'sale_units'}>Venta en unidades</MenuItem> 
+                        <MenuItem value={'price_units'}>Precio unidad</MenuItem>
+                        <MenuItem value={'price_kg'}>Precio Kg</MenuItem>
+                        <MenuItem value={'som'}>SOM</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                   {/*<Grid item xs={4}>
+                    {<FormControl fullWidth>
+                      <InputLabel>Eje X</InputLabel>
+                      <Select
+                        label="Seleccionar Variables"
+                        value={subcategory.totalSaleUnit}
+                        onChange={handleInputChangeSubcategories}
+                      >
+                        <MenuItem value={'Rolling Year'}>Rolling Year</MenuItem>
+                        <MenuItem value={'Full Year'}>Full Year</MenuItem>
+                        <MenuItem value={'Mensual'}>Mensual</MenuItem>
+                        <MenuItem value={'Semestral'}>Semestral</MenuItem>
+                        <MenuItem value={'Trimestral'}>Trimestral</MenuItem>
+                      </Select>
+                    </FormControl>}
+                  </Grid> */}
+                  <Grid item xs={4} style={{display: 'flex'}}>
+                    <Button onClick={()=>{getChart(auth.access_token, chartData.subcategory, chartData.time, chartData.xAxis);}} color='primary' variant='contained' size="large" disabled={!chartData.subcategory || !chartData.time || !chartData.xAxis} style={{height:'3.5em'}}>
+                      Ejecutar
+                    </Button>
+                  </Grid>
+                  <Grid item xs={4}>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </Grid>
+
+              {
+                chartData.loading?
+                <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '20vh'}}>
+                  <ReactLoading type={'bars'} color="#fff" />
+                </Grid>
+                :
+                <></>
+              }
+              {
+                chartData.data?
+                  <Grid item xs={12}>
+                    <Paper
+                      variant="outlined"
+                      style={{padding:'1em'}}
+                    >
+                      <Chart
+                        type={'doughnut'}
+                        legend={true}
+                        datasets={[
+                          {
+                            data: chartData.data.map(i=>(i.x)),
+                            backgroundColor: chartData.data.map(i=>(i.color)),
+                          },
+                        ]}
+                        labels={chartData.data.map(i=>(i.name))}
+                      />
+                    </Paper>
+                  </Grid>
+                :
+                (
+                  (!chartData.loading && !chartData.data)?
+                    <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '5vh'}}>
+                      <div style={{width:'30vw', filter: 'saturate(1)', opacity:'1'}}>
+                        <img src={bg2} alt='' style={{width:'100%'}}/>
+                      </div>
+                    </Grid>
+                  :
+                    <></>
+                )
+              }
+          </Grid>
+        )
       default:
         return (
           <Grid container alignItems='flex-start' spacing={3}>
@@ -2046,8 +2184,11 @@ export default () => {
                       }}>
                         Pie
                       </MenuItem>
-                      <MenuItem style={{width:'100%'}} onClick={()=>{}}>
-                        Pie 2
+                      <MenuItem style={{width:'100%'}} onClick={()=>{
+                        setChartData({...chartData2, data:null});
+                        handleOption(11);
+                      }}>
+                        Dona
                       </MenuItem>
                       <MenuItem style={{width:'100%'}} onClick={()=>{}}>
                         Pie 3
