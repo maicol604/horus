@@ -54,7 +54,7 @@ const TableWrapper = styled.div`
 const OptimalPrices = ({subcategories, token}) => {
     const [chartData, setChartData] = React.useState({
         subcategory:null,
-        month:null,
+        month:(new Date()).getMonth()+1,
         enviroment:[{value:null},{value:null}],
         data:null
     })
@@ -68,8 +68,15 @@ const OptimalPrices = ({subcategories, token}) => {
         }
     }
 
-    const getTable = () => {
-        fetch("https://pricing.demo4to.com/api/pricing.sku.subcategory/"+1+"/get_month_table?access-token="+token, {
+    const getTable = (subcategory, month, enviroment) => {
+        //console.log( subcategory, month, enviroment.map(i=>(`&${i.key}=${i.value}`)).join(''))
+        let env='';
+        if(enviroment[0].value){
+            env = enviroment.map(i=>(`&${i.key}=${i.value}`)).join('');
+        }
+        let url = "https://pricing.demo4to.com/api/pricing.sku.subcategory/"+subcategory+"/get_month_table?access-token="+token+"&month="+month+env;
+        console.log(url)
+        fetch(url, {
             'Access-Control-Allow-Origin': '*',
             "Content-Type": "application/json",
             method: "GET"
@@ -98,6 +105,7 @@ const OptimalPrices = ({subcategories, token}) => {
                                     value={chartData.subcategory}
                                     onChange={(e)=>{
                                         setChartData({...chartData, subcategory:e.target.value})
+                                        //console.log(e.target.value)
                                     }}
                                 >
                                     {
@@ -116,6 +124,7 @@ const OptimalPrices = ({subcategories, token}) => {
                                 label='Mes a estudiar'
                                 onChange={(e)=>{
                                     setChartData({...chartData, month:e.getMonth()+1});
+                                    //console.log({...chartData, month:e.getMonth()+1})
                                 }}
                             />
                         </Grid>
@@ -150,7 +159,7 @@ const OptimalPrices = ({subcategories, token}) => {
                             />
                         </Grid>
                         <Grid item xs={4} style={{display: 'flex'}}>
-                            <Button color="primary"  variant='contained' size="large" style={{height:'3.5em'}} onClick={()=>{getTable();}}>
+                            <Button color="primary"  variant='contained' size="large" style={{height:'3.5em'}} onClick={()=>{/*console.log(chartData.subcategory, chartData.month);*/getTable(chartData.subcategory, chartData.month, chartData.enviroment);}} disabled={!chartData.subcategory}>
                                 Ejecutar
                             </Button>
                         </Grid>
