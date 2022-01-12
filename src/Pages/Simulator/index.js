@@ -39,6 +39,8 @@ import TableComp from '../../Components/Table';
 import SnackBar from '../../Components/SnackBar';
 import CustomDatePicker from '../../Components/CustomDatePicker';
 
+import OptimalPrices from '../OptimalPrices';
+
 import bg1 from '../../Assets/Img/1.svg';
 import bg2 from '../../Assets/Img/P3.png';
 import bg3 from '../../Assets/Img/P2.png';
@@ -1344,7 +1346,7 @@ export default () => {
                 </Grid>
                 
                 <Grid item xs={4} style={{display: 'flex'}}>
-                  <Button onClick={()=>{getCurve('', '', data.month);}} color='primary' variant='contained' size="large" disabled={!data.sku} style={{height:'3.5em'}}>
+                  <Button onClick={()=>{getCurve('', '', data.month);}} color='primary' variant='contained' size="large" style={{height:'3.5em'}} disabled={!data.sku}>
                     Ejecutar
                   </Button>
                 </Grid>
@@ -2135,6 +2137,13 @@ export default () => {
               }
           </Grid>
         )
+      case 12:
+        return (
+          <OptimalPrices
+            subcategories={subcategories}
+            token={auth.access_token}
+          />
+        )
       default:
         return (
           <Grid container alignItems='flex-start' spacing={3}>
@@ -2237,6 +2246,9 @@ export default () => {
               <MenuList style={{width:'100%'}}>
                 <MenuItem style={{width:'100%'}} onClick={()=>handleOption(10)}>
                   Comparativas
+                </MenuItem>
+                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(12)}>
+                  Precios optimos
                 </MenuItem>
                 <MenuItem style={{width:'100%'}} onClick={()=>handleOption(10)}>
                   Historicas

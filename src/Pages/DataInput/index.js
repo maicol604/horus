@@ -2,6 +2,7 @@ import React from 'react';
 import Tabs from '../../Components/Tabs';
 import Spreadsheet from "react-spreadsheet";
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 
 const periodos = new Array(52).fill(null);
 
@@ -95,6 +96,11 @@ const DataInput = ({categories}) => {
 
     return (
         <>
+            <div style={{display:'flex', justifyContent:'flex-end', padding:'2em 2em 0 0 '}}>
+                <Button color="primary"  variant='contained' size="large" style={{height:'3.5em'}} onClick={()=>{window.location.reload()}}>
+                    Finalizar
+                </Button>
+            </div>
             <Tabs
                 tabs={categories.map(i=>({name:i.category.name}))}
                 onChange={(e)=>{
