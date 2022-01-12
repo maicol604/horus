@@ -308,13 +308,13 @@ const NewData = () => {
                                     >
                                         Añade o elimina tus categorias
                                     </Typography>
-                                    <Typography
+                                    {/* {<Typography
                                         variant='caption'
                                     >
                                         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur
                                         unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam
                                         dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.
-                                    </Typography>
+                                    </Typography>} */}
                                 </Grid>
                             </Grid>
                             <Grid container spacing={3}>
@@ -383,13 +383,13 @@ const NewData = () => {
                                     >
                                         Añade o elimina tus subcategorias
                                     </Typography>
-                                    <Typography
+                                    {/* {<Typography
                                         variant='caption'
                                     >
                                         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur
                                         unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam
                                         dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.
-                                    </Typography>
+                                    </Typography>} */}
                                 </Grid>
                             </Grid>
                             <Grid container spacing={3}>
@@ -532,7 +532,7 @@ const NewData = () => {
                             <Typography
                                 variant='caption'
                             >
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur
+                                onsectetur adipisicing elit. Quos blanditiis tenetur
                                 unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam
                                 dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.
                             </Typography>

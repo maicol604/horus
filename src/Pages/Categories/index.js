@@ -57,7 +57,7 @@ const Categories = () => {
                     </div>
                 </div>
             </Grid>
-            <Grid item xs={9} style={{padding:'1.5em', overflow:'auto', maxHeight: 'calc(100vh - 4em)'}}>
+            <Grid item xs={9} style={{padding:'1.5em', overflow:'auto', maxHeight: 'calc(100vh - 6em)'}}>
                 {waiting?
                     <div
                         style={{
@@ -75,7 +75,7 @@ const Categories = () => {
                                     setWaiting(false);
                                 }}
                             >
-                                Agregar otra categoria
+                                Terminar carga de datos
                             </Button>
                         </Stack>
                     </div>

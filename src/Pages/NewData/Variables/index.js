@@ -230,9 +230,9 @@ const Variables = ({category=null, subcategories=[], skus=[], brands=[], onChang
                                         setState({...state, businessRule :event.target.value})
                                     }}
                                 >
-                                    <MenuItem value={10}>Promedio</MenuItem>
-                                    <MenuItem value={20}>Repetir número</MenuItem>
-                                    <MenuItem value={30}>Prorratear</MenuItem>
+                                    <MenuItem value={'Promedio'}>Promedio</MenuItem>
+                                    <MenuItem value={'Repetir número'}>Repetir número</MenuItem>
+                                    <MenuItem value={'Prorratear'}>Prorratear</MenuItem>
                                 </Select>
                             </FormControl>
                         </Grid>

@@ -218,7 +218,7 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, re
                     >
                         Añade o elimina tus SKUS
                     </Typography>
-                    <Typography
+                    {/* {<Typography
                         variant='caption'
                         align='left'
                         display='block'
@@ -226,7 +226,7 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, re
                         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur
                         unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam
                         dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.
-                    </Typography>
+                    </Typography}> */}
                 </Grid>
                 <Grid item xs={12}/>
             </Grid>
@@ -303,6 +303,8 @@ const Step2 = ({ groupers=[], pushSku, subcategories=[], skus=[], updateSkus, re
                                     <MenuItem value={'Kg'}>Kg</MenuItem>
                                     <MenuItem value={'Lib'}>Lib</MenuItem>
                                     <MenuItem value={'Gr'}>Gr</MenuItem>
+                                    <MenuItem value={'Ml'}>Ml</MenuItem>
+                                    <MenuItem value={'Pza'}>Pza</MenuItem>
                                 </Select>
                             </FormControl>
                         </div>

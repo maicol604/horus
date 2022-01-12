@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-export default ({rows=[], heads=[], data=[], onChange}) => {
+export default ({rows=[], heads=[], data=[], onChange, style}) => {
 
   const handleChange = (e) => {
     let {value, name} = e.target;
@@ -19,7 +19,7 @@ export default ({rows=[], heads=[], data=[], onChange}) => {
   return (
     <Paper 
       variant="outlined"
-      style={{padding:'1em'}}
+      style={{padding:'1em', ...style}}
     >
       <TableContainer>
         <Table sx={{ minWidth: '100%' }} aria-label="simple table" size="small">

@@ -15,15 +15,15 @@ import Simulator from './Pages/Simulator';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#2B9982',
-      main: '#89835f'
+      main: '#407D68',
+      //main: '#89835f'
     },
     secondary: {
       main: '#eee'
     },
     bg:{
       main: '#1F1C36',
-      main: '#000'
+      //main: '#000'
     }
   },
 });

@@ -387,7 +387,7 @@ const NewData = ({onUpdate, onFinish}) => {
                                         >
                                             Añade los datos de la categoria
                                         </Typography>
-                                        <Typography
+                                        {/* {<Typography
                                             variant='caption'
                                             align="left"
                                             display="block"
@@ -395,7 +395,7 @@ const NewData = ({onUpdate, onFinish}) => {
                                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur
                                             unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam
                                             dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.
-                                        </Typography>
+                                        </Typography>} */}
                                     </Grid>
                                     <Grid item xs={12}/>
                                 </Grid>
@@ -484,7 +484,7 @@ const NewData = ({onUpdate, onFinish}) => {
                                         >
                                             Añade o elimina subcategorias para <span style={{textTransform:'capitalize'}}>{state.category.name}</span>
                                         </Typography>
-                                        <Typography
+                                        {/* {<Typography
                                             variant='caption'
                                             align="left"
                                             display="block"
@@ -492,7 +492,7 @@ const NewData = ({onUpdate, onFinish}) => {
                                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur
                                             unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam
                                             dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.
-                                        </Typography>
+                                        </Typography>} */}
                                     </Grid>
                                     <Grid item xs={12}/>
                                 </Grid>
@@ -678,7 +678,7 @@ const NewData = ({onUpdate, onFinish}) => {
                                                     value={editSubcategory.color}
                                                 />
                                             </Grid>
-                                            <Grid item xs={3}>
+                                            {/* {<Grid item xs={3}>
                                                 <TextField 
                                                     id="" 
                                                     label="Venta total" 
@@ -729,7 +729,7 @@ const NewData = ({onUpdate, onFinish}) => {
                                                     }}
                                                     value={editSubcategory.totalSaleValue}
                                                 />
-                                            </Grid>
+                                            </Grid>} */}
                                             <Grid item xs={12}>
                                                 <Stack spacing={2} direction="row">
                                                     <Button
@@ -881,7 +881,7 @@ const NewData = ({onUpdate, onFinish}) => {
                             >
                                 Relaciona tus SKU con los de los competidores
                             </Typography>
-                            <Typography
+                            {/* {<Typography
                                 variant='caption'
                                 align='left'
                                 display='block'
@@ -890,7 +890,7 @@ const NewData = ({onUpdate, onFinish}) => {
                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur
                                 unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam
                                 dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.
-                            </Typography>
+                            </Typography>} */}
                         </Grid>
                         <Grid item xs={12}>
                             {
@@ -941,7 +941,7 @@ const NewData = ({onUpdate, onFinish}) => {
                                     //onFinish();
                                 }}
                             >
-                                Guardar
+                                Siguiente
                             </Button>
                         </Stack>
                     </div>
@@ -985,7 +985,7 @@ const NewData = ({onUpdate, onFinish}) => {
                                     onFinish();
                                 }}
                             >
-                                Guardar categoria
+                                Continuar
                             </Button>
                         </Stack>
                     </div>

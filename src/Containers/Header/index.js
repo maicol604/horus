@@ -1,7 +1,7 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 
-import logo from '../../Assets/Img/loreal-logo.svg';
+import logo from '../../Assets/Img/logo.png';
 
 const HeaderContainer = styled('div')(({ theme }) => ({
     backgroundColor: theme.palette.bg.main,
@@ -11,7 +11,7 @@ const HeaderContainer = styled('div')(({ theme }) => ({
     top: 0,
     left: 0,
     zIndex: 1000,
-    height:'4em',
+    height:'6em',
     boxSizing:'border-box',
     display: 'flex',
     justifyContent: 'space-between',
@@ -25,13 +25,13 @@ const Header = ({onChange}) => {
     return (
         <>
             <HeaderContainer>
-                <div style={{filter:'invert(1)', width:'8em'}}><img src={logo} alt='' style={{width:'100%', height:'auto'}}/></div>
+                <div style={{filter:'invert(0)', width:'8em'}}><img src={logo} alt='' style={{width:'100%', height:'auto'}}/></div>
                 <div style={{display:'flex', color:'#fff'}}>
                     <div style={{marginRight:'2em', cursor:'pointer'}} onClick={()=>{onChange('1')}}>Carga de datos</div>
-                    <div style={{cursor:'pointer'}} onClick={()=>{onChange('2')}}>Simulador</div>
+                    <div style={{cursor:'pointer'}} onClick={()=>{onChange('2')}}>Laboratorio</div>
                 </div>
             </HeaderContainer>
-            <div style={{height:'4em'}}/>
+            <div style={{height:'6em'}}/>
         </>
     )
 }
