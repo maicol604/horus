@@ -246,6 +246,12 @@ export default () => {
     })
   }
 
+  const formatNumber = (number) => {
+    let str = number.toString().split('.');
+    str[0] = str[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    return str.join(".");
+  }
+
   const getCurve = (price, values, month) => {
     let val;
     console.log(month)
@@ -1399,7 +1405,7 @@ export default () => {
                 <div style={{marginBottom:'1em'}}>
                   <TableComp
                     heads={['','Precio', 'Cantidad', 'Venta', 'Rentabilidad']}
-                    data={[0,1,2].map((i)=>[[{text:'MV', color:'#e67e22'},{text:'Optimo', color:'#2ecc71'},{text:'MR', color:'#e74c3c'}][i],{text:truncateNumber(data.simulation.optimals.price[i])}, {text:truncateNumber(data.simulation.optimals.quantity[i])}, {text:truncateNumber(data.simulation.optimals.value[i])}, {text:truncateNumber(data.simulation.optimals.profit[i])}])}
+                    data={[0,1,2].map((i)=>[[{text:'MV', color:'#e67e22'},{text:'Optimo', color:'#2ecc71'},{text:'MR', color:'#e74c3c'}][i],{text:formatNumber(truncateNumber(data.simulation.optimals.price[i]))}, {text:formatNumber(truncateNumber(data.simulation.optimals.quantity[i]))}, {text:formatNumber(truncateNumber(data.simulation.optimals.value[i]))}, {text:formatNumber(truncateNumber(data.simulation.optimals.profit[i]))}])}
                   />
                 </div>
                 <div style={{marginBottom:'3.5em'}}>
@@ -1423,9 +1429,9 @@ export default () => {
                             <TableCell>
                               <input type="text" value={truncateNumber(data.price)} onChange={(e)=>{setData({...data, price:e.target.value})}}/>
                             </TableCell>
-                            <TableCell><span style={{color:'#89835f'}}>{truncateNumber(data.simulation.user_point.quantity)}</span></TableCell>
-                            <TableCell><span style={{color:'#89835f'}}>{truncateNumber(data.simulation.user_point.value)}</span></TableCell>
-                            <TableCell><span style={{color:'#89835f'}}>{truncateNumber(data.simulation.user_point.profit)}</span></TableCell>
+                            <TableCell><span style={{color:'#89835f'}}>{formatNumber(truncateNumber(data.simulation.user_point.quantity))}</span></TableCell>
+                            <TableCell><span style={{color:'#89835f'}}>{formatNumber(truncateNumber(data.simulation.user_point.value))}</span></TableCell>
+                            <TableCell><span style={{color:'#89835f'}}>{formatNumber(truncateNumber(data.simulation.user_point.profit))}</span></TableCell>
                           </TableRow>
                         </TableBody>
                       </Table>
