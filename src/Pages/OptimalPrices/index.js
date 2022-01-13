@@ -9,6 +9,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import styled from "styled-components";
 
+import Loader from '../../Components/Loader';
 import CustomDatePicker from '../../Components/CustomDatePicker';
 
 const borderColor = 'rgba(0, 0, 0, 0.12)';
@@ -91,7 +92,7 @@ const OptimalPrices = ({subcategories, token}) => {
         }
         let url = "https://pricing.demo4to.com/api/pricing.sku.subcategory/"+subcategory+"/get_month_table?access-token="+token+"&month="+month+env;
         //console.log(url);
-        setChartData({...chartData, loading:true});
+        setChartData({...chartData, loading:true, data:null, enviroment:[{value:null},{value:null}]});
         fetch(url, {
             'Access-Control-Allow-Origin': '*',
             "Content-Type": "application/json",
@@ -99,8 +100,13 @@ const OptimalPrices = ({subcategories, token}) => {
           })   
           .then(response => response.json())
           .then(result => {
-            console.log('mensual',result.data);
-            setChartData({...chartData, data: result.data, enviroment:result.data.env, loading: false})
+            //console.log('mensual',result.data);
+            if(result.data)
+                setTimeout(() => {
+                    setChartData({...chartData, data: result.data, enviroment:result.data.env, loading: false});
+                }, 2000);
+            else
+                setChartData({...chartData, loading:false});
           })
           .catch(error => {
             console.log('error sub', error);
@@ -185,6 +191,14 @@ const OptimalPrices = ({subcategories, token}) => {
                     </Grid>
                 </Paper>
             </Grid>
+            {
+                chartData.loading?
+                <div style={{width:'100%', height:'40vh', display:'flex', justifyContent:'center', alignItems:'center'}}>
+                    <Loader/>
+                </div>
+                :
+                <></>
+            }
             {chartData.data?
             <Grid item xs={12}>
                 <Paper

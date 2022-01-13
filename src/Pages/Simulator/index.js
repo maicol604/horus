@@ -38,6 +38,7 @@ import Chart from '../../Components/Chart';
 import TableComp from '../../Components/Table';
 import SnackBar from '../../Components/SnackBar';
 import CustomDatePicker from '../../Components/CustomDatePicker';
+import Loader from '../../Components/Loader';
 
 import OptimalPrices from '../OptimalPrices';
 
@@ -1135,7 +1136,7 @@ export default () => {
               {
                 bubbleData.loading?
                   <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '20vh'}}>
-                    <ReactLoading type={'bars'} color="#fff" />
+                    <Loader/>
                   </Grid>
                   :
                   <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '5vh'}}>
@@ -1486,7 +1487,7 @@ export default () => {
               {
               loading?
                 <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '20vh'}}>
-                  <ReactLoading type={'bars'} color="#fff" />
+                  <Loader/>
                 </Grid>
               :
                 <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '5vh'}}>
@@ -1679,7 +1680,7 @@ export default () => {
               {
                 chartData.loading?
                 <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '20vh'}}>
-                  <ReactLoading type={'bars'} color="#fff" />
+                  <Loader/>
                 </Grid>
                 :
                 <></>
@@ -1816,7 +1817,7 @@ export default () => {
               {
                 chartData.loading?
                 <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '20vh'}}>
-                  <ReactLoading type={'bars'} color="#fff" />
+                  <Loader/>
                 </Grid>
                 :
                 <></>
@@ -1968,7 +1969,7 @@ export default () => {
               {
                 chartData.loading?
                 <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '20vh'}}>
-                  <ReactLoading type={'bars'} color="#fff" />
+                  <Loader/>
                 </Grid>
                 :
                 <></>
@@ -2113,7 +2114,7 @@ export default () => {
               {
                 chartData.loading?
                 <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '20vh'}}>
-                  <ReactLoading type={'bars'} color="#fff" />
+                  <Loader/>
                 </Grid>
                 :
                 <></>
