@@ -20,7 +20,15 @@ const TableWrapper = styled.div`
         td{
             padding: 0; 
             margin: 0;
-        border: 1px solid ${borderColor};
+            border: 1px solid ${borderColor};
+            //padding: 0 2em 0 2em;
+            .numbers{
+                padding: 0 2em 0 2em;
+                box-sizing:border-box;
+                width: 100% !important;
+                display:flex;
+                justify-content:center;
+            }
         }
         tr{
             border: 1px solid ${borderColor};
@@ -56,8 +64,15 @@ const OptimalPrices = ({subcategories, token}) => {
         subcategory:null,
         month:(new Date()).getMonth()+1,
         enviroment:[{value:null},{value:null}],
-        data:null
+        data:null,
+        loading: false,
     })
+
+    const formatNumber = (number) => {
+        let str = number.toString().split('.');
+        str[0] = str[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        return str.join(".");
+    }
 
     const truncateNumber = (number) => {
         try{
@@ -75,7 +90,8 @@ const OptimalPrices = ({subcategories, token}) => {
             env = enviroment.map(i=>(`&${i.key}=${i.value}`)).join('');
         }
         let url = "https://pricing.demo4to.com/api/pricing.sku.subcategory/"+subcategory+"/get_month_table?access-token="+token+"&month="+month+env;
-        console.log(url)
+        //console.log(url);
+        setChartData({...chartData, loading:true});
         fetch(url, {
             'Access-Control-Allow-Origin': '*',
             "Content-Type": "application/json",
@@ -84,9 +100,12 @@ const OptimalPrices = ({subcategories, token}) => {
           .then(response => response.json())
           .then(result => {
             console.log('mensual',result.data);
-            setChartData({...chartData, data: result.data, enviroment:result.data.env})
+            setChartData({...chartData, data: result.data, enviroment:result.data.env, loading: false})
           })
-          .catch(error => console.log('error sub', error));
+          .catch(error => {
+            console.log('error sub', error);
+            setChartData({...chartData, loading:false});
+          });
     }
 
     return (
@@ -177,7 +196,7 @@ const OptimalPrices = ({subcategories, token}) => {
                             <tr>
                                 <th>Skus</th>
                                 <th><span style={{opacity:'0'}}>--</span></th>
-                                <th>E</th>
+                                <th><span style={{fontSize:'2.5em'}}>e</span></th>
                                 <th><span style={{opacity:'0'}}>--</span></th>
                                 <th className='c1'>Price max sales</th>
                                 <th className='c1'>QTY</th>
@@ -209,22 +228,22 @@ const OptimalPrices = ({subcategories, token}) => {
                                             <tr key={index}>
                                                 <td><span style={{display:'flex',width:'max-content'}}>{i.name}</span></td>
                                                 <td></td>
-                                                <td><span style={{display:'flex',width:'max-content'}}>{truncateNumber(j.elasticity)}</span></td>
+                                                <td><span style={{display:'flex',width:'max-content'}} className='numbers'>{formatNumber(truncateNumber(i.elasticity))}</span></td>
                                                 <td></td>
-                                                <td><span style={{display:'flex',width:'max-content'}}>{truncateNumber(i.optimals.price[0])}</span></td>
-                                                <td><span style={{display:'flex',width:'max-content'}}>{truncateNumber(i.optimals.quantity_kg[0])}</span></td>
-                                                <td><span style={{display:'flex',width:'max-content'}}>{truncateNumber(i.optimals.value[0])}</span></td>
-                                                <td><span style={{display:'flex',width:'max-content'}}>{truncateNumber(i.optimals.profit[0])}</span></td>
+                                                <td><span style={{display:'flex',width:'max-content'}} className='numbers'>{formatNumber(truncateNumber(i.optimals.price[0]))}</span></td>
+                                                <td><span style={{display:'flex',width:'max-content'}} className='numbers'>{formatNumber(truncateNumber(i.optimals.quantity_kg[0]))}</span></td>
+                                                <td><span style={{display:'flex',width:'max-content'}} className='numbers'>{formatNumber(truncateNumber(i.optimals.value[0]))}</span></td>
+                                                <td><span style={{display:'flex',width:'max-content'}} className='numbers'>{formatNumber(truncateNumber(i.optimals.profit[0]))}</span></td>
                                                 <td></td>
-                                                <td><span style={{display:'flex',width:'max-content'}}>{truncateNumber(i.optimals.price[1])}</span></td>
-                                                <td><span style={{display:'flex',width:'max-content'}}>{truncateNumber(i.optimals.quantity_kg[1])}</span></td>
-                                                <td><span style={{display:'flex',width:'max-content'}}>{truncateNumber(i.optimals.value[1])}</span></td>
-                                                <td><span style={{display:'flex',width:'max-content'}}>{truncateNumber(i.optimals.profit[1])}</span></td>
+                                                <td><span style={{display:'flex',width:'max-content'}} className='numbers'>{formatNumber(truncateNumber(i.optimals.price[1]))}</span></td>
+                                                <td><span style={{display:'flex',width:'max-content'}} className='numbers'>{formatNumber(truncateNumber(i.optimals.quantity_kg[1]))}</span></td>
+                                                <td><span style={{display:'flex',width:'max-content'}} className='numbers'>{formatNumber(truncateNumber(i.optimals.value[1]))}</span></td>
+                                                <td><span style={{display:'flex',width:'max-content'}} className='numbers'>{formatNumber(truncateNumber(i.optimals.profit[1]))}</span></td>
                                                 <td></td>
-                                                <td><span style={{display:'flex',width:'max-content'}}>{truncateNumber(i.optimals.price[2])}</span></td>
-                                                <td><span style={{display:'flex',width:'max-content'}}>{truncateNumber(i.optimals.quantity_kg[2])}</span></td>
-                                                <td><span style={{display:'flex',width:'max-content'}}>{truncateNumber(i.optimals.value[2])}</span></td>
-                                                <td><span style={{display:'flex',width:'max-content'}}>{truncateNumber(i.optimals.profit[2])}</span></td>
+                                                <td><span style={{display:'flex',width:'max-content'}} className='numbers'>{formatNumber(truncateNumber(i.optimals.price[2]))}</span></td>
+                                                <td><span style={{display:'flex',width:'max-content'}} className='numbers'>{formatNumber(truncateNumber(i.optimals.quantity_kg[2]))}</span></td>
+                                                <td><span style={{display:'flex',width:'max-content'}} className='numbers'>{formatNumber(truncateNumber(i.optimals.value[2]))}</span></td>
+                                                <td><span style={{display:'flex',width:'max-content'}} className='numbers'>{formatNumber(truncateNumber(i.optimals.profit[2]))}</span></td>
                                                 <td></td>
                                                 <td><span style={{display:'flex',width:'max-content'}}>
                                                     <input value={truncateNumber(i.user_point.price)} style={{width:'5em'}}/>
@@ -232,15 +251,9 @@ const OptimalPrices = ({subcategories, token}) => {
                                                 <td><span style={{display:'flex',width:'max-content'}}>
                                                     <input value={truncateNumber(i.distribution)} style={{width:'7em'}}/>    
                                                 </span></td>
-                                                <td><span style={{display:'flex',width:'max-content'}}>
-                                                    <input value={truncateNumber(i.user_point.quantity_kg)} style={{width:'5em'}}/>
-                                                </span></td>
-                                                <td><span style={{display:'flex',width:'max-content'}}>
-                                                    <input value={truncateNumber(i.user_point.value)} style={{width:'5em'}}/>
-                                                </span></td>
-                                                <td><span style={{display:'flex',width:'max-content'}}>
-                                                    <input value={truncateNumber(i.user_point.profit)} style={{width:'5em'}}/>
-                                                </span></td>
+                                                <td><span style={{display:'flex',width:'max-content'}} className='numbers'>{formatNumber(truncateNumber(i.user_point.quantity_kg))}</span></td>
+                                                <td><span style={{display:'flex',width:'max-content'}} className='numbers'>{formatNumber(truncateNumber(i.user_point.value))}</span></td>
+                                                <td><span style={{display:'flex',width:'max-content'}} className='numbers'>{formatNumber(truncateNumber(i.user_point.profit))}</span></td>
                                             </tr>
                                         ))
                                         }

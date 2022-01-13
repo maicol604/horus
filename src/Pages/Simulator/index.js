@@ -45,6 +45,21 @@ import bg1 from '../../Assets/Img/1.svg';
 import bg2 from '../../Assets/Img/P3.png';
 import bg3 from '../../Assets/Img/P2.png';
 
+import pie1 from '../../Assets/Img/13.png';
+import pie2 from '../../Assets/Img/11.png';
+import pie3 from '../../Assets/Img/5.png';
+import pie4 from '../../Assets/Img/8.png';
+
+import bar1 from '../../Assets/Img/3.png';
+import bar2 from '../../Assets/Img/7.png';
+import bar3 from '../../Assets/Img/4.png';
+import bar4 from '../../Assets/Img/9.png';
+
+import trend1 from '../../Assets/Img/16.png';
+import trend2 from '../../Assets/Img/1.png';
+import trend3 from '../../Assets/Img/6.png';
+import trend4 from '../../Assets/Img/12.png';
+
 const options = [
   {
     title:1//'Tablas históricas'
@@ -2191,37 +2206,91 @@ export default () => {
                         setChartData({...chartData2, data:null});
                         handleOption(8);
                       }}>
-                        Pie
+                        <div style={{width:'2em'}}><img style={{width:'100%', filter: 'invert(.75)'}} src={pie1}/></div>
                       </MenuItem>
                       <MenuItem style={{width:'100%'}} onClick={()=>{
                         setChartData({...chartData2, data:null});
                         handleOption(11);
                       }}>
-                        Dona
+                        <div style={{width:'2em'}}><img style={{width:'100%', filter: 'invert(.75)'}} src={pie2}/></div>
                       </MenuItem>
                       <MenuItem style={{width:'100%'}} onClick={()=>{}}>
-                        Pie 3
+                        <div style={{width:'2em'}}><img style={{width:'100%', filter: 'invert(.75)'}} src={pie3}/></div>
                       </MenuItem>
                       <MenuItem style={{width:'100%'}} onClick={()=>{}}>
-                        Pie 4
+                        <div style={{width:'2em'}}><img style={{width:'100%', filter: 'invert(.75)'}} src={pie4}/></div>
                       </MenuItem>
                     </MenuList>
                   </AccordionDetails>
                 </Accordion>
 
                 </MenuItem>
-                <MenuItem style={{width:'100%'}} onClick={()=>{
-                  setChartData({...chartData, data:null});
-                  handleOption(9);
-                }}>
-                  Barras
+
+                <MenuItem>
+                  <Accordion>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                    >
+                      <div style={{display:'flex', alignItems:'center'}}>
+                        <span style={{marginLeft:'1em'}}>Barra</span>
+                      </div>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <MenuList style={{width:'100%'}}>
+                        <MenuItem style={{width:'100%'}} onClick={()=>{
+                          setChartData({...chartData, data:null});
+                          handleOption(9);
+                        }}>
+                          <div style={{width:'2em'}}><img style={{width:'100%', filter: 'invert(.75)'}} src={bar1}/></div>
+                        </MenuItem>
+                        <MenuItem style={{width:'100%'}} onClick={()=>{}}>
+                          <div style={{width:'2em'}}><img style={{width:'100%', filter: 'invert(.75)'}} src={bar2}/></div>
+                        </MenuItem>
+                        <MenuItem style={{width:'100%'}} onClick={()=>{}}>
+                          <div style={{width:'2em'}}><img style={{width:'100%', filter: 'invert(.75)'}} src={bar3}/></div>
+                        </MenuItem>
+                        <MenuItem style={{width:'100%'}} onClick={()=>{}}>
+                          <div style={{width:'2em'}}><img style={{width:'100%', filter: 'invert(.75)'}} src={bar4}/></div>
+                        </MenuItem>
+                      </MenuList>
+                    </AccordionDetails>
+                  </Accordion>
                 </MenuItem>
-                <MenuItem style={{width:'100%'}} onClick={()=>{
+
+                <MenuItem>
+                  <Accordion>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                    >
+                      <div style={{display:'flex', alignItems:'center'}}>
+                        <span style={{marginLeft:'1em'}}>Tendencia</span>
+                      </div>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <MenuList style={{width:'100%'}}>
+                        <MenuItem style={{width:'100%'}} onClick={()=>{}}>
+                          <div style={{width:'2em'}}><img style={{width:'100%', filter: 'invert(.75)'}} src={trend1}/></div>
+                        </MenuItem>
+                        <MenuItem style={{width:'100%'}} onClick={()=>{}}>
+                          <div style={{width:'2em'}}><img style={{width:'100%', filter: 'invert(.75)'}} src={trend2}/></div>
+                        </MenuItem>
+                        <MenuItem style={{width:'100%'}} onClick={()=>{}}>
+                          <div style={{width:'2em'}}><img style={{width:'100%', filter: 'invert(.75)'}} src={trend3}/></div>
+                        </MenuItem>
+                        <MenuItem style={{width:'100%'}} onClick={()=>{}}>
+                          <div style={{width:'2em'}}><img style={{width:'100%', filter: 'invert(.75)'}} src={trend4}/></div>
+                        </MenuItem>
+                      </MenuList>
+                    </AccordionDetails>
+                  </Accordion>
+                </MenuItem>
+
+                {/* {<MenuItem style={{width:'100%'}} onClick={()=>{
                   setChart2Data({...chartData2, data:null});
                   handleOption(10);
                 }}>
                   Tendencia
-                </MenuItem>
+                </MenuItem>} */}
                 <MenuItem style={{width:'100%'}} onClick={()=>handleOption(10)}>
                   Gráficas 2 ejes
                 </MenuItem>
@@ -2247,9 +2316,6 @@ export default () => {
                 <MenuItem style={{width:'100%'}} onClick={()=>handleOption(10)}>
                   Comparativas
                 </MenuItem>
-                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(12)}>
-                  Precios optimos
-                </MenuItem>
                 <MenuItem style={{width:'100%'}} onClick={()=>handleOption(10)}>
                   Historicas
                 </MenuItem>
@@ -2270,7 +2336,10 @@ export default () => {
             <AccordionDetails>
               <MenuList style={{width:'100%'}}>
                 <MenuItem style={{width:'100%'}} onClick={()=>handleOption(6)}>
-                  Puntual
+                  Curvas
+                </MenuItem>
+                <MenuItem style={{width:'100%'}} onClick={()=>handleOption(12)}>
+                  Optimal prices
                 </MenuItem>
                 <MenuItem style={{width:'100%'}} onClick={()=>handleOption(10)}>
                   Tendencia
