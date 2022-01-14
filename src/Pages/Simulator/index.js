@@ -126,7 +126,12 @@ export default () => {
     loading: false,
     subcategory:null,
     time:null,
-    xAxis:null
+    xAxis:null,
+    brands:[],
+    owners:[],
+    brandSelected:null,
+    ownerSelected:null,
+    filteredData:[]
   });
 
   const [chartData2, setChart2Data] = React.useState({
@@ -360,7 +365,7 @@ export default () => {
   }
 
   const getChart = (t, subcategory, time, xAxis ) => {
-    let url = `https://pricing.demo4to.com/api/pricing.sku.subcategory/${subcategory}/get_historic_table?access-token=${t}&x_axis=${xAxis}&granularity=${time}`;
+    let url = `https://pricing.demo4to.com/api/pricing.sku.subcategory/${subcategory}/get_historic_table?access-token=${t}&x_axis=${xAxis}&granularity=${time}&brand=brand_id&owner=owner_id`;
     //console.log(url, s)
     let requestOptions = {
       method: 'GET',
@@ -368,12 +373,12 @@ export default () => {
       'Access-Control-Allow-Origin': '*'
     };
     
-    setChartData({...chartData, loading: true, data:null});
+    setChartData({...chartData, loading: true, data:null, brands:[], owners:[]});
 
     fetch(url, requestOptions)
     .then(response => response.json())
     .then(result => {
-      //console.log('bubples',result)
+      console.log('pie',result)
       //console.log([{color:'', id:'test', name:'', x:-5, y:0, z:0},...result.data.filter((element, index) => index < result.data.length - 1)])
       let chart = result.data.map(i=>({...i, x:i.x_axis}));
       chart.pop();
@@ -382,7 +387,11 @@ export default () => {
       
       if(result.type!=='Exception')
         setTimeout(() => {
-          setChartData({...chartData, loading: false, data:chart});
+          let brands, owners;
+          brands = [...new Set(chart.map(i=>i.brand))];
+          owners = [...new Set(chart.map(i=>i.owner))];
+          
+          setChartData({...chartData, loading: false, data:chart, brands, owners, filteredData:chart});
         }, 2000);
     })
     .catch(error => {
@@ -604,6 +613,16 @@ export default () => {
       default:
         return ([])
     }
+  }
+
+  const filterData = (owner, brand) => {
+    let aux = [];
+    for(let i=0;i<chartData.data.length;i++){
+      if(chartData.data[i].brand===brand || chartData.data[i].owner===owner)
+        aux.push(chartData.data[i])
+    }
+    //console.log(aux)
+    setChartData({...chartData, filteredData: aux});
   }
 
   const getContent = () => {
@@ -1724,16 +1743,78 @@ export default () => {
                       variant="outlined"
                       style={{padding:'1em'}}
                     >
+                      <Grid container alignItems='flex-start' spacing={3}>
+                        <Grid item xs={4}>
+                          <FormControl fullWidth>
+                            <InputLabel>Seleccionar marca</InputLabel>
+                            <Select
+                              label="Seleccionar marca"
+                              value={chartData.brandSelected}
+                              key={chartData.brandSelected}
+                              onChange={(e)=>{
+                                setChartData({...chartData, brandSelected:e.target.value})
+                              }}
+                            >
+                              {
+                                chartData.brands.map(i=>(
+                                  <MenuItem value={i} key={i}>{i}</MenuItem>
+                                ))
+                              }
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={4}>
+                          <FormControl fullWidth>
+                            <InputLabel>Seleccionar fabricante</InputLabel>
+                            <Select
+                              label="Seleccionar fabricante"
+                              value={chartData.ownerSelected}
+                              key={chartData.ownerSelected}
+                              onChange={(e)=>{
+                                setChartData({...chartData, ownerSelected:e.target.value})
+                              }}
+                            >
+                              {
+                                chartData.owners.map(i=>(
+                                  <MenuItem value={i} key={i}>{i}</MenuItem>
+                                ))
+                              }
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={4} style={{display:'flex'}}>
+                          <Button onClick={()=>{filterData(chartData.ownerSelected, chartData.brandSelected)}} color='primary' variant='contained' size="large" style={{height:'3.5em'}}>
+                            Filtrar
+                          </Button>
+                        </Grid>
+                        <Grid item xs={4} style={{display:'flex'}}>
+                          <Button onClick={()=>{setChartData({...chartData, filteredData: chartData.data, brandSelected:null, ownerSelected:null})}} color='primary' variant='contained' size="large" style={{height:'3.5em'}}>
+                            Limpiar filtros
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </Paper>
+                  </Grid>
+                  :
+                  <></>
+              }
+              {
+                chartData.data?
+                  <Grid item xs={12}>
+                    <Paper
+                      variant="outlined"
+                      style={{padding:'1em'}}
+                    >
                       <Chart
                         type={'pie'}
                         legend={true}
                         datasets={[
                           {
-                            data: chartData.data.map(i=>(i.x)),
-                            backgroundColor: chartData.data.map(i=>(i.color)),
+                            data: chartData.filteredData.map(i=>(i.x)),
+                            backgroundColor: chartData.filteredData.map(i=>(i.color)),
                           },
                         ]}
-                        labels={chartData.data.map(i=>(i.name))}
+                        labels={chartData.filteredData.map(i=>(i.name))}
                       />
                     </Paper>
                   </Grid>
@@ -1854,6 +1935,69 @@ export default () => {
                 :
                 <></>
               }
+              
+              {
+                chartData.data?
+                  <Grid item xs={12}>
+                    <Paper
+                      variant="outlined"
+                      style={{padding:'1em'}}
+                    >
+                      <Grid container alignItems='flex-start' spacing={3}>
+                        <Grid item xs={4}>
+                          <FormControl fullWidth>
+                            <InputLabel>Seleccionar marca</InputLabel>
+                            <Select
+                              label="Seleccionar marca"
+                              value={chartData.brandSelected}
+                              key={chartData.brandSelected}
+                              onChange={(e)=>{
+                                setChartData({...chartData, brandSelected:e.target.value})
+                              }}
+                            >
+                              {
+                                chartData.brands.map(i=>(
+                                  <MenuItem value={i} key={i}>{i}</MenuItem>
+                                ))
+                              }
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={4}>
+                          <FormControl fullWidth>
+                            <InputLabel>Seleccionar fabricante</InputLabel>
+                            <Select
+                              label="Seleccionar fabricante"
+                              value={chartData.ownerSelected}
+                              key={chartData.ownerSelected}
+                              onChange={(e)=>{
+                                setChartData({...chartData, ownerSelected:e.target.value})
+                              }}
+                            >
+                              {
+                                chartData.owners.map(i=>(
+                                  <MenuItem value={i} key={i}>{i}</MenuItem>
+                                ))
+                              }
+                            </Select>
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={4} style={{display:'flex'}}>
+                          <Button onClick={()=>{filterData(chartData.ownerSelected, chartData.brandSelected)}} color='primary' variant='contained' size="large" style={{height:'3.5em'}}>
+                            Filtrar
+                          </Button>
+                        </Grid>
+                        <Grid item xs={4} style={{display:'flex'}}>
+                          <Button onClick={()=>{setChartData({...chartData, filteredData: chartData.data, brandSelected:null, ownerSelected:null})}} color='primary' variant='contained' size="large" style={{height:'3.5em'}}>
+                            Limpiar filtros
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </Paper>
+                  </Grid>
+                  :
+                  <></>
+              }
               {
                 chartData.data?
                   <Grid item xs={12}>
@@ -1871,7 +2015,7 @@ export default () => {
                             data: chartData.data.map(i=>(i.x)),
                             backgroundColor: chartData.data.map(i=>(i.color))
                           },*/
-                          ...chartData.data.map(i=>({
+                          ...chartData.filteredData.map(i=>({
                             data:[i.x],
                             backgroundColor:i.color,
                             label:i.name
