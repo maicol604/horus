@@ -134,7 +134,7 @@ const Variables = ({category=null, subcategories=[], skus=[], brands=[], onChang
                                         {item.periodicityName}
                                     </div>
                                     <div>
-                                        {item.businessRule}
+                                        {`Primera medición: ${item.periodicity.getDay()}/${item.periodicity.getMonth()+1}/${item.periodicity.getFullYear()}`}
                                     </div>
                                 </div>
                             )

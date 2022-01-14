@@ -12,6 +12,8 @@ import Categories from './Pages/Categories';
 import Dashboard from './Pages/Dashboard';
 import Simulator from './Pages/Simulator';
 
+import gears from './Assets/Img/P2.png';
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -46,7 +48,15 @@ function App() {
             render==='1'?
             <Categories />
             :
+            (render==='2'?
             <Simulator />
+            :
+            <div style={{width:'100%', display:'flex', justifyContent:'center'}}>
+              <div style={{width:'15em', marginTop:'10em'}}>
+                <img src={gears} alt='' style={{width:'100%'}}/>
+              </div>
+            </div>
+            )
           }
         {/* {<BrowserRouter>
           <Routes>

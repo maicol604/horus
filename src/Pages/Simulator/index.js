@@ -204,31 +204,45 @@ export default () => {
     switch(option){
       case 'lineal':
         for(let i=0;i<data.lineal.table.price.length;i++){
-          // price_profit.push([data.table.profit[i], data.table.value[i]]);
-           price_profit.push([truncateNumber(data.lineal.table.price[i]), truncateNumber(data.lineal.table.profit[i])]);
-           price_quantity.push([truncateNumber(data.lineal.table.price[i]), truncateNumber(data.lineal.table.quantity[i])]);
-           price_value.push([truncateNumber(data.lineal.table.price[i]), truncateNumber(data.lineal.table.value[i])]);
-           profit_value.push([truncateNumber(data.lineal.table.profit[i]), truncateNumber(data.lineal.table.value[i])]);
+          //  price_profit.push([truncateNumber(data.lineal.table.price[i]), truncateNumber(data.lineal.table.profit[i])]);
+          //  price_quantity.push([truncateNumber(data.lineal.table.price[i]), truncateNumber(data.lineal.table.quantity[i])]);
+          //  price_value.push([truncateNumber(data.lineal.table.price[i]), truncateNumber(data.lineal.table.value[i])]);
+          //  profit_value.push([truncateNumber(data.lineal.table.profit[i]), truncateNumber(data.lineal.table.value[i])]);
+          
+           price_profit.push([data.lineal.table.price[i], data.lineal.table.profit[i]]);
+           price_quantity.push([data.lineal.table.price[i], data.lineal.table.quantity[i]]);
+           price_value.push([data.lineal.table.price[i], data.lineal.table.value[i]]);
+           profit_value.push([data.lineal.table.profit[i], data.lineal.table.value[i]]);
         }
         user_point = data.lineal.user_point;
         optimals = data.lineal.optimals;
       break;
       case 'polynomial':
         for(let i=0;i<data.polynomial.table.price.length;i++){
-           price_profit.push([truncateNumber(data.polynomial.table.price[i]), truncateNumber(data.polynomial.table.profit[i])]);
-           price_quantity.push([truncateNumber(data.polynomial.table.price[i]), truncateNumber(data.polynomial.table.quantity[i])]);
-           price_value.push([truncateNumber(data.polynomial.table.price[i]), truncateNumber(data.polynomial.table.value[i])]);
-           profit_value.push([truncateNumber(data.polynomial.table.profit[i]), truncateNumber(data.polynomial.table.value[i])]);
+          //  price_profit.push([truncateNumber(data.polynomial.table.price[i]), truncateNumber(data.polynomial.table.profit[i])]);
+          //  price_quantity.push([truncateNumber(data.polynomial.table.price[i]), truncateNumber(data.polynomial.table.quantity[i])]);
+          //  price_value.push([truncateNumber(data.polynomial.table.price[i]), truncateNumber(data.polynomial.table.value[i])]);
+          //  profit_value.push([truncateNumber(data.polynomial.table.profit[i]), truncateNumber(data.polynomial.table.value[i])]);
+           
+           price_profit.push([data.polynomial.table.price[i], data.polynomial.table.profit[i]]);
+           price_quantity.push([data.polynomial.table.price[i], data.polynomial.table.quantity[i]]);
+           price_value.push([data.polynomial.table.price[i], data.polynomial.table.value[i]]);
+           profit_value.push([data.polynomial.table.profit[i], data.polynomial.table.value[i]]);
         }
         user_point = data.polynomial.user_point;
         optimals = data.polynomial.optimals;
       break;
       case 'logarithmic':
         for(let i=0;i<data.logarithmic.table.price.length;i++){
-           price_profit.push([truncateNumber(data.logarithmic.table.price[i]), truncateNumber(data.logarithmic.table.profit[i])]);
-           price_quantity.push([truncateNumber(data.logarithmic.table.price[i]), truncateNumber(data.logarithmic.table.quantity[i])]);
-           price_value.push([truncateNumber(data.logarithmic.table.price[i]), truncateNumber(data.logarithmic.table.value[i])]);
-           profit_value.push([truncateNumber(data.logarithmic.table.profit[i]), truncateNumber(data.logarithmic.table.value[i])]);
+          //  price_profit.push([truncateNumber(data.logarithmic.table.price[i]), truncateNumber(data.logarithmic.table.profit[i])]);
+          //  price_quantity.push([truncateNumber(data.logarithmic.table.price[i]), truncateNumber(data.logarithmic.table.quantity[i])]);
+          //  price_value.push([truncateNumber(data.logarithmic.table.price[i]), truncateNumber(data.logarithmic.table.value[i])]);
+          //  profit_value.push([truncateNumber(data.logarithmic.table.profit[i]), truncateNumber(data.logarithmic.table.value[i])]);
+           
+           price_profit.push([data.logarithmic.table.price[i], data.logarithmic.table.profit[i]]);
+           price_quantity.push([data.logarithmic.table.price[i], data.logarithmic.table.quantity[i]]);
+           price_value.push([data.logarithmic.table.price[i], data.logarithmic.table.value[i]]);
+           profit_value.push([data.logarithmic.table.profit[i], data.logarithmic.table.value[i]]);
         }
         user_point = data.logarithmic.user_point;
         optimals = data.logarithmic.optimals;
@@ -470,26 +484,38 @@ export default () => {
       case 'price_profit':
         return ([
           {
-            x: truncateNumber(data.optimals.price[0]),
-            y: truncateNumber(data.optimals.profit[0]),
+            // x: truncateNumber(data.optimals.price[0]),
+            // y: truncateNumber(data.optimals.profit[0]),
+
+            x: data.optimals.price[0],
+            y: data.optimals.profit[0],
             text: 'MV = '+truncateNumber(data.optimals.price[0]),
             color: '#e67e22'
           },
           {
-            x: truncateNumber(data.optimals.price[1]),
-            y: truncateNumber(data.optimals.profit[1]),
+          //   x: truncateNumber(data.optimals.price[1]),
+          //   y: truncateNumber(data.optimals.profit[1]),
+            
+            x: data.optimals.price[1],
+            y: data.optimals.profit[1],
             text: 'Optimo = '+truncateNumber(data.optimals.price[1]),
             color: '#2ecc71'
           },
           {
-            x: truncateNumber(data.optimals.price[2]),
-            y: truncateNumber(data.optimals.profit[2]),
+            // x: truncateNumber(data.optimals.price[2]),
+            // y: truncateNumber(data.optimals.profit[2]),
+            
+            x: data.optimals.price[2],
+            y: data.optimals.profit[2],
             text: 'MR = '+truncateNumber(data.optimals.price[2]),
             color: '#e74c3c'
           },
           {
-            x: truncateNumber(data.user_point.price),
-            y: truncateNumber(data.user_point.profit),
+            // x: truncateNumber(data.user_point.price),
+            // y: truncateNumber(data.user_point.profit),
+
+            x: data.user_point.price,
+            y: data.user_point.profit,
             text: 'Punto usuario = '+truncateNumber(data.user_point.price),
             color: '#3498db'
           },
@@ -1295,7 +1321,7 @@ export default () => {
                     <InputLabel>Selecciona SKU</InputLabel>
                     <Select
                       //name={'totalSaleUnit'}
-                      label="Periodicidad"
+                      label="Selecciona SKU"
                       /*value={subcategory.totalSaleUnit}*/
                       onChange={(e)=>{
                         setData({...data, sku:e.target.value});
@@ -1472,7 +1498,7 @@ export default () => {
             <Grid item xs={6} style={{textAlign:'center'}}>
               <Paper 
                 variant="outlined"
-                style={{padding:'1em', overflow:'hidden'}}
+                style={{padding:'1em', overflow:'hidden', marginBottom:'2em'}}
               >
                 <div key={update}>
                   <Plot2

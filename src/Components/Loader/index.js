@@ -13,7 +13,7 @@ const animationMinute = keyframes`
 
 
 const Wrapper = styled.div`
-    width:3em;
+    width:5em;
     height:1.5em;
     animation: ${animationMinute} 2s linear infinite;
 `

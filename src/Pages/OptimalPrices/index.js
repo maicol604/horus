@@ -8,6 +8,7 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import styled from "styled-components";
+import Stack from '@mui/material/Stack';
 
 import Loader from '../../Components/Loader';
 import CustomDatePicker from '../../Components/CustomDatePicker';
@@ -78,7 +79,9 @@ const OptimalPrices = ({token}) => {
         data:null,
         loading: false,
         category:null,
-    })
+    });
+
+    const [values, setValues] = React.useState()
 
     const [categories, setCategories] = React.useState([]);
     const [subcategories, setSubcategories] = React.useState([]);
@@ -90,7 +93,7 @@ const OptimalPrices = ({token}) => {
     const getCategories = () => {
         
         let url = "https://pricing.demo4to.com/api/pricing.sku.category?access-token="+token;
-        console.log('getting categories')
+        //console.log('getting categories')
         fetch(url, {
             'Access-Control-Allow-Origin': '*',
             "Content-Type": "application/json",
@@ -174,6 +177,17 @@ const OptimalPrices = ({token}) => {
             if(result.data)
                 setTimeout(() => {
                     setChartData({...chartData, data: result.data, enviroment:result.data.env, loading: false});
+
+                    let values = result.data.subcategory_ids.map(i =>
+                        (i.sku_ids.map(j=>
+                                ({id:j.id, distribution:j.distribution, price:j.user_point.price})
+                            )
+                        )
+                    )
+
+                    //console.log('values',values);
+
+                    setValues(values);
                 }, 2000);
             else
                 setChartData({...chartData, loading:false});
@@ -184,22 +198,47 @@ const OptimalPrices = ({token}) => {
           });
     }
 
-    const getTableSimulation = (subcategory, month, enviroment) => {
-        //console.log( subcategory, month, enviroment.map(i=>(`&${i.key}=${i.value}`)).join(''))
-        let env='';
-        if(enviroment[0].value){
-            env = enviroment.map(i=>(`&${i.key}=${i.value}`)).join('');
+    const getTableSimulation = (v, enviroment) => {
+        
+        let distribution=v.map(i=>( i.map(j=>({[`d${j.id}`]:`${j.distribution}`+''})) )), daux=[];
+        let price=v.map(i=>( i.map(j=>({[`a${j.id}`]:`${j.price}`+''})) )), paux=[];
+
+        for(let i=0;i<distribution.length;i++){
+            daux=[...daux, ...distribution[i]]
+            paux=[...paux, ...price[i]]
         }
+
+        distribution = {};
+        price={};
+
+        for(let i=0;i<daux.length;i++){
+            distribution = {...distribution, ...daux[i]};
+            price = {...price, ...paux[i]};
+        }
+
+        let vaux = {...distribution, ...price};
+
+        let env={};
+        if(enviroment[0].value){
+            let eaux = enviroment.map(i=>({[`${i.key}`]:i.value+''}));
+            for(let i=0;i<eaux.length;i++){
+                env={...env, ...eaux[i]};
+            }
+        }
+
+        console.log({...vaux, ...env})
+
+
         let url;
-        console.log(subcategory!=='Todas')
-        if(subcategory!=='Todas'){
+        //console.log(chartData.subcategory!=='Todas')
+        if(chartData.subcategory!=='Todas'){
             console.log('here')
-            url = "https://pricing.demo4to.com/api/pricing.sku.subcategory/"+subcategory+"/get_month_table?access-token="+token+"&month="+month+env;
+            url = "https://pricing.demo4to.com/api/pricing.sku.subcategory/"+chartData.subcategory+"/get_month_table?access-token="+token+"&month="+chartData.month+"&values="+JSON.stringify({...vaux, ...env});
         }
         else{
-            url = "https://pricing.demo4to.com/api/pricing.sku.category/"+chartData.category+"/get_month_table?access-token="+token+"&month="+month+env;
+            url = "https://pricing.demo4to.com/api/pricing.sku.category/"+chartData.category+"/get_month_table?access-token="+token+"&month="+chartData.month+"&values="+JSON.stringify({...vaux, ...env});
         }
-        //console.log(url);
+        
         setChartData({...chartData, loading:true, data:null, enviroment:[{value:null},{value:null}]});
         fetch(url, {
             'Access-Control-Allow-Origin': '*',
@@ -208,7 +247,7 @@ const OptimalPrices = ({token}) => {
           })   
           .then(response => response.json())
           .then(result => {
-            //console.log('mensual',result.data);
+            console.log('mensual sim',result);
             if(result.data)
                 setTimeout(() => {
                     setChartData({...chartData, data: result.data, enviroment:result.data.env, loading: false});
@@ -220,6 +259,19 @@ const OptimalPrices = ({token}) => {
             console.log('error sub', error);
             setChartData({...chartData, loading:false});
           });
+    }
+
+    const handlePriceValues = (value, i, j) => {
+        let cpy = values.slice();
+        cpy[i][j] = {...cpy[i][j], price:value};
+        setValues(cpy);
+
+    }
+
+    const handleDistributionValues = (value, i, j) => {
+        let cpy = values.slice();
+        cpy[i][j] = {...cpy[i][j], distribution:value};
+        setValues(cpy);
     }
 
     return (
@@ -345,6 +397,7 @@ const OptimalPrices = ({token}) => {
             <></>
             }
             {chartData.data?
+            <>
             <Grid item xs={12}>
                 <Paper
                     variant="outlined"
@@ -354,30 +407,30 @@ const OptimalPrices = ({token}) => {
                         <table>
                             <tr>
                                 <th colspan="4"></th>
-                                <th colspan="4" className='titles'>MAXIMUN VALUES SALES</th>
+                                <th colspan="4" className='titles'>MAXIMUM VALUE SALES</th>
                                 <th></th>
                                 <th colspan="4" className='titles'>OPTIMAL PRICE POINT</th>
                                 <th></th>
-                                <th colspan="4" className='titles'>MAXIMUN PROFIT</th>
+                                <th colspan="4" className='titles'>MAXIMUM PROFIT</th>
                                 <th></th>
-                                <th colspan="5" className='titles'>LAST YEAR SCENARIO</th>
+                                <th colspan="5" className='titles'>LABORATORIO</th>
                             </tr>
                             <tr>
                                 <th></th>
                                 <th><span style={{opacity:'0'}}>--</span></th>
                                 <th style={{ backgroundColor:'#002060' }}><span style={{fontSize:'2.5em', color:'#fff'}}>e</span></th>
                                 <th><span style={{opacity:'0'}}>--</span></th>
-                                <th className='c1'>Price max sales</th>
+                                <th className='c1'><div style={{display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}><span>Price</span><span>Max sales</span></div></th>
                                 <th className='c1'>QTY</th>
                                 <th className='c1'>Sales</th>
                                 <th className='c1'>Profit</th>
                                 <th><span style={{opacity:'0'}}>--</span></th>
-                                <th className='c2'>Price optimals</th>
+                                <th className='c2'>Optimal price</th>
                                 <th className='c2'>QTY</th>
                                 <th className='c2'>Sales</th>
                                 <th className='c2'>Profit</th>
                                 <th><span style={{opacity:'0'}}>--</span></th>
-                                <th className='c3'>Price max profit</th>
+                                <th className='c3'><div style={{display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}><span>Price</span><span>Max profit</span></div></th>
                                 <th className='c3'>QTY</th>
                                 <th className='c3'>Sales</th>
                                 <th className='c3'>Profit</th>
@@ -389,7 +442,7 @@ const OptimalPrices = ({token}) => {
                                 <th className='c4'>Profit</th>
                             </tr>
                             {
-                                chartData.data.subcategory_ids.map(j=>(
+                                chartData.data.subcategory_ids.map((j, inde)=>(
                                     <>
                                         <td colspan="1"><span style={{display:'flex', padding:'.25em 1em'}} className='sub-t'>{j.name}</span></td>
                                         <td></td>
@@ -421,10 +474,10 @@ const OptimalPrices = ({token}) => {
                                                 <td><span style={{display:'flex',width:'max-content'}} className='numbers'>{formatNumber(truncateNumber(i.optimals.profit[2]))}</span></td>
                                                 <td></td>
                                                 <td><span style={{display:'flex',width:'max-content'}}>
-                                                    <input value={truncateNumber(i.user_point.price)} style={{width:'5em'}}/>
+                                                    <input onChange={(e)=>{handlePriceValues(e.target.value, inde, index)}} defaultValue={truncateNumber(i.user_point.price)} style={{width:'5em', textAlign:'center'}}/>
                                                 </span></td>
                                                 <td><span style={{display:'flex',width:'max-content'}}>
-                                                    <input value={truncateNumber(i.distribution)} style={{width:'7em'}}/>    
+                                                    <input onChange={(e)=>{handleDistributionValues(e.target.value, inde, index)}} defaultValue={truncateNumber(i.distribution)} style={{width:'7em', textAlign:'center'}}/>    
                                                 </span></td>
                                                 <td><span style={{display:'flex',width:'max-content'}} className='numbers'>{formatNumber(truncateNumber(i.user_point.quantity_kg))}</span></td>
                                                 <td><span style={{display:'flex',width:'max-content'}} className='numbers'>{formatNumber(truncateNumber(i.user_point.value))}</span></td>
@@ -439,6 +492,24 @@ const OptimalPrices = ({token}) => {
                     </TableWrapper>
                 </Paper>
             </Grid>
+            
+            <Grid item xs={12}>
+                <Paper
+                    variant="outlined"
+                    style={{padding:'1em', marginBottom: '2em'}}
+                >
+                    <div style={{display:'flex'}}>
+                        <Button color="primary"  variant='contained' style={{height:'3.5em', marginRight:'1em'}} onClick={()=>{getTableSimulation(values, chartData.enviroment)}} disabled={false}>
+                            Simular 
+                        </Button>
+                        <Button color="primary"  variant='contained' style={{height:'3.5em'}} onClick={()=>{}} disabled={true}>
+                            Guardar simulación
+                        </Button>
+                    </div>
+                    
+                </Paper>
+            </Grid>
+            </>
             :
             <></>
             }
