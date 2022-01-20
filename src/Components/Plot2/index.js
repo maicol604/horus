@@ -6,10 +6,11 @@ import Plot from 'react-plotly.js';
     // "test": "react-scripts test",
     // "eject": "react-scripts eject",
 
-export default ({ points, annotations, name, title, xaxisTitle='', yaxisTitle='' }) => {
+export default ({ points, annotations, name, title, xaxisTitle='', yaxisTitle='', extraCurves=[], names }) => {
 
     //console.log(...annotations.map(i=>({x:[i.x], y:[i.y], name:i.text, mode: 'markers', marker: { size: [10],}})))
-
+    console.log(extraCurves);
+    
     return (
         <Plot
             data={[
@@ -20,11 +21,12 @@ export default ({ points, annotations, name, title, xaxisTitle='', yaxisTitle=''
                     mode: 'lines+markers',
                     marker: {color: 'red'},
                 },*/
+                ...extraCurves.map((i, index)=>({...i, type: 'scatter', visible:'legendonly', name:names[index]})),
                 {
                     x: [...points.map(i=>i[0])], 
                     y: [...points.map(i=>i[1])], 
                     type: 'scatter',
-                    name:{name}
+                    name:name
                 },
                 ...annotations.map(i=>({x:[i.x], y:[i.y], name:i.text, mode: 'markers', marker: { size: [15], color:i.color?i.color:null}})),
             ]}

@@ -401,8 +401,35 @@ const OptimalPrices = ({token}) => {
             <Grid item xs={12}>
                 <Paper
                     variant="outlined"
-                    style={{padding:'1em', overflowX:'scroll'}}
+                    style={{padding:'1em', overflowX:'scroll', display: 'flex', alignItems:'flex-end'}}
                 >
+                    <div>
+                        <TableWrapper>
+                            <table>
+                                <tr>
+                                    <th colspan="4"></th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                </tr>
+                                {
+                                    chartData.data.subcategory_ids.map((j, inde)=>(
+                                        <>
+                                            <td colspan="1"><span style={{display:'flex', padding:'.25em 1em'}} className='sub-t'>{j.name}</span></td>
+                                            <td></td>
+                                            {
+                                            j.sku_ids.map((i, index)=>(
+                                                <tr key={index}>
+                                                    <td><span style={{display:'flex',width:'max-content'}}>{i.name}</span></td>
+                                                </tr>
+                                            ))
+                                            }
+                                        </>
+                                    ))
+                                }
+                            </table> 
+                        </TableWrapper>
+                    </div>
                     <TableWrapper>
                         <table>
                             <tr>

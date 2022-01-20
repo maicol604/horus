@@ -303,7 +303,8 @@ const Variables = ({category=null, subcategories=[], skus=[], brands=[], onChang
                     variant="outlined"
                 >
                     <SpreadSheetVariables
-                        
+                        initDate = {state.periodicity}
+                        periodicity={state.periodicityName}
                     />
                 </Paper>
             </Modal>

@@ -12,6 +12,10 @@ import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+
 import Typography from '@mui/material/Typography';
 
 import Accordion from '@mui/material/Accordion';
@@ -39,6 +43,7 @@ import TableComp from '../../Components/Table';
 import SnackBar from '../../Components/SnackBar';
 import CustomDatePicker from '../../Components/CustomDatePicker';
 import Loader from '../../Components/Loader';
+import SpeedDial from '../../Components/SpeedDial';
 
 import OptimalPrices from '../OptimalPrices';
 
@@ -109,11 +114,12 @@ export default () => {
     subcategories:[],
     simulation: null,
     price:'',
-    curve:'price_profit', 
+    curve:'price_quantity', 
     fun:'lineal',
     points:[],
     sku:null,
     month:null,
+    extraCurves:[]
   });
 
   const [bubbleData, setBubbleData] = React.useState({
@@ -131,7 +137,8 @@ export default () => {
     owners:[],
     brandSelected:null,
     ownerSelected:null,
-    filteredData:[]
+    filteredData:[],
+    groupBy:'id'
   });
 
   const [chartData2, setChart2Data] = React.useState({
@@ -139,7 +146,8 @@ export default () => {
     loading: false,
     subcategory:null,
     time:null,
-    xAxis:null
+    xAxis:null,
+    groupBy:'id'
   });
 
   const [subcategories, setSubcategories] = React.useState({
@@ -151,7 +159,7 @@ export default () => {
 
   const [update, setUpdate] = React.useState(1)
 
-  const [option, setOption] = React.useState(0);
+  const [option, setOption] = React.useState(50);
 
 
   const getSkus = (token, cb) => {
@@ -203,8 +211,11 @@ export default () => {
     let price_quantity = [];
     let price_value = [];
     let profit_value = [];
+    let quantity_value = [];
+    let quantity_profit = [];
     let user_point;
     let optimals;
+    let extraCurves=[{price_profit:[], price_quantity:[], price_value:[], profit_value:[], quantity_value:[], quantity_profit:[]}, {price_profit:[], price_quantity:[], price_value:[], profit_value:[], quantity_value:[], quantity_profit:[]}];
 
     switch(option){
       case 'lineal':
@@ -218,7 +229,30 @@ export default () => {
            price_quantity.push([data.lineal.table.price[i], data.lineal.table.quantity[i]]);
            price_value.push([data.lineal.table.price[i], data.lineal.table.value[i]]);
            profit_value.push([data.lineal.table.profit[i], data.lineal.table.value[i]]);
+           quantity_value.push([data.lineal.table.quantity[i], data.lineal.table.value[i]]);
+           quantity_profit.push([data.lineal.table.quantity[i], data.lineal.table.profit[i]]);
         }
+        
+        for(let i=0;i<data.polynomial.table.price.length;i++){
+          extraCurves[0].price_profit.push([data.polynomial.table.price[i], data.polynomial.table.profit[i]]);
+          extraCurves[0].price_quantity.push([data.polynomial.table.price[i], data.polynomial.table.quantity[i]]);
+          extraCurves[0].price_value.push([data.polynomial.table.price[i], data.polynomial.table.value[i]]);
+          extraCurves[0].profit_value.push([data.polynomial.table.profit[i], data.polynomial.table.value[i]]);
+          extraCurves[0].quantity_value.push([data.polynomial.table.quantity[i], data.polynomial.table.value[i]]);
+          extraCurves[0].quantity_profit.push([data.polynomial.table.quantity[i], data.polynomial.table.profit[i]]);
+        }
+
+
+        for(let i=0;i<data.logarithmic.table.price.length;i++){
+          extraCurves[1].price_profit.push([data.logarithmic.table.price[i], data.logarithmic.table.profit[i]]);
+          extraCurves[1].price_quantity.push([data.logarithmic.table.price[i], data.logarithmic.table.quantity[i]]);
+          extraCurves[1].price_value.push([data.logarithmic.table.price[i], data.logarithmic.table.value[i]]);
+          extraCurves[1].profit_value.push([data.logarithmic.table.profit[i], data.logarithmic.table.value[i]]);
+          extraCurves[1].quantity_value.push([data.logarithmic.table.quantity[i], data.logarithmic.table.value[i]]);
+          extraCurves[1].quantity_profit.push([data.logarithmic.table.quantity[i], data.logarithmic.table.profit[i]]);
+        }
+
+
         user_point = data.lineal.user_point;
         optimals = data.lineal.optimals;
       break;
@@ -233,7 +267,29 @@ export default () => {
            price_quantity.push([data.polynomial.table.price[i], data.polynomial.table.quantity[i]]);
            price_value.push([data.polynomial.table.price[i], data.polynomial.table.value[i]]);
            profit_value.push([data.polynomial.table.profit[i], data.polynomial.table.value[i]]);
+           quantity_value.push([data.polynomial.table.quantity[i], data.polynomial.table.value[i]]);
+           quantity_profit.push([data.polynomial.table.quantity[i], data.polynomial.table.profit[i]]);
         }
+        
+        for(let i=0;i<data.polynomial.table.price.length;i++){
+          extraCurves[0].price_profit.push([data.lineal.table.price[i], data.lineal.table.profit[i]]);
+          extraCurves[0].price_quantity.push([data.lineal.table.price[i], data.lineal.table.quantity[i]]);
+          extraCurves[0].price_value.push([data.lineal.table.price[i], data.lineal.table.value[i]]);
+          extraCurves[0].profit_value.push([data.lineal.table.profit[i], data.lineal.table.value[i]]);
+          extraCurves[0].quantity_value.push([data.lineal.table.quantity[i], data.lineal.table.value[i]]);
+          extraCurves[0].quantity_profit.push([data.lineal.table.quantity[i], data.lineal.table.profit[i]]);
+        }
+
+
+        for(let i=0;i<data.logarithmic.table.price.length;i++){
+          extraCurves[1].price_profit.push([data.logarithmic.table.price[i], data.logarithmic.table.profit[i]]);
+          extraCurves[1].price_quantity.push([data.logarithmic.table.price[i], data.logarithmic.table.quantity[i]]);
+          extraCurves[1].price_value.push([data.logarithmic.table.price[i], data.logarithmic.table.value[i]]);
+          extraCurves[1].profit_value.push([data.logarithmic.table.profit[i], data.logarithmic.table.value[i]]);
+          extraCurves[1].quantity_value.push([data.logarithmic.table.quantity[i], data.logarithmic.table.value[i]]);
+          extraCurves[1].quantity_profit.push([data.logarithmic.table.quantity[i], data.logarithmic.table.profit[i]]);
+        }
+
         user_point = data.polynomial.user_point;
         optimals = data.polynomial.optimals;
       break;
@@ -248,6 +304,27 @@ export default () => {
            price_quantity.push([data.logarithmic.table.price[i], data.logarithmic.table.quantity[i]]);
            price_value.push([data.logarithmic.table.price[i], data.logarithmic.table.value[i]]);
            profit_value.push([data.logarithmic.table.profit[i], data.logarithmic.table.value[i]]);
+           quantity_value.push([data.logarithmic.table.quantity[i], data.logarithmic.table.value[i]]);
+           quantity_profit.push([data.logarithmic.table.quantity[i], data.logarithmic.table.profit[i]]);
+        }
+
+        for(let i=0;i<data.polynomial.table.price.length;i++){
+          extraCurves[0].price_profit.push([data.lineal.table.price[i], data.lineal.table.profit[i]]);
+          extraCurves[0].price_quantity.push([data.lineal.table.price[i], data.lineal.table.quantity[i]]);
+          extraCurves[0].price_value.push([data.lineal.table.price[i], data.lineal.table.value[i]]);
+          extraCurves[0].profit_value.push([data.lineal.table.profit[i], data.lineal.table.value[i]]);
+          extraCurves[0].quantity_value.push([data.lineal.table.quantity[i], data.lineal.table.value[i]]);
+          extraCurves[0].quantity_profit.push([data.lineal.table.quantity[i], data.lineal.table.profit[i]]);
+        }
+
+
+        for(let i=0;i<data.logarithmic.table.price.length;i++){
+          extraCurves[1].price_profit.push([data.polynomial.table.price[i], data.polynomial.table.profit[i]]);
+          extraCurves[1].price_quantity.push([data.polynomial.table.price[i], data.polynomial.table.quantity[i]]);
+          extraCurves[1].price_value.push([data.polynomial.table.price[i], data.polynomial.table.value[i]]);
+          extraCurves[1].profit_value.push([data.polynomial.table.profit[i], data.polynomial.table.value[i]]);
+          extraCurves[1].quantity_value.push([data.polynomial.table.quantity[i], data.polynomial.table.value[i]]);
+          extraCurves[1].quantity_profit.push([data.polynomial.table.quantity[i], data.polynomial.table.profit[i]]);
         }
         user_point = data.logarithmic.user_point;
         optimals = data.logarithmic.optimals;
@@ -260,8 +337,11 @@ export default () => {
       price_quantity,
       price_value,
       profit_value,
+      quantity_value,
+      quantity_profit,
       user_point,
       optimals,
+      extraCurves
     })
   }
 
@@ -273,11 +353,11 @@ export default () => {
 
   const getCurve = (price, values, month) => {
     let val;
-    console.log(month)
+    //console.log(month)
     try {
       //console.log('{'+values.map(i=>(`${[i.key]}:${i.value}`)).join(',')+'}')
       val = ''+values.map(i=>(`${[i.key]}=${i.value}`)).join('&')+'';
-      console.log(val)
+      //console.log(val)
     } catch (error) {
       val = '';
     }
@@ -300,7 +380,7 @@ export default () => {
 
       setTimeout(() => {
         setLoading(false);
-        setData({...data, ...result.data, price: curve.user_point.price, optimals:curve.optimals, user_point: curve.user_point, simulation: {...result.data, user_point: curve.user_point, optimals:curve.optimals ,price_profit:curve.price_profit, price_quantity:curve.price_quantity, price_value:curve.price_value, profit_value:curve.profit_value, points:curve.price_quantity}})
+        setData({...data, ...result.data, extraCurves: curve.extraCurves, price: curve.user_point.price, optimals:curve.optimals, user_point: curve.user_point, simulation: {...result.data, user_point: curve.user_point, optimals:curve.optimals ,price_profit:curve.price_profit, price_quantity:curve.price_quantity, price_value:curve.price_value, profit_value:curve.profit_value, quantity_value:curve.quantity_value, quantity_profit:curve.quantity_profit, points:curve.price_quantity}})
       }, 2000);
     })
     .catch(error => {
@@ -364,8 +444,9 @@ export default () => {
     });
   }
 
-  const getChart = (t, subcategory, time, xAxis ) => {
-    let url = `https://pricing.demo4to.com/api/pricing.sku.subcategory/${subcategory}/get_historic_table?access-token=${t}&x_axis=${xAxis}&granularity=${time}&brand=brand_id&owner=owner_id`;
+  const getChart = (t, subcategory, time, xAxis, groupBy ) => {
+    
+    let url = `https://pricing.demo4to.com/api/pricing.sku.subcategory/${subcategory}/get_historic_table?access-token=${t}&x_axis=${xAxis}&granularity=${time}&brand=brand_id&owner=owner_id&groupby_key=${groupBy}`;
     //console.log(url, s)
     let requestOptions = {
       method: 'GET',
@@ -402,8 +483,8 @@ export default () => {
     });
   }
 
-  const getChart2 = (t, subcategory, time, xAxis ) => {
-    let url = `https://pricing.demo4to.com/api/pricing.sku.subcategory/${subcategory}/get_historic_complete?access-token=${t}&granularity=${time}`;
+  const getChart2 = (t, subcategory, time, xAxis, groupBy ) => {
+    let url = `https://pricing.demo4to.com/api/pricing.sku.subcategory/${subcategory}/get_historic_complete?access-token=${t}&granularity=${time}&groupby_key=${groupBy}`;
     //console.log(url, s)
     let requestOptions = {
       method: 'GET',
@@ -484,6 +565,33 @@ export default () => {
       case 'profit_value':
         //setData({...data, simulation:{...data.simulation, points:[...data.simulation.profit_value]}})
         return ([...data.simulation.profit_value]);
+      case 'quantity_value':
+        return ([...data.simulation.quantity_value]);
+      case 'quantity_profit':
+        return ([...data.simulation.quantity_profit]);
+    }
+    return [];
+  }
+
+  const getPointsExtraCurves = (option, d) => {
+    console.log(option)
+    switch(option){
+      case 'price_profit':
+        //setData({...data, simulation:{...data.simulation, points:[...data.simulation.price_profit]}})
+        return ([...d.price_profit]);
+      case 'price_quantity':
+        //setData({...data, simulation:{...data.simulation, points:[...data.simulation.price_quantity]}})
+        return ([...d.price_quantity]);
+      case 'price_value':
+        //setData({...data, simulation:{...data.simulation, points:[...data.simulation.price_value]}})
+        return ([...d.price_value]);
+      case 'profit_value':
+        //setData({...data, simulation:{...data.simulation, points:[...data.simulation.profit_value]}})
+        return ([...d.profit_value]);
+      case 'quantity_value':
+        return ([...d.quantity_value]);
+      case 'quantity_profit':
+        return ([...d.quantity_profit]);
     }
     return [];
   }
@@ -610,6 +718,60 @@ export default () => {
             color: '#3498db'
           },
         ]);
+      case 'quantity_value':
+        return ([
+          {
+            x: truncateNumber(data.optimals.quantity[0]),
+            y: truncateNumber(data.optimals.value[0]),
+            text: 'MV = '+truncateNumber(data.optimals.profit[0]),
+            color: '#e67e22'
+          },
+          {
+            x: truncateNumber(data.optimals.quantity[1]),
+            y: truncateNumber(data.optimals.value[1]),
+            text: 'Optimo = '+truncateNumber(data.optimals.profit[1]),
+            color: '#2ecc71'
+          },
+          {
+            x: truncateNumber(data.optimals.quantity[2]),
+            y: truncateNumber(data.optimals.value[2]),
+            text: 'MR = '+truncateNumber(data.optimals.profit[2]),
+            color: '#e74c3c'
+          },
+          {
+            x: truncateNumber(data.user_point.quantity),
+            y: truncateNumber(data.user_point.value),
+            text: 'Punto usuario = '+truncateNumber(data.user_point.profit),
+            color: '#3498db'
+          },
+        ]);
+      case 'quantity_profit':
+        return ([
+          {
+            x: data.optimals.quantity[0],
+            y: data.optimals.profit[0],
+            text: 'MV = '+truncateNumber(data.optimals.price[0]),
+            color: '#e67e22'
+          },
+          {
+            x: data.optimals.quantity[1],
+            y: data.optimals.profit[1],
+            text: 'Optimo = '+truncateNumber(data.optimals.price[1]),
+            color: '#2ecc71'
+          },
+          {
+            x: data.optimals.quantity[2],
+            y: data.optimals.profit[2],
+            text: 'MR = '+truncateNumber(data.optimals.price[2]),
+            color: '#e74c3c'
+          },
+          {
+            x: data.user_point.quantity,
+            y: data.user_point.profit,
+            text: 'Punto usuario = '+truncateNumber(data.user_point.price),
+            color: '#3498db'
+          },
+        ]);
       default:
         return ([])
     }
@@ -623,6 +785,10 @@ export default () => {
     }
     //console.log(aux)
     setChartData({...chartData, filteredData: aux});
+  }
+
+  const addCurve = (option) => {
+    
   }
 
   const getContent = () => {
@@ -1373,7 +1539,8 @@ export default () => {
                           setData({...data, fun:e.target.value, price: curve.user_point.price, optimals:curve.optimals, user_point: curve.user_point, simulation: {...data.simulation, user_point: curve.user_point, optimals:curve.optimals ,price_profit:curve.price_profit, price_quantity:curve.price_quantity, price_value:curve.price_value, profit_value:curve.profit_value, points:curve.price_quantity}})
                         } catch (error) {
                           setData({...data, fun:e.target.value});
-                        }}}
+                        }
+                      }}
                     >
                       <MenuItem value={'lineal'}>Lineal</MenuItem>
                       <MenuItem value={'polynomial'}>Polinomial</MenuItem>
@@ -1394,10 +1561,12 @@ export default () => {
                       }}
                       defaultValue="price_profit"
                     >
-                      <MenuItem value={'price_profit'}>Precio vs rentabilidad</MenuItem>
-                      <MenuItem value={'price_quantity'}>Precio vs cantidad</MenuItem>
-                      <MenuItem value={'price_value'}>Precio vs valor</MenuItem>
-                      <MenuItem value={'profit_value'}>Rentabilidad vs valor</MenuItem>
+                      <MenuItem value={'price_quantity'}>Precio - Cantidad</MenuItem>
+                      <MenuItem value={'price_profit'}>Precio - Rentabilidad</MenuItem>
+                      <MenuItem value={'price_value'}>Precio - Valor</MenuItem>
+                      <MenuItem value={'profit_value'}>Rentabilidad - Valor</MenuItem>
+                      <MenuItem value={'quantity_value'}>Cantidad - Valor</MenuItem>
+                      <MenuItem value={'quantity_profit'}>Cantidad - Rentabilidad</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
@@ -1517,19 +1686,28 @@ export default () => {
             <Grid item xs={6} style={{textAlign:'center'}}>
               <Paper 
                 variant="outlined"
-                style={{padding:'1em', overflow:'hidden', marginBottom:'2em'}}
+                style={{padding:'1em', overflow:'hidden', marginBottom:'4em'}}
               >
                 <div key={update}>
                   <Plot2
+                    extraCurves={data.extraCurves.map(i=>getPointsExtraCurves(data.curve, i)).map(i=>({x:i.map(j=>j[0]), y:i.map(j=>j[1])})).map(i=>({...i, name:'test'}))}
+                    names={data.fun==='lineal'?(['Polinomial', 'Logaritmica']):(data.fun==='polynomial'?(['Lineal', 'Logaritmica']):(['Lineal', 'Polinomial']))}
                     points={getPoints(data.curve)}
                     optimals={null}
                     annotations={getAnnotations(data.curve)}
-                    name={data.curve}
+                    name={data.fun}
                     title={''}
-                    xaxisTitle={data.curve.split('_')[0]==='price'?'Precio':'Rentabilidad'}
+                    xaxisTitle={data.curve.split('_')[0]==='profit'?'Rentabilidad':(data.curve.split('_')[0]==='quantity'?'Cantidad':(data.curve.split('_')[0]==='value'?'Valor':''))}
                     yaxisTitle={data.curve.split('_')[1]==='profit'?'Rentabilidad':(data.curve.split('_')[1]==='quantity'?'Cantidad':(data.curve.split('_')[1]==='value'?'Valor':''))}
                   />
                 </div>
+                {/* {<div>
+                  <FormGroup>
+                    {data.fun!=='lineal'?<FormControlLabel control={<Checkbox />} label="Lineal" />:<></>}
+                    {data.fun!=='polynomial'?<FormControlLabel control={<Checkbox />} label="Polinomial" />:<></>}
+                    {data.fun!=='logarithmic'?<FormControlLabel control={<Checkbox />} label="Logaritmica" />:<></>}
+                  </FormGroup>
+                </div>} */}
               </Paper>
             </Grid>
             </>
@@ -1548,6 +1726,12 @@ export default () => {
                 </Grid>
               }
             </>
+            }
+            {data.simulation?
+            <div style={{position:'fixed', right:'1em', bottom:'1em'}}>
+              <SpeedDial/>
+            </div>
+            :<></>
             }
           </Grid>
         )
@@ -1701,6 +1885,23 @@ export default () => {
                       </Select>
                     </FormControl>
                   </Grid>
+                  <Grid item xs={4}>
+                    <FormControl fullWidth>
+                      <InputLabel>Agrupar por</InputLabel>
+                      <Select
+                        label="Agrupar por"
+                        defaultValue={'id'}
+                        value={chartData.groupBy}
+                        onChange={(e)=>{
+                          setChartData({...chartData, groupBy:e.target.value})
+                        }}
+                      >
+                        <MenuItem value={'id'}>Sku</MenuItem>
+                        <MenuItem value={'brand_id'}>Marca</MenuItem>
+                        <MenuItem value={'owner_id'}>Fabricante</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
                    {/*<Grid item xs={4}>
                     {<FormControl fullWidth>
                       <InputLabel>Eje X</InputLabel>
@@ -1718,7 +1919,7 @@ export default () => {
                     </FormControl>}
                   </Grid> */}
                   <Grid item xs={4} style={{display: 'flex'}}>
-                    <Button onClick={()=>{getChart(auth.access_token, chartData.subcategory, chartData.time, chartData.xAxis);}} color='primary' variant='contained' size="large" disabled={!chartData.subcategory || !chartData.time || !chartData.xAxis} style={{height:'3.5em'}}>
+                    <Button onClick={()=>{console.log(chartData);getChart(auth.access_token, chartData.subcategory, chartData.time, chartData.xAxis, chartData.groupBy);}} color='primary' variant='contained' size="large" disabled={!chartData.subcategory || !chartData.time || !chartData.xAxis} style={{height:'3.5em'}}>
                       Ejecutar
                     </Button>
                   </Grid>
@@ -1737,66 +1938,66 @@ export default () => {
                 <></>
               }
               {
-                chartData.data?
-                  <Grid item xs={12}>
-                    <Paper
-                      variant="outlined"
-                      style={{padding:'1em'}}
-                    >
-                      <Grid container alignItems='flex-start' spacing={3}>
-                        <Grid item xs={4}>
-                          <FormControl fullWidth>
-                            <InputLabel>Seleccionar marca</InputLabel>
-                            <Select
-                              label="Seleccionar marca"
-                              value={chartData.brandSelected}
-                              key={chartData.brandSelected}
-                              onChange={(e)=>{
-                                setChartData({...chartData, brandSelected:e.target.value})
-                              }}
-                            >
-                              {
-                                chartData.brands.map(i=>(
-                                  <MenuItem value={i} key={i}>{i}</MenuItem>
-                                ))
-                              }
-                            </Select>
-                          </FormControl>
-                        </Grid>
-                        <Grid item xs={4}>
-                          <FormControl fullWidth>
-                            <InputLabel>Seleccionar fabricante</InputLabel>
-                            <Select
-                              label="Seleccionar fabricante"
-                              value={chartData.ownerSelected}
-                              key={chartData.ownerSelected}
-                              onChange={(e)=>{
-                                setChartData({...chartData, ownerSelected:e.target.value})
-                              }}
-                            >
-                              {
-                                chartData.owners.map(i=>(
-                                  <MenuItem value={i} key={i}>{i}</MenuItem>
-                                ))
-                              }
-                            </Select>
-                          </FormControl>
-                        </Grid>
-                        <Grid item xs={4} style={{display:'flex'}}>
-                          <Button onClick={()=>{filterData(chartData.ownerSelected, chartData.brandSelected)}} color='primary' variant='contained' size="large" style={{height:'3.5em'}}>
-                            Filtrar
-                          </Button>
-                        </Grid>
-                        <Grid item xs={4} style={{display:'flex'}}>
-                          <Button onClick={()=>{setChartData({...chartData, filteredData: chartData.data, brandSelected:null, ownerSelected:null})}} color='primary' variant='contained' size="large" style={{height:'3.5em'}}>
-                            Limpiar filtros
-                          </Button>
-                        </Grid>
-                      </Grid>
-                    </Paper>
-                  </Grid>
-                  :
-                  <></>
+                // chartData.data?
+                //   <Grid item xs={12}>
+                //     <Paper
+                //       variant="outlined"
+                //       style={{padding:'1em'}}
+                //     >
+                //       <Grid container alignItems='flex-start' spacing={3}>
+                //         <Grid item xs={4}>
+                //           <FormControl fullWidth>
+                //             <InputLabel>Seleccionar marca</InputLabel>
+                //             <Select
+                //               label="Seleccionar marca"
+                //               value={chartData.brandSelected}
+                //               key={chartData.brandSelected}
+                //               onChange={(e)=>{
+                //                 setChartData({...chartData, brandSelected:e.target.value})
+                //               }}
+                //             >
+                //               {
+                //                 chartData.brands.map(i=>(
+                //                   <MenuItem value={i} key={i}>{i}</MenuItem>
+                //                 ))
+                //               }
+                //             </Select>
+                //           </FormControl>
+                //         </Grid>
+                //         <Grid item xs={4}>
+                //           <FormControl fullWidth>
+                //             <InputLabel>Seleccionar fabricante</InputLabel>
+                //             <Select
+                //               label="Seleccionar fabricante"
+                //               value={chartData.ownerSelected}
+                //               key={chartData.ownerSelected}
+                //               onChange={(e)=>{
+                //                 setChartData({...chartData, ownerSelected:e.target.value})
+                //               }}
+                //             >
+                //               {
+                //                 chartData.owners.map(i=>(
+                //                   <MenuItem value={i} key={i}>{i}</MenuItem>
+                //                 ))
+                //               }
+                //             </Select>
+                //           </FormControl>
+                //         </Grid>
+                //         <Grid item xs={4} style={{display:'flex'}}>
+                //           <Button onClick={()=>{filterData(chartData.ownerSelected, chartData.brandSelected)}} color='primary' variant='contained' size="large" style={{height:'3.5em'}}>
+                //             Filtrar
+                //           </Button>
+                //         </Grid>
+                //         <Grid item xs={4} style={{display:'flex'}}>
+                //           <Button onClick={()=>{setChartData({...chartData, filteredData: chartData.data, brandSelected:null, ownerSelected:null})}} color='primary' variant='contained' size="large" style={{height:'3.5em'}}>
+                //             Limpiar filtros
+                //           </Button>
+                //         </Grid>
+                //       </Grid>
+                //     </Paper>
+                //   </Grid>
+                //   :
+                //   <></>
               }
               {
                 chartData.data?
@@ -1829,6 +2030,12 @@ export default () => {
                   :
                     <></>
                 )
+              }
+              {chartData.data?
+              <div style={{position:'fixed', right:'1em', bottom:'1em'}}>
+                <SpeedDial/>
+              </div>
+              :<></>
               }
           </Grid>
         )
@@ -1901,6 +2108,23 @@ export default () => {
                       </Select>
                     </FormControl>
                   </Grid>
+                  <Grid item xs={4}>
+                    <FormControl fullWidth>
+                      <InputLabel>Agrupar por</InputLabel>
+                      <Select
+                        label="Agrupar por"
+                        defaultValue={'id'}
+                        value={chartData.groupBy}
+                        onChange={(e)=>{
+                          setChartData({...chartData, groupBy:e.target.value})
+                        }}
+                      >
+                        <MenuItem value={'id'}>Sku</MenuItem>
+                        <MenuItem value={'brand_id'}>Marca</MenuItem>
+                        <MenuItem value={'owner_id'}>Fabricante</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
                     {/*<Grid item xs={4}>
                     {<FormControl fullWidth>
                       <InputLabel>Eje X</InputLabel>
@@ -1918,7 +2142,7 @@ export default () => {
                     </FormControl>}
                   </Grid> */}
                   <Grid item xs={4} style={{display: 'flex'}}>
-                    <Button onClick={()=>{getChart(auth.access_token, chartData.subcategory, chartData.time, chartData.xAxis);}} color='primary' variant='contained' size="large" disabled={!chartData.subcategory || !chartData.time || !chartData.xAxis} style={{height:'3.5em'}}>
+                    <Button onClick={()=>{getChart(auth.access_token, chartData.subcategory, chartData.time, chartData.xAxis, chartData.groupBy);}} color='primary' variant='contained' size="large" disabled={!chartData.subcategory || !chartData.time || !chartData.xAxis} style={{height:'3.5em'}}>
                       Ejecutar
                     </Button>
                   </Grid>
@@ -1937,66 +2161,66 @@ export default () => {
               }
               
               {
-                chartData.data?
-                  <Grid item xs={12}>
-                    <Paper
-                      variant="outlined"
-                      style={{padding:'1em'}}
-                    >
-                      <Grid container alignItems='flex-start' spacing={3}>
-                        <Grid item xs={4}>
-                          <FormControl fullWidth>
-                            <InputLabel>Seleccionar marca</InputLabel>
-                            <Select
-                              label="Seleccionar marca"
-                              value={chartData.brandSelected}
-                              key={chartData.brandSelected}
-                              onChange={(e)=>{
-                                setChartData({...chartData, brandSelected:e.target.value})
-                              }}
-                            >
-                              {
-                                chartData.brands.map(i=>(
-                                  <MenuItem value={i} key={i}>{i}</MenuItem>
-                                ))
-                              }
-                            </Select>
-                          </FormControl>
-                        </Grid>
-                        <Grid item xs={4}>
-                          <FormControl fullWidth>
-                            <InputLabel>Seleccionar fabricante</InputLabel>
-                            <Select
-                              label="Seleccionar fabricante"
-                              value={chartData.ownerSelected}
-                              key={chartData.ownerSelected}
-                              onChange={(e)=>{
-                                setChartData({...chartData, ownerSelected:e.target.value})
-                              }}
-                            >
-                              {
-                                chartData.owners.map(i=>(
-                                  <MenuItem value={i} key={i}>{i}</MenuItem>
-                                ))
-                              }
-                            </Select>
-                          </FormControl>
-                        </Grid>
-                        <Grid item xs={4} style={{display:'flex'}}>
-                          <Button onClick={()=>{filterData(chartData.ownerSelected, chartData.brandSelected)}} color='primary' variant='contained' size="large" style={{height:'3.5em'}}>
-                            Filtrar
-                          </Button>
-                        </Grid>
-                        <Grid item xs={4} style={{display:'flex'}}>
-                          <Button onClick={()=>{setChartData({...chartData, filteredData: chartData.data, brandSelected:null, ownerSelected:null})}} color='primary' variant='contained' size="large" style={{height:'3.5em'}}>
-                            Limpiar filtros
-                          </Button>
-                        </Grid>
-                      </Grid>
-                    </Paper>
-                  </Grid>
-                  :
-                  <></>
+                // chartData.data?
+                //   <Grid item xs={12}>
+                //     <Paper
+                //       variant="outlined"
+                //       style={{padding:'1em'}}
+                //     >
+                //       <Grid container alignItems='flex-start' spacing={3}>
+                //         <Grid item xs={4}>
+                //           <FormControl fullWidth>
+                //             <InputLabel>Seleccionar marca</InputLabel>
+                //             <Select
+                //               label="Seleccionar marca"
+                //               value={chartData.brandSelected}
+                //               key={chartData.brandSelected}
+                //               onChange={(e)=>{
+                //                 setChartData({...chartData, brandSelected:e.target.value})
+                //               }}
+                //             >
+                //               {
+                //                 chartData.brands.map(i=>(
+                //                   <MenuItem value={i} key={i}>{i}</MenuItem>
+                //                 ))
+                //               }
+                //             </Select>
+                //           </FormControl>
+                //         </Grid>
+                //         <Grid item xs={4}>
+                //           <FormControl fullWidth>
+                //             <InputLabel>Seleccionar fabricante</InputLabel>
+                //             <Select
+                //               label="Seleccionar fabricante"
+                //               value={chartData.ownerSelected}
+                //               key={chartData.ownerSelected}
+                //               onChange={(e)=>{
+                //                 setChartData({...chartData, ownerSelected:e.target.value})
+                //               }}
+                //             >
+                //               {
+                //                 chartData.owners.map(i=>(
+                //                   <MenuItem value={i} key={i}>{i}</MenuItem>
+                //                 ))
+                //               }
+                //             </Select>
+                //           </FormControl>
+                //         </Grid>
+                //         <Grid item xs={4} style={{display:'flex'}}>
+                //           <Button onClick={()=>{filterData(chartData.ownerSelected, chartData.brandSelected)}} color='primary' variant='contained' size="large" style={{height:'3.5em'}}>
+                //             Filtrar
+                //           </Button>
+                //         </Grid>
+                //         <Grid item xs={4} style={{display:'flex'}}>
+                //           <Button onClick={()=>{setChartData({...chartData, filteredData: chartData.data, brandSelected:null, ownerSelected:null})}} color='primary' variant='contained' size="large" style={{height:'3.5em'}}>
+                //             Limpiar filtros
+                //           </Button>
+                //         </Grid>
+                //       </Grid>
+                //     </Paper>
+                //   </Grid>
+                //   :
+                //   <></>
               }
               {
                 chartData.data?
@@ -2036,6 +2260,12 @@ export default () => {
                   :
                     <></>
                 )
+              }
+              {chartData.data?
+              <div style={{position:'fixed', right:'1em', bottom:'1em'}}>
+                <SpeedDial/>
+              </div>
+              :<></>
               }
           </Grid>
         )
@@ -2108,6 +2338,23 @@ export default () => {
                       </Select>
                     </FormControl>
                   </Grid>
+                  <Grid item xs={4}>
+                    <FormControl fullWidth>
+                      <InputLabel>Agrupar por</InputLabel>
+                      <Select
+                        label="Agrupar por"
+                        defaultValue={'id'}
+                        value={chartData2.groupBy}
+                        onChange={(e)=>{
+                          setChartData({...chartData2, groupBy:e.target.value})
+                        }}
+                      >
+                        <MenuItem value={'id'}>Sku</MenuItem>
+                        <MenuItem value={'brand_id'}>Marca</MenuItem>
+                        <MenuItem value={'owner_id'}>Fabricante</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
                     {/*<Grid item xs={4}>
                     {<FormControl fullWidth>
                       <InputLabel>Eje X</InputLabel>
@@ -2126,7 +2373,7 @@ export default () => {
                   </Grid> */}
                   <Grid item xs={4} style={{display: 'flex'}}>
                     <Button onClick={()=>{
-                        getChart2(auth.access_token, chartData2.subcategory, chartData2.time, chartData2.xAxis);
+                        getChart2(auth.access_token, chartData2.subcategory, chartData2.time, chartData2.xAxis, chartData2.groupBy);
                       }} 
                       color='primary' 
                       variant='contained' 
@@ -2188,6 +2435,12 @@ export default () => {
                   :
                     <></>
                 )
+              }
+              {chartData2.data?
+              <div style={{position:'fixed', right:'1em', bottom:'1em'}}>
+                <SpeedDial/>
+              </div>
+              :<></>
               }
           </Grid>
         )
@@ -2260,6 +2513,23 @@ export default () => {
                       </Select>
                     </FormControl>
                   </Grid>
+                  <Grid item xs={4}>
+                    <FormControl fullWidth>
+                      <InputLabel>Agrupar por</InputLabel>
+                      <Select
+                        label="Agrupar por"
+                        defaultValue={'id'}
+                        value={chartData.groupBy}
+                        onChange={(e)=>{
+                          setChartData({...chartData, groupBy:e.target.value})
+                        }}
+                      >
+                        <MenuItem value={'id'}>Sku</MenuItem>
+                        <MenuItem value={'brand_id'}>Marca</MenuItem>
+                        <MenuItem value={'owner_id'}>Fabricante</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
                    {/*<Grid item xs={4}>
                     {<FormControl fullWidth>
                       <InputLabel>Eje X</InputLabel>
@@ -2277,7 +2547,7 @@ export default () => {
                     </FormControl>}
                   </Grid> */}
                   <Grid item xs={4} style={{display: 'flex'}}>
-                    <Button onClick={()=>{getChart(auth.access_token, chartData.subcategory, chartData.time, chartData.xAxis);}} color='primary' variant='contained' size="large" disabled={!chartData.subcategory || !chartData.time || !chartData.xAxis} style={{height:'3.5em'}}>
+                    <Button onClick={()=>{getChart(auth.access_token, chartData.subcategory, chartData.time, chartData.xAxis, chartData.groupBy);}} color='primary' variant='contained' size="large" disabled={!chartData.subcategory || !chartData.time || !chartData.xAxis} style={{height:'3.5em'}}>
                       Ejecutar
                     </Button>
                   </Grid>
@@ -2326,6 +2596,12 @@ export default () => {
                   :
                     <></>
                 )
+              }
+              {chartData.data?
+              <div style={{position:'fixed', right:'1em', bottom:'1em'}}>
+                <SpeedDial/>
+              </div>
+              :<></>
               }
           </Grid>
         )
@@ -2536,5 +2812,9 @@ export default () => {
 }
 
 /*
-  guardar escenario
+  dejar fijo el nombre en las tablas
+  periodicidad y primera medicion
+  guardar graficas 
+  fechas variables de entorno
+
 */
