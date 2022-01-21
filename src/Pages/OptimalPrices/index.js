@@ -16,7 +16,13 @@ import CustomDatePicker from '../../Components/CustomDatePicker';
 const borderColor = '#fff';
 
 const TableWrapper = styled.div`
-    max-height: 50vh;
+    //max-height: 50vh;
+    position: sticky;
+    padding-top: 4.5em;
+    left: 0;
+    height:max-content;
+    z-index:1;
+    background-color: #fff;
     table{
         border: 1px solid ${borderColor};
         td{
@@ -69,6 +75,64 @@ const TableWrapper = styled.div`
         background-color: #0070c0;
         color:#fff;
     }
+`;
+const TableWrapper2 = styled.div`
+//max-height: 50vh;
+//overflow-x: scroll;
+position: relative;
+table{
+    border: 1px solid ${borderColor};
+    width: 100%;
+    td{
+        padding: 0; 
+        margin: 0;
+        border: 1px solid ${borderColor};
+        //padding: 0 2em 0 2em;
+        .numbers{
+            padding: 0 2em 0 2em;
+            box-sizing:border-box;
+            width: 100% !important;
+            display:flex;
+            justify-content:center;
+        }
+    }
+    tr{
+        border: 1px solid ${borderColor};
+        th{
+            background-color: ${borderColor};
+            border: 1px solid ${borderColor};
+            border-collapse: collapse;
+        }
+        .titles{
+            background-color: #fff;
+            border: 1px solid #000;
+        }
+    }
+}
+.c1{
+    background-color: #a6a6a6;
+    color: #fff;
+}
+.c2{
+    background-color: #8ea9db;
+    color: #fff;
+}
+.c3{
+    background-color: #305496;
+    color: #fff;
+}
+.c4{
+    background-color: #000;
+    color: #fff;
+}
+.sub-t{
+    background-color: #8497b0;
+    color:#fff;
+}
+.e{
+    background-color: #0070c0;
+    color:#fff;
+}
 `;
 
 const OptimalPrices = ({token}) => {
@@ -226,7 +290,7 @@ const OptimalPrices = ({token}) => {
             }
         }
 
-        console.log({...vaux, ...env})
+        //console.log({...vaux, ...env})
 
 
         let url;
@@ -239,7 +303,7 @@ const OptimalPrices = ({token}) => {
             url = "https://pricing.demo4to.com/api/pricing.sku.category/"+chartData.category+"/get_month_table?access-token="+token+"&month="+chartData.month+"&values="+JSON.stringify({...vaux, ...env});
         }
         
-        setChartData({...chartData, loading:true, data:null, enviroment:[{value:null},{value:null}]});
+        setChartData({...chartData, loading:true, enviroment:[{value:null},{value:null}]});
         fetch(url, {
             'Access-Control-Allow-Origin': '*',
             "Content-Type": "application/json",
@@ -346,7 +410,7 @@ const OptimalPrices = ({token}) => {
                 </Paper>
             </Grid>
             {
-                chartData.loading?
+                chartData.loading && !chartData.data?
                 <div style={{width:'100%', height:'40vh', display:'flex', justifyContent:'center', alignItems:'center'}}>
                     <Loader/>
                 </div>
@@ -401,39 +465,45 @@ const OptimalPrices = ({token}) => {
             <Grid item xs={12}>
                 <Paper
                     variant="outlined"
-                    style={{padding:'1em', overflowX:'scroll', display: 'flex', alignItems:'flex-end'}}
+                    style={{maxHeight:'50vh', overflow: 'hidden', display: 'flex', position:'relative'}}
                 >
-                    <div>
-                        <TableWrapper>
-                            <table>
-                                <tr>
-                                    <th colspan="4"></th>
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                </tr>
-                                {
-                                    chartData.data.subcategory_ids.map((j, inde)=>(
-                                        <>
-                                            <td colspan="1"><span style={{display:'flex', padding:'.25em 1em'}} className='sub-t'>{j.name}</span></td>
-                                            <td></td>
-                                            {
-                                            j.sku_ids.map((i, index)=>(
-                                                <tr key={index}>
-                                                    <td><span style={{display:'flex',width:'max-content'}}>{i.name}</span></td>
-                                                </tr>
-                                            ))
-                                            }
-                                        </>
-                                    ))
-                                }
-                            </table> 
-                        </TableWrapper>
-                    </div>
-                    <TableWrapper>
+                    {chartData.loading && chartData.data?
+                        <div style={{width:'100%', position:'absolute', zIndex:'5', backgroundColor:'rgba(0,0,0,.5)', height: '50vh'}}>
+                            
+                        </div>
+                        :
+                        <></>
+                    }
+                    <div style={{position: 'relative', overflow:'scroll', display:'flex'}}>
+                    <TableWrapper style={{}}>
                         <table>
                             <tr>
                                 <th colspan="4"></th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                            </tr>
+                            {
+                                chartData.data.subcategory_ids.map((j, inde)=>(
+                                    <>
+                                        <td colspan="1"><span style={{display:'flex', padding:'.25em 1em'}} className='sub-t'>{j.name}</span></td>
+                                        <td></td>
+                                        {
+                                        j.sku_ids.map((i, index)=>(
+                                            <tr key={index}>
+                                                <td><span style={{display:'flex',width:'max-content'}}>{i.name}</span></td>
+                                            </tr>
+                                        ))
+                                        }
+                                    </>
+                                ))
+                            }
+                        </table> 
+                    </TableWrapper>
+                    <TableWrapper2 style={{flex: '1 0 auto'}}>
+                        <table>
+                            <tr>
+                                <th></th>
                                 <th colspan="4" className='titles'>MAXIMUM VALUE SALES</th>
                                 <th></th>
                                 <th colspan="4" className='titles'>OPTIMAL PRICE POINT</th>
@@ -443,7 +513,6 @@ const OptimalPrices = ({token}) => {
                                 <th colspan="5" className='titles'>LABORATORIO</th>
                             </tr>
                             <tr>
-                                <th></th>
                                 <th><span style={{opacity:'0'}}>--</span></th>
                                 <th style={{ backgroundColor:'#002060' }}><span style={{fontSize:'2.5em', color:'#fff'}}>e</span></th>
                                 <th><span style={{opacity:'0'}}>--</span></th>
@@ -471,7 +540,6 @@ const OptimalPrices = ({token}) => {
                             {
                                 chartData.data.subcategory_ids.map((j, inde)=>(
                                     <>
-                                        <td colspan="1"><span style={{display:'flex', padding:'.25em 1em'}} className='sub-t'>{j.name}</span></td>
                                         <td></td>
                                         <td className='e'>{formatNumber(truncateNumber(j.elasticity))}</td>
                                         <td></td>
@@ -481,7 +549,6 @@ const OptimalPrices = ({token}) => {
                                         {
                                         j.sku_ids.map((i, index)=>(
                                             <tr key={index}>
-                                                <td><span style={{display:'flex',width:'max-content'}}>{i.name}</span></td>
                                                 <td></td>
                                                 <td><span style={{display:'flex',width:'max-content'}} className='numbers'>{formatNumber(truncateNumber(i.elasticity))}</span></td>
                                                 <td></td>
@@ -516,7 +583,8 @@ const OptimalPrices = ({token}) => {
                                 ))
                             }
                         </table> 
-                    </TableWrapper>
+                    </TableWrapper2>
+                    </div>
                 </Paper>
             </Grid>
             
