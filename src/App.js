@@ -9,7 +9,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import Header from './Containers/Header';
 
 import Categories from './Pages/Categories';
-import Dashboard from './Pages/Dashboard';
+import TradeSpend from './Pages/TradeSpend';
 import Simulator from './Pages/Simulator';
 
 import gears from './Assets/Img/P2.png';
@@ -51,11 +51,12 @@ function App() {
             (render==='2'?
             <Simulator />
             :
-            <div style={{width:'100%', display:'flex', justifyContent:'center'}}>
-              <div style={{width:'15em', marginTop:'10em'}}>
-                <img src={gears} alt='' style={{width:'100%'}}/>
-              </div>
-            </div>
+            // <div style={{width:'100%', display:'flex', justifyContent:'center'}}>
+            //   <div style={{width:'15em', marginTop:'10em'}}>
+            //     <img src={gears} alt='' style={{width:'100%'}}/>
+            //   </div>
+            // </div>
+            <TradeSpend/>
             )
           }
         {/* {<BrowserRouter>

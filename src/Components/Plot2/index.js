@@ -6,10 +6,10 @@ import Plot from 'react-plotly.js';
     // "test": "react-scripts test",
     // "eject": "react-scripts eject",
 
-export default ({ points, annotations, name, title, xaxisTitle='', yaxisTitle='', extraCurves=[], names }) => {
+const Plot2 = ({ points, annotations, name, title, xaxisTitle='', yaxisTitle='', extraCurves=[], names }) => {
 
     //console.log(...annotations.map(i=>({x:[i.x], y:[i.y], name:i.text, mode: 'markers', marker: { size: [10],}})))
-    console.log(extraCurves);
+    //console.log(extraCurves);
     
     return (
         <Plot
@@ -30,10 +30,12 @@ export default ({ points, annotations, name, title, xaxisTitle='', yaxisTitle=''
                 },
                 ...annotations.map(i=>({x:[i.x], y:[i.y], name:i.text, mode: 'markers', marker: { size: [15], color:i.color?i.color:null}})),
             ]}
-            layout={{title: title, width:'100%', xaxis: {title: {text: xaxisTitle}}, yaxis: {title: {text: yaxisTitle}}}}
+            layout={{legend:{bgcolor: 'rgba(111, 209, 176, .25)', orientation:'h'}, title: title, width:'100%', xaxis: {title: {text: xaxisTitle}}, yaxis: {title: {text: yaxisTitle}}}}
         />
     );
   
 }
+
+export default Plot2;
 
 //nombre de ejes

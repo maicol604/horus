@@ -21,7 +21,7 @@ const TableWrapper = styled.div`
     padding-top: 4.5em;
     left: 0;
     height:max-content;
-    z-index:1;
+    z-index:2;
     background-color: #fff;
     table{
         border: 1px solid ${borderColor};
@@ -107,6 +107,15 @@ table{
             background-color: #fff;
             border: 1px solid #000;
         }
+    }
+    th{
+        position: sticky;
+        top: 0;
+        z-index: 1; 
+        background: #fff; 
+    }
+    .second th{
+        top: 1.75em;
     }
 }
 .c1{
@@ -501,8 +510,11 @@ const OptimalPrices = ({token}) => {
                         </table> 
                     </TableWrapper>
                     <TableWrapper2 style={{flex: '1 0 auto'}}>
+
                         <table>
                             <tr>
+                                <th></th>
+                                <th></th>
                                 <th></th>
                                 <th colspan="4" className='titles'>MAXIMUM VALUE SALES</th>
                                 <th></th>
@@ -512,7 +524,7 @@ const OptimalPrices = ({token}) => {
                                 <th></th>
                                 <th colspan="5" className='titles'>LABORATORIO</th>
                             </tr>
-                            <tr>
+                            <tr className='second'>
                                 <th><span style={{opacity:'0'}}>--</span></th>
                                 <th style={{ backgroundColor:'#002060' }}><span style={{fontSize:'2.5em', color:'#fff'}}>e</span></th>
                                 <th><span style={{opacity:'0'}}>--</span></th>

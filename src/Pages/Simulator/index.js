@@ -416,7 +416,7 @@ export default () => {
       //console.log('bubples',result)
       //console.log([{color:'', id:'test', name:'', x:-5, y:0, z:0},...result.data.filter((element, index) => index < result.data.length - 1)])
       let bubbles = result.data.map(i=>({...i, x:i.x_axis, y:i.y_axis, z:i.z_axis, name:i.name+' (SOM:'+truncateNumber(i.som)+')'}));
-      bubbles.pop();
+      //bubbles.pop();
       //console.log(bubbles)
       bubbles = sort_by_key(bubbles, 'z').reverse();
       //console.log(bubbles)
@@ -462,7 +462,7 @@ export default () => {
       console.log('pie',result)
       //console.log([{color:'', id:'test', name:'', x:-5, y:0, z:0},...result.data.filter((element, index) => index < result.data.length - 1)])
       let chart = result.data.map(i=>({...i, x:i.x_axis}));
-      chart.pop();
+      //chart.pop();
       //console.log(bubbles)
       //console.log(chart)
       
@@ -500,7 +500,7 @@ export default () => {
       console.log('chart 2',result)
       //console.log([{color:'', id:'test', name:'', x:-5, y:0, z:0},...result.data.filter((element, index) => index < result.data.length - 1)])
       let chart = result.data.map(i=>({...i, x:i.x_axis}));
-      chart.pop();
+      //chart.pop();
       //console.log(bubbles)
       //console.log(chart)
       
@@ -785,10 +785,6 @@ export default () => {
     }
     //console.log(aux)
     setChartData({...chartData, filteredData: aux});
-  }
-
-  const addCurve = (option) => {
-    
   }
 
   const getContent = () => {
@@ -1697,7 +1693,7 @@ export default () => {
                     annotations={getAnnotations(data.curve)}
                     name={data.fun}
                     title={''}
-                    xaxisTitle={data.curve.split('_')[0]==='profit'?'Rentabilidad':(data.curve.split('_')[0]==='quantity'?'Cantidad':(data.curve.split('_')[0]==='value'?'Valor':''))}
+                    xaxisTitle={data.curve.split('_')[0]==='profit'?'Rentabilidad':(data.curve.split('_')[0]==='quantity'?'Cantidad':(data.curve.split('_')[0]==='value'?'Valor':(data.curve.split('_')[0]==='price'?'Precio':'')))}
                     yaxisTitle={data.curve.split('_')[1]==='profit'?'Rentabilidad':(data.curve.split('_')[1]==='quantity'?'Cantidad':(data.curve.split('_')[1]==='value'?'Valor':''))}
                   />
                 </div>
@@ -2125,22 +2121,6 @@ export default () => {
                       </Select>
                     </FormControl>
                   </Grid>
-                    {/*<Grid item xs={4}>
-                    {<FormControl fullWidth>
-                      <InputLabel>Eje X</InputLabel>
-                      <Select
-                        label="Seleccionar Variables"
-                        value={subcategory.totalSaleUnit}
-                        onChange={handleInputChangeSubcategories}
-                      >
-                        <MenuItem value={'Rolling Year'}>Rolling Year</MenuItem>
-                        <MenuItem value={'Full Year'}>Full Year</MenuItem>
-                        <MenuItem value={'Mensual'}>Mensual</MenuItem>
-                        <MenuItem value={'Semestral'}>Semestral</MenuItem>
-                        <MenuItem value={'Trimestral'}>Trimestral</MenuItem>
-                      </Select>
-                    </FormControl>}
-                  </Grid> */}
                   <Grid item xs={4} style={{display: 'flex'}}>
                     <Button onClick={()=>{getChart(auth.access_token, chartData.subcategory, chartData.time, chartData.xAxis, chartData.groupBy);}} color='primary' variant='contained' size="large" disabled={!chartData.subcategory || !chartData.time || !chartData.xAxis} style={{height:'3.5em'}}>
                       Ejecutar
@@ -2160,68 +2140,6 @@ export default () => {
                 <></>
               }
               
-              {
-                // chartData.data?
-                //   <Grid item xs={12}>
-                //     <Paper
-                //       variant="outlined"
-                //       style={{padding:'1em'}}
-                //     >
-                //       <Grid container alignItems='flex-start' spacing={3}>
-                //         <Grid item xs={4}>
-                //           <FormControl fullWidth>
-                //             <InputLabel>Seleccionar marca</InputLabel>
-                //             <Select
-                //               label="Seleccionar marca"
-                //               value={chartData.brandSelected}
-                //               key={chartData.brandSelected}
-                //               onChange={(e)=>{
-                //                 setChartData({...chartData, brandSelected:e.target.value})
-                //               }}
-                //             >
-                //               {
-                //                 chartData.brands.map(i=>(
-                //                   <MenuItem value={i} key={i}>{i}</MenuItem>
-                //                 ))
-                //               }
-                //             </Select>
-                //           </FormControl>
-                //         </Grid>
-                //         <Grid item xs={4}>
-                //           <FormControl fullWidth>
-                //             <InputLabel>Seleccionar fabricante</InputLabel>
-                //             <Select
-                //               label="Seleccionar fabricante"
-                //               value={chartData.ownerSelected}
-                //               key={chartData.ownerSelected}
-                //               onChange={(e)=>{
-                //                 setChartData({...chartData, ownerSelected:e.target.value})
-                //               }}
-                //             >
-                //               {
-                //                 chartData.owners.map(i=>(
-                //                   <MenuItem value={i} key={i}>{i}</MenuItem>
-                //                 ))
-                //               }
-                //             </Select>
-                //           </FormControl>
-                //         </Grid>
-                //         <Grid item xs={4} style={{display:'flex'}}>
-                //           <Button onClick={()=>{filterData(chartData.ownerSelected, chartData.brandSelected)}} color='primary' variant='contained' size="large" style={{height:'3.5em'}}>
-                //             Filtrar
-                //           </Button>
-                //         </Grid>
-                //         <Grid item xs={4} style={{display:'flex'}}>
-                //           <Button onClick={()=>{setChartData({...chartData, filteredData: chartData.data, brandSelected:null, ownerSelected:null})}} color='primary' variant='contained' size="large" style={{height:'3.5em'}}>
-                //             Limpiar filtros
-                //           </Button>
-                //         </Grid>
-                //       </Grid>
-                //     </Paper>
-                //   </Grid>
-                //   :
-                //   <></>
-              }
               {
                 chartData.data?
                   <Grid item xs={12}>
@@ -2245,7 +2163,7 @@ export default () => {
                             label:i.name
                           }))
                         ]}
-                        labels={['SKUs']}
+                        labels={[chartData.groupBy==='id'?'SKUs':(chartData.groupBy==='brand_id'?'Marca':chartData.groupBy==='owner_id'?'Fabricante':'')]}
                       />
                     </Paper>
                   </Grid>

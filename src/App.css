@@ -92,7 +92,10 @@
 
 .js-plotly-plot .plotly .modebar{
   position: absolute;
-  left: 10em;
+  left: 0em;
+}
+.js-plotly-plot .plotly .main-svg{
+  margin-top: 2em;
 }
 .modebar-group:last-child .modebar-btn.plotlyjsicon.modebar-btn--logo{
   width: 5em;
