@@ -446,7 +446,7 @@ export default () => {
 
   const getChart = (t, subcategory, time, xAxis, groupBy ) => {
     
-    let url = `https://pricing.demo4to.com/api/pricing.sku.subcategory/${subcategory}/get_historic_table?access-token=${t}&x_axis=${xAxis}&granularity=${time}&brand=brand_id&owner=owner_id&groupby_key=${groupBy}`;
+    let url = `https://pricing.demo4to.com/api/pricing.sku.subcategory/${subcategory}/get_pie_chart?access-token=${t}&variable=${xAxis}&granularity=${time}&groupby_key=${groupBy}`;
     //console.log(url, s)
     let requestOptions = {
       method: 'GET',
@@ -461,7 +461,7 @@ export default () => {
     .then(result => {
       console.log('pie',result)
       //console.log([{color:'', id:'test', name:'', x:-5, y:0, z:0},...result.data.filter((element, index) => index < result.data.length - 1)])
-      let chart = result.data.map(i=>({...i, x:i.x_axis}));
+      let chart = result.data.map(i=>({...i, x:i.variable}));
       //chart.pop();
       //console.log(bubbles)
       //console.log(chart)
@@ -1874,7 +1874,7 @@ export default () => {
                         <MenuItem value={'elasticity'}>Elasticidad</MenuItem>
                         <MenuItem value={'sale_values'}>Venta valor</MenuItem>
                         <MenuItem value={'sale_kg'}>Venta en Kg</MenuItem>
-                        <MenuItem value={'sale_units'}>Venta en unidades</MenuItem> 
+                        {/* {<MenuItem value={'sale_units'}>Venta en unidades</MenuItem> } */}
                         <MenuItem value={'price_units'}>Precio unidad</MenuItem>
                         <MenuItem value={'price_kg'}>Precio Kg</MenuItem>
                         <MenuItem value={'som'}>SOM</MenuItem>
@@ -2424,7 +2424,7 @@ export default () => {
                         <MenuItem value={'elasticity'}>Elasticidad</MenuItem>
                         <MenuItem value={'sale_values'}>Venta valor</MenuItem>
                         <MenuItem value={'sale_kg'}>Venta en Kg</MenuItem>
-                        <MenuItem value={'sale_units'}>Venta en unidades</MenuItem> 
+                        {/* {<MenuItem value={'sale_units'}>Venta en unidades</MenuItem>}*/}
                         <MenuItem value={'price_units'}>Precio unidad</MenuItem>
                         <MenuItem value={'price_kg'}>Precio Kg</MenuItem>
                         <MenuItem value={'som'}>SOM</MenuItem>

@@ -3,16 +3,11 @@ import CustomCursor from './Components/CustomCursor';
 import './App.css';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { BrowserRouter } from "react-router-dom";
-import { Routes, Route, Link } from "react-router-dom";
-
 import Header from './Containers/Header';
 
 import Categories from './Pages/Categories';
 import TradeSpend from './Pages/TradeSpend';
 import Simulator from './Pages/Simulator';
-
-import gears from './Assets/Img/P2.png';
 
 const theme = createTheme({
   palette: {
@@ -44,32 +39,19 @@ function App() {
           }}
         />
         <CustomCursor/>
-          {
-            render==='1'?
+        {
+          render==='1'?
             <Categories />
-            :
-            (render==='2'?
+          :
+          (render==='2'?
             <Simulator />
-            :
-            // <div style={{width:'100%', display:'flex', justifyContent:'center'}}>
-            //   <div style={{width:'15em', marginTop:'10em'}}>
-            //     <img src={gears} alt='' style={{width:'100%'}}/>
-            //   </div>
-            // </div>
+          :
             <TradeSpend/>
-            )
-          }
-        {/* {<BrowserRouter>
-          <Routes>
-            <Route path="categories" element={<Categories />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="horus" element={<Simulator />} />
-          </Routes>
-        </BrowserRouter>} */}
+          )
+        }
       </ThemeProvider>
     </div>
   );
-  
 }
 
 export default App;

@@ -18,7 +18,7 @@ const borderColor = '#fff';
 const TableWrapper = styled.div`
     //max-height: 50vh;
     position: sticky;
-    padding-top: 4.5em;
+    //padding-top: 4.5em;
     left: 0;
     height:max-content;
     z-index:2;
@@ -29,6 +29,7 @@ const TableWrapper = styled.div`
             padding: 0; 
             margin: 0;
             border: 1px solid ${borderColor};
+            height: 1.5em;
             //padding: 0 2em 0 2em;
             .numbers{
                 padding: 0 2em 0 2em;
@@ -70,6 +71,7 @@ const TableWrapper = styled.div`
     .sub-t{
         background-color: #8497b0;
         color:#fff;
+        height: 1.5em;
     }
     .e{
         background-color: #0070c0;
@@ -87,6 +89,7 @@ table{
         padding: 0; 
         margin: 0;
         border: 1px solid ${borderColor};
+        height: 1.5em;
         //padding: 0 2em 0 2em;
         .numbers{
             padding: 0 2em 0 2em;
@@ -137,6 +140,7 @@ table{
 .sub-t{
     background-color: #8497b0;
     color:#fff;
+    height: 1.5em;
 }
 .e{
     background-color: #0070c0;
@@ -179,7 +183,8 @@ const OptimalPrices = ({token}) => {
             //     getCategories();
             //     return;
             // }
-            setCategories(result.data);
+            if(result.data)
+                setCategories(result.data);
         })
         .catch(error => {
             console.log('categories', error);
@@ -370,7 +375,7 @@ const OptimalPrices = ({token}) => {
                                     {
                                     categories.map((item, index)=>{
                                         return (
-                                        <MenuItem value={item.id} key={index}>{item.name}</MenuItem>
+                                            <MenuItem value={item.id} key={index}>{item.name}</MenuItem>
                                         )
                                     })
                                 }
@@ -389,14 +394,14 @@ const OptimalPrices = ({token}) => {
                                     }}
                                     disabled={!chartData.category}
                                 >
+                                    <MenuItem value={'Todas'}>Todas</MenuItem>
                                     {
-                                    subcategories.map((item, index)=>{
-                                        return (
-                                            <MenuItem value={item[0]} key={index}>{item[1]}</MenuItem>
-                                        )
-                                    })
-                                }
-                                <MenuItem value={'Todas'}>Todas</MenuItem>
+                                        subcategories.map((item, index)=>{
+                                            return (
+                                                <MenuItem value={item[0]} key={index}>{item[1]}</MenuItem>
+                                            )
+                                        })
+                                    }
                             </Select>
                             </FormControl>
                         </Grid>
@@ -486,16 +491,16 @@ const OptimalPrices = ({token}) => {
                     <div style={{position: 'relative', overflow:'scroll', display:'flex'}}>
                     <TableWrapper style={{}}>
                         <table>
-                            <tr>
-                                <th colspan="4"></th>
+                            <tr style={{opacity:0}}>
+                                <th>te</th>
                             </tr>
-                            <tr>
-                                <th></th>
+                            <tr className='second' style={{opacity:0}}>
+                                <th style={{ backgroundColor:'#002060' }}><span style={{fontSize:'2.5em', color:'#fff'}}>e</span></th>
                             </tr>
                             {
                                 chartData.data.subcategory_ids.map((j, inde)=>(
                                     <>
-                                        <td colspan="1"><span style={{display:'flex', padding:'.25em 1em'}} className='sub-t'>{j.name}</span></td>
+                                        <td colspan="1"><span style={{display:'flex', padding:''}} className='sub-t'>{j.name}</span></td>
                                         <td></td>
                                         {
                                         j.sku_ids.map((i, index)=>(
@@ -509,10 +514,12 @@ const OptimalPrices = ({token}) => {
                             }
                         </table> 
                     </TableWrapper>
-                    <TableWrapper2 style={{flex: '1 0 auto'}}>
-
-                        <table>
+                    <TableWrapper2 style={{flex: '1 0 auto', top: '-5.35em'}}>
+                        <table style={{position:'realtive'}}>
                             <tr>
+                                <th style={{position:'sticky', top:0, backgroundColor:'#fff', height:'5em'}} colspan="50"></th>
+                            </tr>
+                            <tr style={{backgroundColor:'#fff', zIndex:'3'}}>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -524,7 +531,7 @@ const OptimalPrices = ({token}) => {
                                 <th></th>
                                 <th colspan="5" className='titles'>LABORATORIO</th>
                             </tr>
-                            <tr className='second'>
+                            <tr className='second' style={{backgroundColor:'#fff', zIndex:'3'}}>
                                 <th><span style={{opacity:'0'}}>--</span></th>
                                 <th style={{ backgroundColor:'#002060' }}><span style={{fontSize:'2.5em', color:'#fff'}}>e</span></th>
                                 <th><span style={{opacity:'0'}}>--</span></th>
