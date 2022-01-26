@@ -15,7 +15,7 @@ const TableWrapper = styled.div`
             text-transform: uppercase;
         }
         td{
-            padding: 0 1em;
+            //padding: 0 1em;
             input{
                 text-align: center;
                 width: 100%;
@@ -39,6 +39,48 @@ const TableWrapper = styled.div`
 `;
 
 const TradeSpend = () => {
+
+    const [auth, setAuth] = React.useState({
+        access_token:null
+    });
+
+    React.useEffect(()=>{
+        var requestOptions = {
+            method: 'GET',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        };
+    
+        fetch("https://pricing.demo4to.com/api/auth/token?login=admin&password=admin&db=pricing", requestOptions)
+        .then(response => response.json())
+        .then(result => {
+            setAuth(result);
+        
+            getValues(result.access_token);
+    
+        })
+        .catch(error => console.log('error', error));
+    },[])
+
+    const getValues = (t) => {
+        let url = `https://pricing.demo4to.com/api/pricing.sku.subcategory/get_promo_sales_units?access-token=${t}`;
+
+        let requestOptions = {
+          method: 'GET',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        };
+    
+        fetch(url, requestOptions)
+        .then(response => response.json())
+        .then(result => {
+          console.log('trade',result)
+        })
+        .catch(error => {
+          console.log('error', error);
+        });
+    }
+
     return (
         <TableWrapper>
             <div>
@@ -216,25 +258,42 @@ const TradeSpend = () => {
                         <th></th>
                         <th colspan="6" className='year'>Año Siguente</th>
                     </tr>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <td>ENE</td>
+                        <td>FEB</td>
+                        <td>MAR</td>
+                        <td>ABR</td>
+                        <td>MAY</td>
+                        <td>JUN</td>
+                        <td colspan="1" className='spacer'>--</td>
+                        <td>ENE</td>
+                        <td>FEB</td>
+                        <td>MAR</td>
+                        <td>ABR</td>
+                        <td>MAY</td>
+                        <td>JUN</td>
+                    </tr>
                     {
                         [1,2,3,4,5,6].map((i, index)=>(
                             <>
                                 <tr>
                                     <td rowspan='2' style={{position:'sticky', left:'0', backgroundColor:'#fff'}}>{'SKU '+i}</td>
                                     <td>BASE</td>
-                                    <td>ENE</td>
-                                    <td>FEB</td>
-                                    <td>MAR</td>
-                                    <td>ABR</td>
-                                    <td>MAY</td>
-                                    <td>JUN</td>
+                                    <td>00.00</td>
+                                    <td>00.00</td>
+                                    <td>00.00</td>
+                                    <td>00.00</td>
+                                    <td>00.00</td>
+                                    <td>00.00</td>
                                     <td colspan="1" className='spacer'>--</td>
-                                    <td>ENE</td>
-                                    <td>FEB</td>
-                                    <td>MAR</td>
-                                    <td>ABR</td>
-                                    <td>MAY</td>
-                                    <td>JUN</td>
+                                    <td>00.00</td>
+                                    <td>00.00</td>
+                                    <td>00.00</td>
+                                    <td>00.00</td>
+                                    <td>00.00</td>
+                                    <td>00.00</td>
                                 </tr>
                                 <tr>
                                     <td>PROMO</td>
