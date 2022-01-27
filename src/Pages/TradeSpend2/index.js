@@ -12,6 +12,9 @@ import SpeedDial from '../../Components/SpeedDial';
 import wlogo from '../../Assets/Img/test-logo.png';
 
 const TableWrapper = styled.div`
+    position: relative;
+    //height: 10em;
+    //overflow: scroll;
     table{
         th{
             text-transform: uppercase;
@@ -44,6 +47,20 @@ const TableWrapper = styled.div`
         }
         .sku-name{
             padding: 0 1em;
+            position: sticky;
+            left: 0;
+            background-color: #fff;
+            z-index: 1;
+        }
+        .sub{
+            background-color: #fff;
+            color: #000;
+        }
+        .header{
+            position: sticky;
+            top: 0;
+            height: 1.5em;
+            //background-color: #fff;
         }
     }
 `;
@@ -53,6 +70,8 @@ const TradeSpend = () => {
     const [auth, setAuth] = React.useState({
         access_token:null
     });
+
+    const [retract, setRetract] = React.useState(false);
 
     React.useEffect(()=>{
         var requestOptions = {
@@ -130,6 +149,7 @@ const TradeSpend = () => {
                     </Grid>
                 </Paper>
             </div>} */}
+            {retract?
             <div>
                 <table cellSpacing="0" cellPadding="0">
                     <tr>
@@ -149,21 +169,21 @@ const TradeSpend = () => {
                     <tr>
                         <th style={{backgroundColor:'transparent'}}></th>
                         <th style={{backgroundColor:'transparent'}}></th>
-                        <th>Precio</th>
-                        <th>Volumen</th>
-                        <th>Precio</th>
-                        <th>Volumen</th>
-                        <th style={{backgroundColor:'transparent'}}></th>
-                        <th>Base</th>
-                        <th>Promo</th>
-                        <th>Base</th>
-                        <th>Promo</th>
-                        <th>Base</th>
-                        <th>Promo</th>
-                        <th>Base</th>
-                        <th>Promo</th>
-                        <th>Base</th>
-                        <th>Promo</th>
+                        <th className='sub'>Precio</th>
+                        <th className='sub'>Volumen</th>
+                        <th className='sub'>Precio</th>
+                        <th className='sub'>Volumen</th>
+                        <th className='sub' style={{backgroundColor:'transparent'}}></th>
+                        <th className='sub'>Base</th>
+                        <th className='sub'>Promo</th>
+                        <th className='sub'>Base</th>
+                        <th className='sub'>Promo</th>
+                        <th className='sub'>Base</th>
+                        <th className='sub'>Promo</th>
+                        <th className='sub'>Base</th>
+                        <th className='sub'>Promo</th>
+                        <th className='sub'>Base</th>
+                        <th className='sub'>Promo</th>
                     </tr>
                     <tr>
                         <td colSpan={2} style={{padding:'0 1em'}}>TOTAL AUTOSERVICIOS</td>
@@ -262,6 +282,179 @@ const TradeSpend = () => {
                     }
                 </table>
             </div>
+            :
+            <div>
+                <table cellSpacing="0" cellPadding="0">
+                    <tr>
+                        <th colSpan={2} className='sku-name'></th>  
+                        <th colSpan={"4"} className='header'>Enero</th>
+                        <th colSpan={"4"} className='header'>Febrero</th>
+                        <th colSpan={"1"} className='spacer'>--</th>
+                        <th colSpan={"4"} className='header' style={{backgroundColor:'#ffe699', color:'#000'}}>GROSS SALES</th>
+                        <th colSpan={"1"} className='spacer'>--</th>
+                        <th colSpan={"4"} className='header' style={{backgroundColor:'#ffe699', color:'#000'}}>COND. COM.</th>
+                        <th colSpan={"1"} className='spacer'>--</th>
+                        <th colSpan={"4"} className='header' style={{backgroundColor:'#ffe699', color:'#000'}}>TRADE SPEND</th>
+                    </tr>
+                    <tr>
+                        <th colSpan={2} className='sku-name'></th>
+                        <th colSpan={"2"} className='header' style={{backgroundColor:'#9bc2e6', color:'#000', top:'1.5em'}}>BASE</th>
+                        <th colSpan={"2"} className='header' style={{backgroundColor:'red', top:'1.5em'}}>PROMOCIÓN</th>
+                        <th colSpan={"2"} className='header' style={{backgroundColor:'#9bc2e6', color:'#000', top:'1.5em'}}>BASE</th>
+                        <th colSpan={"2"} className='header' style={{backgroundColor:'red', top:'1.5em'}}>PROMOCIÓN</th>
+                        <th style={{backgroundColor:'transparent'}}></th>
+                        <th colSpan={"2"} className='header' style={{backgroundColor:'#fff', color:'#000', top:'1.5em'}}>Enero</th>
+                        <th colSpan={"2"} className='header' style={{backgroundColor:'#fff', color:'#000', top:'1.5em'}}>Febrero</th>
+                        <th style={{backgroundColor:'transparent'}}></th>
+                        <th colSpan={"2"} className='header' style={{backgroundColor:'#fff', color:'#000', top:'1.5em'}}>Enero</th>
+                        <th colSpan={"2"} className='header' style={{backgroundColor:'#fff', color:'#000', top:'1.5em'}}>Febrero</th>
+                        <th style={{backgroundColor:'transparent'}}></th>
+                        <th colSpan={"2"} className='header' style={{backgroundColor:'#fff', color:'#000', top:'1.5em'}}>Enero</th>
+                        <th colSpan={"2"} className='header' style={{backgroundColor:'#fff', color:'#000', top:'1.5em'}}>Febrero</th>
+                    </tr>
+                    <tr>
+                        <th colSpan={2} className='sku-name'></th>
+                        <th className='sub' className='header' style={{top:'3em'}}>Precio</th>
+                        <th className='sub' className='header' style={{top:'3em'}}>Volumen</th>
+                        <th className='sub' className='header' style={{top:'3em'}}>Precio</th>
+                        <th className='sub' className='header' style={{top:'3em'}}>Volumen</th>
+                        <th className='sub' className='header' style={{top:'3em'}}>Precio</th>
+                        <th className='sub' className='header' style={{top:'3em'}}>Volumen</th>
+                        <th className='sub' className='header' style={{top:'3em'}}>Precio</th>
+                        <th className='sub' className='header' style={{top:'3em'}}>Volumen</th>
+                        <th className='sub' style={{backgroundColor:'transparent'}}></th>
+                        <th className='sub' className='header' style={{backgroundColor:'#9bc2e6', top:'3em'}}>Base</th>
+                        <th className='sub' className='header' style={{backgroundColor:'red', color:'#fff', top:'3em'}}>Promo</th>
+                        <th className='sub' className='header' style={{backgroundColor:'#9bc2e6', top:'3em'}}>Base</th>
+                        <th className='sub' className='header' style={{backgroundColor:'red', color:'#fff', top:'3em'}}>Promo</th>
+                        <th className='sub' className='header' style={{backgroundColor:'transparent'}}></th>
+                        <th className='sub' className='header' style={{backgroundColor:'#9bc2e6', top:'3em'}}>Base</th>
+                        <th className='sub' className='header' style={{backgroundColor:'red', color:'#fff', top:'3em'}}>Promo</th>
+                        <th className='sub' className='header' style={{backgroundColor:'#9bc2e6', top:'3em'}}>Base</th>
+                        <th className='sub' className='header' style={{backgroundColor:'red', color:'#fff', top:'3em'}}>Promo</th>
+                        <th className='sub' className='header' style={{backgroundColor:'transparent'}}></th>
+                        <th className='sub' className='header' style={{backgroundColor:'#9bc2e6', top:'3em'}}>Base</th>
+                        <th className='sub' className='header' style={{backgroundColor:'red', color:'#fff', top:'3em'}}>Promo</th>
+                        <th className='sub' className='header' style={{backgroundColor:'#9bc2e6', top:'3em'}}>Base</th>
+                        <th className='sub' className='header' style={{backgroundColor:'red', color:'#fff', top:'3em'}}>Promo</th>
+                    </tr>
+                    <tr>
+                        <td colSpan={2} style={{padding:'0 1em'}} className='sku-name'></td>
+                        <td>00.00</td>
+                        <td>00.00</td>
+                        <td>00.00</td>
+                        <td>00.00</td>
+                        <td>00.00</td>
+                        <td>00.00</td>
+                        <td>00.00</td>
+                        <td>00.00</td>
+                        <td></td>
+                        <td>00.00</td>
+                        <td>00.00</td>
+                        <td>00.00</td>
+                        <td>00.00</td>
+                        <td></td>
+                        <td>00.00</td>
+                        <td>00.00</td>
+                        <td>00.00</td>
+                        <td>00.00</td>  
+                        <td></td>
+                        <td>00.00</td>
+                        <td>00.00</td>
+                        <td>00.00</td>
+                        <td>00.00</td>  
+                    </tr>
+                    <tr>
+                        <th style={{backgroundColor:'transparent'}}>--</th>
+                    </tr>
+
+                    {
+                        [1,2,3,4].map((i, index)=>(
+                            <>
+                            <tr>
+                                <td className='sku-name' colSpan={2}>SKU 1</td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td></td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td></td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td>00.00</td>  
+                                <td></td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td>00.00</td>  
+                            </tr>
+                            <tr>
+                                <td className='sku-name' colSpan={2}>SKU 2</td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td></td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td></td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td>00.00</td>  
+                                <td></td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td>00.00</td>
+                                <td>00.00</td>  
+                            </tr>
+                            <tr>
+                                <td style={{borderBottom:'1px solid #a6a6a6'}} className='sku-name' colSpan={2}>SKU 3</td>
+                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
+                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
+                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
+                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
+                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
+                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
+                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
+                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
+                                <td style={{borderBottom:'1px solid #a6a6a6'}}></td>
+                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
+                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
+                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
+                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
+                                <td style={{borderBottom:'1px solid #a6a6a6'}}></td>
+                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
+                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
+                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
+                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td> 
+                                <td style={{borderBottom:'1px solid #a6a6a6'}}></td>
+                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
+                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
+                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
+                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>  
+                            </tr>
+                            </>
+                        ))
+                    }
+                </table>
+            </div>
+            }
             <div style={{position:'fixed', right:'1em', bottom:'1em'}}>
                 <SpeedDial/>
             </div>

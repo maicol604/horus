@@ -9,6 +9,8 @@ import Categories from './Pages/Categories';
 import TradeSpend from './Pages/TradeSpend2';
 import Simulator from './Pages/Simulator';
 
+import Home from './Pages/Home';
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -49,6 +51,7 @@ function App() {
             <TradeSpend/>
           )
         }
+        {/* {<Home/>} */}
       </ThemeProvider>
     </div>
   );
