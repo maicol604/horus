@@ -489,8 +489,7 @@ const OptimalPrices = ({token}) => {
                         <></>
                     }
                     <div style={{position: 'relative', overflow:'scroll', display:'flex'}}>
-                    <TableWrapper style={{}}>
-                        aqui
+                    <TableWrapper style={{position: ''}}>
                         <table>
                             <tr style={{opacity:0}}>
                                 <th>te</th>

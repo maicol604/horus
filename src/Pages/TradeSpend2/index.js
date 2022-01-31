@@ -21,7 +21,7 @@ const TableWrapper = styled.div`
             padding: 0 1em;
             background-color: #a6a6a6;
             color: #fff;
-            white-space: nowrap
+            white-space: nowrap;
         }
         td{
             //padding: 0 1em;
@@ -71,7 +71,7 @@ const TradeSpend = () => {
         access_token:null
     });
 
-    const [retract, setRetract] = React.useState(false);
+    const [retract, setRetract] = React.useState(true);
 
     React.useEffect(()=>{
         var requestOptions = {
@@ -283,7 +283,7 @@ const TradeSpend = () => {
                 </table>
             </div>
             :
-            <div>
+            <div style={{position:'relative'}}>
                 <table cellSpacing="0" cellPadding="0">
                     <tr>
                         <th colSpan={2} className='sku-name'></th>  
@@ -365,11 +365,12 @@ const TradeSpend = () => {
                         <td>00.00</td>  
                     </tr>
                     <tr>
+                        <td className='sku-name' colSpan={2}>SKU 1</td>
                         <th style={{backgroundColor:'transparent'}}>--</th>
                     </tr>
 
                     {
-                        [1,2,3,4].map((i, index)=>(
+                        [1,2,3,4,5,6,7,8].map((i, index)=>(
                             <>
                             <tr>
                                 <td className='sku-name' colSpan={2}>SKU 1</td>
