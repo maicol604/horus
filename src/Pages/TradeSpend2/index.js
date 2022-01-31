@@ -71,7 +71,17 @@ const TradeSpend = () => {
         access_token:null
     });
 
+    const truncateNumber = (number) => {
+        try{
+          return (number+'').toString().match(/^-?\d+(?:\.\d{0,2})?/)[0];
+        }
+        catch{
+          return (number)
+        }
+    }
     const [retract, setRetract] = React.useState(true);
+
+    const [data, setData] = React.useState(null);
 
     React.useEffect(()=>{
         var requestOptions = {
@@ -92,7 +102,7 @@ const TradeSpend = () => {
     },[])
 
     const getValues = (t) => {
-        let url = `https://pricing.demo4to.com/api/pricing.sku.subcategory/get_promo_sales_units?access-token=${t}`;
+        let url = `https://pricing.demo4to.com/api/pricing.sell.out/get_collapsed_pl?access-token=${t}&values=null`;
 
         let requestOptions = {
           method: 'GET',
@@ -103,7 +113,8 @@ const TradeSpend = () => {
         fetch(url, requestOptions)
         .then(response => response.json())
         .then(result => {
-          console.log('trade',result)
+          console.log('trade2',result)
+          setData(result.data);
         })
         .catch(error => {
           console.log('error', error);
@@ -150,6 +161,7 @@ const TradeSpend = () => {
                 </Paper>
             </div>} */}
             {retract?
+            (data?
             <div>
                 <table cellSpacing="0" cellPadding="0">
                     <tr>
@@ -210,54 +222,61 @@ const TradeSpend = () => {
                     </tr>
 
                     {
-                        [1,2,3,4].map((i, index)=>(
+                        data.map((i, index)=>(
                             <>
                             <tr>
-                                <td rowSpan={'3'} style={{borderBottom:'1px solid #a6a6a6'}}>
-                                    <div style={{width:'100%', padding: '1em', boxSizing:'border-box'}}>
+                                <td rowSpan={`${i.skus.length+1}`} style={{borderBottom:'1px solid #a6a6a6'}}>
+                                    {/* {<div style={{width:'100%', padding: '1em', boxSizing:'border-box'}}>
                                         <img src={wlogo} alt='' style={{width:'100%'}}/>
-                                    </div>
+                                    </div>} */}
+                                    {i.name}
                                 </td>
-                                <td className='sku-name'>SKU 1</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td></td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>  
                             </tr>
-                            <tr>
-                                <td className='sku-name'>SKU 2</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td></td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>  
-                            </tr>
-                            <tr>
+                            {
+                                i.skus.map((j, index0)=>(
+                                    index0===(i.skus.length-1)?
+                                    <tr>
+                                        <td style={{borderBottom:'1px solid #a6a6a6'}} className='sku-name'>{j.name}</td>
+                                        <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.base_price)}</td>
+                                        <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.base_qty)}</td>
+                                        <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.promo_price)}</td>
+                                        <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.promo_qty)}</td>
+                                        <td style={{borderBottom:'1px solid #a6a6a6'}}></td>
+                                        <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.base_gross_sale)}</td>
+                                        <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.promo_gross_sale)}</td>
+                                        <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.base_commercial_cond)}</td>
+                                        <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.promo_commercial_cond)}</td>
+                                        <td style={{borderBottom:'1px solid #a6a6a6',textAlign:'right'}} colSpan={2}>{truncateNumber(j.trade_spend)}</td>
+                                        <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.base_net_sale)}</td>
+                                        <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.promo_net_sale)}</td>
+                                        <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.base_op)}</td>
+                                        <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.promo_op)}</td>
+                                        <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.roi)}</td>
+                                        <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.uplift)}</td>  
+                                    </tr>
+                                    :
+                                    <tr>
+                                        <td className='sku-name'>{truncateNumber(j.name)}</td>
+                                        <td>{truncateNumber(j.base_price)}</td>
+                                        <td>{truncateNumber(j.base_qty)}</td>
+                                        <td>{truncateNumber(j.promo_price)}</td>
+                                        <td>{truncateNumber(j.promo_qty)}</td>
+                                        <td></td>
+                                        <td>{truncateNumber(j.base_gross_sale)}</td>
+                                        <td>{truncateNumber(j.promo_gross_sale)}</td>
+                                        <td>{truncateNumber(j.base_commercial_cond)}</td>
+                                        <td>{truncateNumber(j.promo_commercial_cond)}</td>
+                                        <td colSpan={2} style={{textAlign:'right'}}>{truncateNumber(j.trade_spend)}</td>
+                                        <td>{truncateNumber(j.base_net_sale)}</td>
+                                        <td>{truncateNumber(j.promo_net_sale)}</td>
+                                        <td>{truncateNumber(j.base_op)}</td>
+                                        <td>{truncateNumber(j.promo_op)}</td>
+                                        <td>{truncateNumber(j.roi)}</td>
+                                        <td>{truncateNumber(j.uplift)}</td>  
+                                    </tr>
+                                ))
+                            }
+                            {/* {<tr>
                                 <td style={{borderBottom:'1px solid #a6a6a6'}} className='sku-name'>SKU 3</td>
                                 <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
                                 <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
@@ -276,12 +295,14 @@ const TradeSpend = () => {
                                 <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
                                 <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
                                 <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>  
-                            </tr>
+                            </tr>} */}
                             </>
                         ))
                     }
                 </table>
             </div>
+            :<></>
+            )
             :
             <div style={{position:'relative'}}>
                 <table cellSpacing="0" cellPadding="0">
