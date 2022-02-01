@@ -38,7 +38,7 @@ function a11yProps(index) {
   };
 }
 
-export default function BasicTabs({tabs=[], children, onChange}) {
+export default function BasicTabs({tabs=[], children, onChange, option}) {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -46,6 +46,10 @@ export default function BasicTabs({tabs=[], children, onChange}) {
         onChange(newValue)
     setValue(newValue);
   };
+
+  React.useEffect(()=>{
+    setValue(option)
+  },[option]);
 
   return (
     <Box sx={{ width: '100%' }}>

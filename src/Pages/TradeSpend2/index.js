@@ -65,11 +65,8 @@ const TableWrapper = styled.div`
     }
 `;
 
-const TradeSpend = () => {
+const TradeSpend = ({data}) => {
 
-    const [auth, setAuth] = React.useState({
-        access_token:null
-    });
 
     const truncateNumber = (number) => {
         try{
@@ -79,47 +76,8 @@ const TradeSpend = () => {
           return (number)
         }
     }
+
     const [retract, setRetract] = React.useState(true);
-
-    const [data, setData] = React.useState(null);
-
-    React.useEffect(()=>{
-        var requestOptions = {
-            method: 'GET',
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-        };
-    
-        fetch("https://pricing.demo4to.com/api/auth/token?login=admin&password=admin&db=pricing", requestOptions)
-        .then(response => response.json())
-        .then(result => {
-            setAuth(result);
-        
-            getValues(result.access_token);
-    
-        })
-        .catch(error => console.log('error', error));
-    },[])
-
-    const getValues = (t) => {
-        let url = `https://pricing.demo4to.com/api/pricing.sell.out/get_collapsed_pl?access-token=${t}&values=null`;
-
-        let requestOptions = {
-          method: 'GET',
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        };
-    
-        fetch(url, requestOptions)
-        .then(response => response.json())
-        .then(result => {
-          console.log('trade2',result)
-          setData(result.data);
-        })
-        .catch(error => {
-          console.log('error', error);
-        });
-    }
 
     return (
         <TableWrapper>
@@ -246,7 +204,7 @@ const TradeSpend = () => {
                                         <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.promo_gross_sale)}</td>
                                         <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.base_commercial_cond)}</td>
                                         <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.promo_commercial_cond)}</td>
-                                        <td style={{borderBottom:'1px solid #a6a6a6',textAlign:'right'}} colSpan={2}>{truncateNumber(j.trade_spend)}</td>
+                                        <td style={{borderBottom:'1px solid #a6a6a6', textAlign:'right'}} colSpan={2}>{truncateNumber(j.trade_spend)}</td>
                                         <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.base_net_sale)}</td>
                                         <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.promo_net_sale)}</td>
                                         <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.base_op)}</td>
