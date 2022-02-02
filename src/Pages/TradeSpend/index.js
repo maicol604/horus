@@ -63,7 +63,7 @@ const TradeSpend = ({editable=true, data=null, onSimulate, loading, onPromoChang
     return (
         data?
         <TableWrapper>
-            <div style={{maxWidth:'100%', overflowX:'auto', padding: '1em 0 1em 0', marginBottom: '1.5em'}}>
+            <div style={{maxWidth:'100%', overflowX:'auto', padding: '1em 0 1em 0', marginBottom: '1.5em', display:'flex', justifyContent:'center'}}>
                 <table cellSpacing="0" cellPadding="0">
                     <tr>
                         <th></th>
@@ -108,6 +108,7 @@ const TradeSpend = ({editable=true, data=null, onSimulate, loading, onPromoChang
 
                 </table>
             </div>
+            {editable?
             <div style={{textAlign:'left', marginBottom: '2em'}}>
                 <Button 
                     color="primary" 
@@ -120,6 +121,9 @@ const TradeSpend = ({editable=true, data=null, onSimulate, loading, onPromoChang
                     simular
                 </Button>
             </div>
+            :
+            <></>
+            }
             {
                 !data.table?
                 <></>

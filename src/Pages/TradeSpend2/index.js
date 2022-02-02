@@ -65,8 +65,7 @@ const TableWrapper = styled.div`
     }
 `;
 
-const TradeSpend = ({data}) => {
-
+const TradeSpend = ({data, dataExpand}) => {
 
     const truncateNumber = (number) => {
         try{
@@ -81,50 +80,13 @@ const TradeSpend = ({data}) => {
 
     return (
         <TableWrapper>
-            {/* {<div>
-                <Paper
-                    variant="outlined"
-                    style={{padding:'1em'}}
-                >
-                    <Grid container alignItems='flex-start' spacing={3}>
-                        <Grid item xs={4}>
-                            <FormControl fullWidth>
-                                <InputLabel>Seleccionar subcategoria</InputLabel>
-                                <Select
-                                    label="Seleccionar subcategoria"
-                                    //value={chartData.category}
-                                    onChange={(e)=>{
-                                        
-                                    }}
-                                >
-                                    <MenuItem>test</MenuItem>
-                            </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <FormControl fullWidth>
-                                <InputLabel>Seleccionar cliente</InputLabel>
-                                <Select
-                                    label="Seleccionar subcategoria"
-                                    //value={chartData.category}
-                                    onChange={(e)=>{
-                                        
-                                    }}
-                                >
-                                    <MenuItem>test</MenuItem>
-                            </Select>
-                            </FormControl>
-                        </Grid>
-                    </Grid>
-                </Paper>
-            </div>} */}
             {retract?
             (data?
             <div>
                 <table cellSpacing="0" cellPadding="0">
                     <tr>
-                        <th style={{backgroundColor:'transparent'}}></th>
-                        <th style={{backgroundColor:'transparent'}}></th>
+                        <th style={{backgroundColor:'transparent'}} className='sku-name'></th>
+                        <th style={{backgroundColor:'#fff'}} className='sku-name'></th>
                         <th colSpan={"2"} style={{backgroundColor:'#0070c0'}}>BASE</th>
                         <th colSpan={"2"} style={{backgroundColor:'red'}}>PROMOCIÓN</th>
                         <th colSpan={"1"} className='spacer'>--</th>
@@ -138,7 +100,7 @@ const TradeSpend = ({data}) => {
                     </tr>
                     <tr>
                         <th style={{backgroundColor:'transparent'}}></th>
-                        <th style={{backgroundColor:'transparent'}}></th>
+                        <th style={{backgroundColor:'#fff'}} className='sku-name'></th>
                         <th className='sub'>Precio</th>
                         <th className='sub'>Volumen</th>
                         <th className='sub'>Precio</th>
@@ -155,32 +117,35 @@ const TradeSpend = ({data}) => {
                         <th className='sub'>Base</th>
                         <th className='sub'>Promo</th>
                     </tr>
-                    <tr>
-                        <td colSpan={2} style={{padding:'0 1em'}}>TOTAL AUTOSERVICIOS</td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td></td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td>00.00</td>  
-                    </tr>
+                    {data.filter(i=>(i.id===0)).map((i)=>(
+                        <tr>
+                            <td></td>
+                            <td colSpan={1} style={{padding:'0 1em'}} className='sku-name'>TOTAL AUTOSERVICIOS</td>
+                            <td>{truncateNumber(i.values.base_price)}</td>
+                            <td>{truncateNumber(i.values.base_qty)}</td>
+                            <td>{truncateNumber(i.values.promo_price)}</td>
+                            <td>{truncateNumber(i.values.promo_qty)}</td>
+                            <td></td>
+                            <td>{truncateNumber(i.values.base_gross_sale)}</td>
+                            <td>{truncateNumber(i.values.promo_gross_sale)}</td>
+                            <td>{truncateNumber(i.values.base_commercial_cond)}</td>
+                            <td>{truncateNumber(i.values.promo_commercial_cond)}</td>
+                            <td colSpan={2} style={{textAlign:'right'}}>{truncateNumber(i.values.trade_spend)}</td>
+                            <td>{truncateNumber(i.values.base_net_sale)}</td>
+                            <td>{truncateNumber(i.values.promo_net_sale)}</td>
+                            <td>{truncateNumber(i.values.base_op)}</td>
+                            <td>{truncateNumber(i.values.promo_op)}</td>
+                            <td>{truncateNumber(i.values.roi)}</td>
+                            <td>{truncateNumber(i.values.uplift)}</td>  
+                        </tr>
+                    ))}
+                    
                     <tr>
                         <th style={{backgroundColor:'transparent'}}>--</th>
                     </tr>
 
                     {
-                        data.map((i, index)=>(
+                        data.filter(i=>(i.id!==0)).map((i, index)=>(
                             <>
                             <tr>
                                 <td rowSpan={`${i.skus.length+1}`} style={{borderBottom:'1px solid #a6a6a6'}}>
@@ -234,26 +199,6 @@ const TradeSpend = ({data}) => {
                                     </tr>
                                 ))
                             }
-                            {/* {<tr>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}} className='sku-name'>SKU 3</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}></td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>  
-                            </tr>} */}
                             </>
                         ))
                     }

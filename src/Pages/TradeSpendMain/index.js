@@ -3,6 +3,7 @@ import React from 'react';
 import TradeSpend1 from '../TradeSpend';
 import TradeSpend2 from '../TradeSpend2';
 import Tabs from '../../Components/Tabs';
+import Loader from '../../Components/Loader';
 
 const TradeSpendMain = () => {
 
@@ -84,7 +85,6 @@ const TradeSpendMain = () => {
 
             setSimulationData({...result.data, periods});
             setData({...result.data, periods});
-            getValues2(t, result.data);
 
         })
         .catch(error => {
@@ -109,6 +109,7 @@ const TradeSpendMain = () => {
             setLoading(false);
             //console.log('trade simulacion',{...result.data, periods, oldValues:data})
             setSimulationData({...result.data, periods, oldValues:data});
+            getValues2(t, result.data);
             //setData({...result.data, periods, oldValues:data});
             setOption(1);
         })
@@ -152,24 +153,29 @@ const TradeSpendMain = () => {
     }
 
     const getValues2 = (t, values) => {
-        let url = `https://pricing.demo4to.com/api/pricing.sell.out/get_collapsed_p_l?access-token=${t}&values=${JSON.stringify(values)}`;
+        let url = `https://pricing.demo4to.com/api/trade.spend.values/get_collapsed_p_l?access-token=${t}&start_period=1&end_period=23`;
 
-        console.log('values',url)
+        //&values=${JSON.stringify(values)}
+
+        //console.log(JSON.stringify(values))
+
         let requestOptions = {
-          method: 'GET',
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
+            method: 'GET',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
         };
     
         fetch(url, requestOptions)
         .then(response => response.json())
         .then(result => {
-          console.log('trade2',result)
-          setData2(result.data);
+            console.log('getValues2',result)
+            if(result.type!=="Exception")
+                setData2(result.data);
         })
         .catch(error => {
-          console.log('error', error);
+            console.log('getValues2', error);
         });
+
     }
 
     const getContent = (op) => {
@@ -226,7 +232,9 @@ const TradeSpendMain = () => {
             </Tabs>
         </>
         :
-        <></>
+        <div style={{display: 'flex', justifyContent:'center', alignItems:'center', height: '80vh', width:'100%'}}>
+            <Loader/>    
+        </div>
     )
 }
 
