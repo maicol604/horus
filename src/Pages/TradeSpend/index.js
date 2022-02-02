@@ -49,7 +49,7 @@ const TableWrapper = styled.div`
     }
 `;
 
-const TradeSpend = ({editable=true, data=null, onSimulate, loading, onPromoChange}) => {
+const TradeSpend = ({editable=true, data=null, onSimulate, loading, onPromoChange, promo}) => {
 
     const truncateNumber = (number) => {
         try{
@@ -110,13 +110,16 @@ const TradeSpend = ({editable=true, data=null, onSimulate, loading, onPromoChang
             </div>
             {editable?
             <div style={{textAlign:'left', marginBottom: '2em'}}>
+                {
+                    console.log(loading, promo)
+                }
                 <Button 
                     color="primary" 
                     variant='contained'
                     onClick={()=>{
                         onSimulate()
                     }}
-                    disabled={loading}
+                    disabled={(loading || !promo)}
                 >
                     simular
                 </Button>
@@ -184,7 +187,14 @@ const TradeSpend = ({editable=true, data=null, onSimulate, loading, onPromoChang
                                                     return (
                                                         <>
                                                             {count===0?<td style={{position:'sticky', left:`${Math.max(...j.skus.map(h=>h.name.length))/2-1.5}em`, backgroundColor:'#fff'}}>PROMO</td>:<></>}
-                                                            <td key={k.promo_price}><input disabled={!editable} style={{backgroundColor:data.oldValues?(data.oldValues.table[index0].skus[index].promo_price!==k.promo_price?'#a9d08e':'#fff'):'#fff'}} defaultValue={truncateNumber(k.promo_price)} onChange={(e)=>{onPromoChange(e.target.value, i.id, j.id, count)}} /></td>
+                                                            <td /*key={k.promo_price}*/style={{backgroundColor:data.oldValues?(data.oldValues.table[index0].skus[index].promo_price!==k.promo_price?'#a9d08e':'#fff'):'#fff', padding: '0 1.5em'}}>
+                                                                {
+                                                                    editable?
+                                                                    <input disabled={!editable} style={{backgroundColor:data.oldValues?(data.oldValues.table[index0].skus[index].promo_price!==k.promo_price?'#a9d08e':'#fff'):'#fff'}} defaultValue={truncateNumber(k.promo_price)} onChange={(e)=>{onPromoChange(e.target.value, i.id, j.id, count)}} />
+                                                                    :
+                                                                    truncateNumber(k.promo_price)
+                                                                }
+                                                            </td>
                                                             {count===11?<td colspan="1"></td>:<></>}
                                                             
                                                         </>

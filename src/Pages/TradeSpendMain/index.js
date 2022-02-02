@@ -81,9 +81,9 @@ const TradeSpendMain = () => {
         .then(response => response.json())
         .then(result => {
             let periods = result.data.table[0].skus[0].values.map(i=>({date: getMonthName(new Date(i.date).getMonth())}));
-            //console.log('trade',{...result.data, periods})
+            console.log('trade',{...result.data, periods})
 
-            setSimulationData({...result.data, periods});
+            //setSimulationData({...result.data, periods});
             setData({...result.data, periods});
 
         })
@@ -190,6 +190,7 @@ const TradeSpendMain = () => {
                             onSimulate={()=>getSimulation(auth.access_token)}
                             onPromoChange={onPromoChange}
                             loading={loading}
+                            promo={Object.keys(promo).length>0}
                         />
                     </>
                 )
