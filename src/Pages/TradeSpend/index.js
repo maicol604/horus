@@ -167,16 +167,15 @@ const TradeSpend = ({editable=true, data=null, onSimulate, loading, onPromoChang
                                         j.skus.map((i, index)=>(
                                             <>
                                             <tr>
-                                                <td rowspan='3' style={{position:'sticky', left:'0', backgroundColor:'#fff'}}>{i.name}</td>
+                                                <td rowspan='3' style={{position:'sticky', left:'0', backgroundColor:'#fff'}}>{i.name==='total'?(`Total ${j.name}`):(i.name)}</td>
                                             </tr>
                                             <tr>
                                                 {i.values.map((k, count)=>{
                                                     return (
                                                         <>
-                                                            {count===0?<td style={{position:'sticky', left:`${Math.max(...j.skus.map(h=>h.name.length))/2-1.5}em`, backgroundColor:'#fff'}}>BASE</td>:<></>}
-                                                            <td>{truncateNumber(k.base_price)}</td>
+                                                            {count===0?<td style={{position:'sticky', left:`${Math.max(...j.skus.map(h=>h.name.length))/2-1.5}em`, backgroundColor:'#ededed'}}>BASE</td>:<></>}
+                                                            <td style={{backgroundColor:'#ededed'}}>{truncateNumber(editable?k.base_price:k.base_qty)}</td>
                                                             {count===11?<td colspan="1"></td>:<></>}
-                                                            
                                                         </>
                                                     )
                                                 })}
@@ -190,9 +189,9 @@ const TradeSpend = ({editable=true, data=null, onSimulate, loading, onPromoChang
                                                             <td /*key={k.promo_price}*/style={{backgroundColor:data.oldValues?(data.oldValues.table[index0].skus[index].promo_price!==k.promo_price?'#a9d08e':'#fff'):'#fff', padding: '0 1.5em'}}>
                                                                 {
                                                                     editable?
-                                                                    <input disabled={!editable} style={{backgroundColor:data.oldValues?(data.oldValues.table[index0].skus[index].promo_price!==k.promo_price?'#a9d08e':'#fff'):'#fff'}} defaultValue={truncateNumber(k.promo_price)} onChange={(e)=>{onPromoChange(e.target.value, i.id, j.id, count)}} />
+                                                                    <input disabled={!editable} style={{border:'0',backgroundColor:data.oldValues?(data.oldValues.table[index0].skus[index].promo_price!==k.promo_price?'#a9d08e':'#fff'):'#fff'}} defaultValue={truncateNumber(k.promo_price)} onChange={(e)=>{onPromoChange(e.target.value, i.id, j.id, count)}} />
                                                                     :
-                                                                    truncateNumber(k.promo_price)
+                                                                    truncateNumber(k.promo_qty)
                                                                 }
                                                             </td>
                                                             {count===11?<td colspan="1"></td>:<></>}

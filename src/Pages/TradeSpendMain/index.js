@@ -105,7 +105,7 @@ const TradeSpendMain = () => {
         .then(response => response.json())
         .then(result => {
             let periods = result.data.table[0].skus[0].values.map(i=>({date: getMonthName(new Date(i.date).getMonth())}));
-
+            console.log(result.data);
             setLoading(false);
             //console.log('trade simulacion',{...result.data, periods, oldValues:data})
             setSimulationData({...result.data, periods, oldValues:data});
