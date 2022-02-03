@@ -9,7 +9,18 @@ import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
 import SpeedDial from '../../Components/SpeedDial';
 
+import img1 from '../../Assets/Img/clients/client (1).jpeg';
+import img2 from '../../Assets/Img/clients/client (2).jpeg';
+import img3 from '../../Assets/Img/clients/client (3).jpeg';
+import img4 from '../../Assets/Img/clients/client (4).jpeg';
+import img5 from '../../Assets/Img/clients/client (5).jpeg';
+import img6 from '../../Assets/Img/clients/client (6).jpeg';
+import img7 from '../../Assets/Img/clients/client (7).jpeg';
+import img8 from '../../Assets/Img/clients/client (8).jpeg';
 import wlogo from '../../Assets/Img/test-logo.png';
+
+const images = [img6, img2, img3, img7, img8, img1, img5, img4];
+
 
 const TableWrapper = styled.div`
     position: relative;
@@ -65,11 +76,7 @@ const TableWrapper = styled.div`
     }
 `;
 
-const TradeSpend = () => {
-
-    const [auth, setAuth] = React.useState({
-        access_token:null
-    });
+const TradeSpend = ({data, dataExpand}) => {
 
     const truncateNumber = (number) => {
         try{
@@ -79,96 +86,20 @@ const TradeSpend = () => {
           return (number)
         }
     }
+
     const [retract, setRetract] = React.useState(true);
-
-    const [data, setData] = React.useState(null);
-
-    React.useEffect(()=>{
-        var requestOptions = {
-            method: 'GET',
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-        };
-    
-        fetch("https://pricing.demo4to.com/api/auth/token?login=admin&password=admin&db=pricing", requestOptions)
-        .then(response => response.json())
-        .then(result => {
-            setAuth(result);
-        
-            getValues(result.access_token);
-    
-        })
-        .catch(error => console.log('error', error));
-    },[])
-
-    const getValues = (t) => {
-        let url = `https://pricing.demo4to.com/api/pricing.sell.out/get_collapsed_pl?access-token=${t}&values=null`;
-
-        let requestOptions = {
-          method: 'GET',
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        };
-    
-        fetch(url, requestOptions)
-        .then(response => response.json())
-        .then(result => {
-          console.log('trade2',result)
-          setData(result.data);
-        })
-        .catch(error => {
-          console.log('error', error);
-        });
-    }
 
     return (
         <TableWrapper>
-            {/* {<div>
-                <Paper
-                    variant="outlined"
-                    style={{padding:'1em'}}
-                >
-                    <Grid container alignItems='flex-start' spacing={3}>
-                        <Grid item xs={4}>
-                            <FormControl fullWidth>
-                                <InputLabel>Seleccionar subcategoria</InputLabel>
-                                <Select
-                                    label="Seleccionar subcategoria"
-                                    //value={chartData.category}
-                                    onChange={(e)=>{
-                                        
-                                    }}
-                                >
-                                    <MenuItem>test</MenuItem>
-                            </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <FormControl fullWidth>
-                                <InputLabel>Seleccionar cliente</InputLabel>
-                                <Select
-                                    label="Seleccionar subcategoria"
-                                    //value={chartData.category}
-                                    onChange={(e)=>{
-                                        
-                                    }}
-                                >
-                                    <MenuItem>test</MenuItem>
-                            </Select>
-                            </FormControl>
-                        </Grid>
-                    </Grid>
-                </Paper>
-            </div>} */}
             {retract?
             (data?
             <div>
                 <table cellSpacing="0" cellPadding="0">
-                    <tr>
-                        <th style={{backgroundColor:'transparent'}}></th>
-                        <th style={{backgroundColor:'transparent'}}></th>
-                        <th colSpan={"2"} style={{backgroundColor:'#0070c0'}}>BASE</th>
-                        <th colSpan={"2"} style={{backgroundColor:'red'}}>PROMOCIÓN</th>
+                    <tr style={{position:'sticky', top:'0'}}>
+                        <th style={{backgroundColor:'#fff', height:'1.5em', position:'sticky', top:'0'}} className='sku-name'></th>
+                        <th style={{backgroundColor:'#fff', position:'sticky', top:'0', zIndex:'10000'}} className='sku-name'>test</th>
+                        <th colSpan={"2"} style={{backgroundColor:'#6fd1b0', color:'#000'}}>BASE</th>
+                        <th colSpan={"2"} style={{backgroundColor:'#ebce75', color:'#000'}}>PROMOCIÓN</th>
                         <th colSpan={"1"} className='spacer'>--</th>
                         <th colSpan={"2"}>GROSS SALES</th>
                         <th colSpan={"2"}>COND. COM.</th>
@@ -178,9 +109,9 @@ const TradeSpend = () => {
                         <th rowSpan={'2'}>ROI %</th>
                         <th rowSpan={'2'}>UPLIFT %</th>
                     </tr>
-                    <tr>
-                        <th style={{backgroundColor:'transparent'}}></th>
-                        <th style={{backgroundColor:'transparent'}}></th>
+                    <tr style={{position:'sticky', top:'1.5em'}}>
+                        <th style={{backgroundColor:'#fff', width:'100%', position:'sticky', top:'1.5em'}}></th>
+                        <th style={{backgroundColor:'#fff', width:'100%', position:'sticky', top:'1.5em', zIndex:'100'}} className='sku-name'></th>
                         <th className='sub'>Precio</th>
                         <th className='sub'>Volumen</th>
                         <th className='sub'>Precio</th>
@@ -197,38 +128,41 @@ const TradeSpend = () => {
                         <th className='sub'>Base</th>
                         <th className='sub'>Promo</th>
                     </tr>
-                    <tr>
-                        <td colSpan={2} style={{padding:'0 1em'}}>TOTAL AUTOSERVICIOS</td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td></td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td>00.00</td>
-                        <td>00.00</td>  
-                    </tr>
+                    {data.filter(i=>(i.id===0)).map((i)=>(
+                        <tr>
+                            <td></td>
+                            <td colSpan={1} style={{padding:'0 1em'}} className='sku-name'>TOTAL AUTOSERVICIOS</td>
+                            <td>{truncateNumber(i.values.base_price)}</td>
+                            <td>{truncateNumber(i.values.base_qty)}</td>
+                            <td>{truncateNumber(i.values.promo_price)}</td>
+                            <td>{truncateNumber(i.values.promo_qty)}</td>
+                            <td></td>
+                            <td>{truncateNumber(i.values.base_gross_sale)}</td>
+                            <td>{truncateNumber(i.values.promo_gross_sale)}</td>
+                            <td>{truncateNumber(i.values.base_commercial_cond)}</td>
+                            <td>{truncateNumber(i.values.promo_commercial_cond)}</td>
+                            <td colSpan={2} style={{textAlign:'right'}}>{truncateNumber(i.values.trade_spend)}</td>
+                            <td>{truncateNumber(i.values.base_net_sale)}</td>
+                            <td>{truncateNumber(i.values.promo_net_sale)}</td>
+                            <td>{truncateNumber(i.values.base_op)}</td>
+                            <td>{truncateNumber(i.values.promo_op)}</td>
+                            <td>{truncateNumber(i.values.roi)}</td>
+                            <td>{truncateNumber(i.values.uplift)}</td>  
+                        </tr>
+                    ))}
+                    
                     <tr>
                         <th style={{backgroundColor:'transparent'}}>--</th>
                     </tr>
 
                     {
-                        data.map((i, index)=>(
+                        data.filter(i=>(i.id!==0)).map((i, index)=>(
                             <>
                             <tr>
                                 <td rowSpan={`${i.skus.length+1}`} style={{borderBottom:'1px solid #a6a6a6'}}>
-                                    {/* {<div style={{width:'100%', padding: '1em', boxSizing:'border-box'}}>
-                                        <img src={wlogo} alt='' style={{width:'100%'}}/>
-                                    </div>} */}
+                                    <div style={{width:'100%', padding: '1em', boxSizing:'border-box'}}>
+                                        <img src={images[index]} alt='' style={{width:'100%'}}/>
+                                    </div>
                                     {i.name}
                                 </td>
                             </tr>
@@ -236,7 +170,7 @@ const TradeSpend = () => {
                                 i.skus.map((j, index0)=>(
                                     index0===(i.skus.length-1)?
                                     <tr>
-                                        <td style={{borderBottom:'1px solid #a6a6a6'}} className='sku-name'>{j.name}</td>
+                                        <td style={{borderBottom:'1px solid #a6a6a6', textAlign:'left'}} className='sku-name'>{j.name}</td>
                                         <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.base_price)}</td>
                                         <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.base_qty)}</td>
                                         <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.promo_price)}</td>
@@ -246,7 +180,7 @@ const TradeSpend = () => {
                                         <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.promo_gross_sale)}</td>
                                         <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.base_commercial_cond)}</td>
                                         <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.promo_commercial_cond)}</td>
-                                        <td style={{borderBottom:'1px solid #a6a6a6',textAlign:'right'}} colSpan={2}>{truncateNumber(j.trade_spend)}</td>
+                                        <td style={{borderBottom:'1px solid #a6a6a6', textAlign:'right'}} colSpan={2}>{truncateNumber(j.trade_spend)}</td>
                                         <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.base_net_sale)}</td>
                                         <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.promo_net_sale)}</td>
                                         <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.base_op)}</td>
@@ -256,7 +190,7 @@ const TradeSpend = () => {
                                     </tr>
                                     :
                                     <tr>
-                                        <td className='sku-name'>{truncateNumber(j.name)}</td>
+                                        <td className='sku-name' style={{textAlign:'left'}}>{j.name}</td>
                                         <td>{truncateNumber(j.base_price)}</td>
                                         <td>{truncateNumber(j.base_qty)}</td>
                                         <td>{truncateNumber(j.promo_price)}</td>
@@ -276,26 +210,6 @@ const TradeSpend = () => {
                                     </tr>
                                 ))
                             }
-                            {/* {<tr>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}} className='sku-name'>SKU 3</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}></td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>  
-                            </tr>} */}
                             </>
                         ))
                     }

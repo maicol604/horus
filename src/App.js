@@ -6,7 +6,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Header from './Containers/Header';
 
 import Categories from './Pages/Categories';
-import TradeSpend from './Pages/TradeSpend2';
+import TradeSpend from './Pages/TradeSpendMain';
 import Simulator from './Pages/Simulator';
 import Clients from './Pages/Clients';
 import PageConstution from './Pages/PageUnderConstruction';
