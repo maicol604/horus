@@ -1,11 +1,26 @@
 import React from 'react';
 import { styled as CustomStyle } from '@mui/material/styles';
 import styled from "styled-components";
+import Typography from '@mui/material/Typography';
 
 import MenuIcon from '@mui/icons-material/Menu';
 
 import logo from '../../Assets/Img/logo.png';
 import gear from '../../Assets/Img/P2.png';
+import banderaespania from '../../Assets/Img/espaniabandera.png'
+import banderausa from '../../Assets/Img/banderausa.png'
+import FolderIcon from '@mui/icons-material/Folder';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import initialIcon from '../../Assets/Img/17.png';
+import pricingIcon from '../../Assets/Img/18.png';
+import salesIcon from '../../Assets/Img/19.png';
+import forecastIcon from '../../Assets/Img/20.png';
+
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+
 
 const HomeHeaderWrapper = CustomStyle('div')(({ theme }) => ({
     backgroundColor: theme.palette.bg.main,
@@ -66,11 +81,18 @@ const HomeWrapper = styled.div`
         top: 40vh;
         width: 100vw;
         .option{
-            background-color: #fff;
-            border-radius: .5em;
+            background-color: #469378;
+            border-radius: 50%;
+            height: 150px;
             padding: 1.5em;
             flex: 0 1 auto;
             width: 10%;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            color: #fff;
+            box-shadow: 5px 5px 20px rgba(0,0,5,50);
             .option-icon{
 
                 img{
@@ -82,12 +104,14 @@ const HomeWrapper = styled.div`
                 font-weight: 600;
                 margin-bottom: 1em;
                 opacity: .75;
+                cursor: pointer;
             }
             .content{
                 ul{
                     margin: 0;
                     padding: 0;
                     li{
+                        font-family: 'Open Sans', sans-serif;
                         margin: 0;
                         padding: 0;
                         list-style: none;
@@ -123,102 +147,218 @@ const HomeWrapper = styled.div`
     }
 `;
 
-const Home = () => {
+const Home = ({ onChange }) => {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const [selectMenu, setSelectMenu] = React.useState(null);
+    const handleClick = (event) => {
+
+        setSelectMenu(event.target.id)
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const onChangepage = () => {
+    }
+
+
     return (
         <HomeWrapper>
             <HomeHeaderWrapper className='header'>
                 <div className='logo-container'>
-                    <img src={logo} alt=''/>
+                    {/** <img src={logo} alt=''/> */}
                 </div>
                 <div>
-                    <MenuIcon/>
+                    <MenuIcon style={{ cursor: 'pointer' }} onClick={handleClick} id='menu' />
+                    {
+                        selectMenu === 'menu' ?
+                            <Menu
+                                id="basic-menu"
+                                anchorEl={anchorEl}
+                                open={open}
+                                onClose={handleClose}
+                                MenuListProps={{
+                                    'aria-labelledby': 'basic-button',
+                                }}
+                            >
+                                <MenuItem onClick={handleClose}>
+                                    <ListItemIcon>
+                                        <img style={{ width: '20px' }} src={banderaespania} />
+                                    </ListItemIcon>
+                                    <Typography style={{ fontWeight: 'bold' }} >
+                                        Español
+                                    </Typography>
+                                </MenuItem>
+                                <MenuItem onClick={handleClose}>
+                                    <ListItemIcon>
+                                        <img style={{ width: '20px' }} src={banderausa} />
+                                    </ListItemIcon>
+                                    <Typography style={{ fontWeight: 'bold' }} >
+                                        Inglés
+                                    </Typography>
+                                </MenuItem>
+                            </Menu> : null
+                    }
+
                 </div>
             </HomeHeaderWrapper>
             <Divisor className='divisor'>
 
             </Divisor>
             <div className='welcome-text'>
-                <p>Hello! First of all, tell us,</p>
-                <p>what do you want to do today?</p>
+                <img src={logo} alt='' width={'250px'} />
+
             </div>
             <div className='options-container'>
 
                 <div className='option'>
                     <div className='option-icon'>
-                        <img src={gear} alt=''/>
+                        <img src={initialIcon} style={{ width: '75px' }} />
                     </div>
                     <div className='title'>
-                        Initial category set up
+                        <Typography style={{ fontWeight: 'bold' }} onClick={handleClick} id='Initial' >
+                            Initial category set up
+                        </Typography>
                     </div>
                     <div className='content'>
-                        <ul>
-                            <li>
-                                
-                            </li>
-                        </ul>
+                        {
+                            selectMenu === 'Initial' ?
+                                <Menu
+                                    id="basic-menu"
+                                    anchorEl={anchorEl}
+                                    open={open}
+                                    onClose={handleClose}
+                                    MenuListProps={{
+                                        'aria-labelledby': 'basic-button',
+                                    }}
+                                >
+                                    <MenuItem onClick={() => { onChange('1') }}>
+                                        <Typography style={{ fontWeight: 'bold' }} >
+                                            Carga de datos
+                                        </Typography>
+                                    </MenuItem>
+                                </Menu> : null
+                        }
+
                     </div>
                 </div>
 
                 <div className='option'>
                     <div className='option-icon'>
-                        <img src={gear} alt=''/>
+                        <img src={pricingIcon} style={{ width: '75px' }} />
+
                     </div>
-                    <div className='title'>
-                        Pricing Management
+                    <div className='title' >
+                        <Typography style={{ fontWeight: 'bold' }} onClick={handleClick} id='PricingManagement'>
+                            Pricing Management
+                        </Typography>
                     </div>
                     <div className='content'>
-                        <ul>
-                            <li>
-                                Lab
-                            </li>
-                            <li>
-                                Report Repository
-                            </li>
-                            <li>
-                                Pricing Architecture
-                            </li>
-                            <li>
-                                Relative Pricing Vs Competitors
-                            </li>
-                        </ul>
+                        {
+                            selectMenu === 'PricingManagement' ?
+                                <Menu
+                                    id="basic-menu"
+                                    anchorEl={anchorEl}
+                                    open={open}
+                                    onClose={handleClose}
+                                    MenuListProps={{
+                                        'aria-labelledby': 'basic-button',
+                                    }}
+                                >
+                                    <MenuItem onClick={() => { onChange('2') }}>
+                                        <Typography style={{ fontWeight: 'bold' }} >
+                                            Lab
+                                        </Typography>
+                                    </MenuItem>
+                                    <MenuItem onClick={handleClose}>
+                                        <Typography style={{ fontWeight: 'bold' }} >
+                                            Report repository
+                                        </Typography>
+                                    </MenuItem>
+                                </Menu> : null
+                        }
                     </div>
                 </div>
 
                 <div className='option'>
                     <div className='option-icon'>
-                        <img src={gear} alt=''/>
+                        <img src={salesIcon} style={{ width: '75px' }} />
                     </div>
-                    <div className='title'>
-                        Sales Planning
+                    <div className='title' >
+                        <Typography style={{ fontWeight: 'bold' }} onClick={handleClick} id='SalesPlanning' >
+                            Sales Planning
+                        </Typography>
                     </div>
                     <div className='content'>
-                        <ul>
-                            <li>
-                                Set up Retailers
-                            </li>
-                            <li>
-                                Promotion Planning
-                            </li>
-                            <li>
-                                Sell Out vs Sell In
-                            </li>
-                        </ul>
+                        {
+                            selectMenu === 'SalesPlanning' ?
+                                <Menu
+                                    id="basic-menu"
+                                    anchorEl={anchorEl}
+                                    open={open}
+                                    onClose={handleClose}
+                                    MenuListProps={{
+                                        'aria-labelledby': 'basic-button',
+                                    }}
+                                >
+                                    <MenuItem onClick={() => { onChange('4') }}>
+                                        <Typography style={{ fontWeight: 'bold' }} >
+                                            Setup retailers
+                                        </Typography>
+                                    </MenuItem>
+                                    <MenuItem onClick={() => { onChange('3') }}>
+                                        <Typography style={{ fontWeight: 'bold' }} >
+                                            Promotion Planning
+                                        </Typography>
+                                    </MenuItem>
+                                    <MenuItem onClick={handleClose}>
+                                        <Typography style={{ fontWeight: 'bold' }} >
+                                            Sell in vs Sell out
+                                        </Typography>
+                                    </MenuItem>
+                                </Menu> : null
+                        }
+
                     </div>
                 </div>
 
                 <div className='option'>
                     <div className='option-icon'>
-                        <img src={gear} alt=''/>
+                        <img src={forecastIcon} style={{ width: '75px' }} />
                     </div>
-                    <div className='title'>
-                        Forecasting
+                    <div className='title'  >
+                        <Typography style={{ fontWeight: 'bold' }} onClick={handleClick} id='Forecasting'>
+                            Forecasting
+                        </Typography>
                     </div>
                     <div className='content'>
-                        <ul>
-                            <li>
-                            
-                            </li>
-                        </ul>
+                        {
+                            selectMenu === 'Forecasting' ?
+                                <Menu
+                                    id="basic-menu"
+                                    anchorEl={anchorEl}
+                                    open={open}
+                                    onClose={handleClose}
+                                    MenuListProps={{
+                                        'aria-labelledby': 'basic-button',
+                                    }}
+                                >
+                                    <MenuItem onClick={handleClose}>
+                                        <Typography style={{ fontWeight: 'bold' }} >
+                                            Building blocks
+                                        </Typography>
+                                    </MenuItem>
+                                    <MenuItem onClick={handleClose}>
+                                        <Typography style={{ fontWeight: 'bold' }} >
+                                            Demand Planning
+                                        </Typography>
+                                    </MenuItem>
+
+
+                                </Menu> : null
+                        }
                     </div>
                 </div>
 

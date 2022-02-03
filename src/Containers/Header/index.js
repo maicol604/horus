@@ -21,16 +21,18 @@ const HeaderContainer = styled('div')(({ theme }) => ({
   
 
 const Header = ({onChange}) => {
-
     return (
         <>
             <HeaderContainer>
-                <div style={{filter:'invert(0)', width:'8em'}}><img src={logo} alt='' style={{width:'100%', height:'auto'}}/></div>
-                <div style={{display:'flex', color:'#fff'}}>
+                <div onClick={()=>{onChange('0')}} style={{filter:'invert(0)', width:'8em', cursor:'pointer'}}>
+                    <img src={logo} alt='' style={{width:'100%', height:'auto'}}/></div>
+             {/*   <div style={{display:'flex', color:'#fff'}}>
                     <div style={{marginRight:'2em', cursor:'pointer'}} onClick={()=>{onChange('1')}}>Carga de datos</div>
                     <div style={{marginRight:'2em', cursor:'pointer'}} onClick={()=>{onChange('2')}}>Laboratorio</div>
                     <div style={{cursor:'pointer'}} onClick={()=>{onChange('3')}}>Trade spend</div>
-                </div>
+                    <div style={{marginLeft:'2em',cursor:'pointer'}} onClick={()=>{onChange('4')}}>Clientes</div>
+
+                </div>*/}
             </HeaderContainer>
             <div style={{height:'6em'}}/>
         </>
