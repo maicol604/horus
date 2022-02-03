@@ -165,21 +165,18 @@ const TradeSpend = ({editable=true, data=null, onSimulate, loading, onPromoChang
                         </AccordionSummary>
                         <AccordionDetails>
                             <div style={{maxWidth:'100%', height: '40vh', overflow:'scroll', padding: '0em 0 1em 0', marginBottom: '1em'}}>
-                                <div style={{backgroundColor:'#fff', width:'min-content', position: 'absolute', top: '4.5em', height:'3em', left: 0, zIndex: 10}}>
-                                    <span style={{opacity:0}}>{new Array(Math.max(...j.skus.map(h=>h.name.length)) + 1).join( 'a' )}</span>
-                                    {/* {console.log(Math.max(...j.skus.map(h=>h.name.length)))} */}
-                                </div>
+                                
                                 <table cellSpacing="0" cellPadding="0">
                                     <tr>
-                                        <th></th>
-                                        <th></th>
+                                        <th style={{position:'sticky', left:'0', backgroundColor:'#fff', zIndex:'1', top:'0'}}></th>
+                                        <th style={{position:'sticky', left:`${Math.max(...j.skus.map(h=>h.name.length))/2-1.5}em`, backgroundColor:'#fff', zIndex:'1', top:'0'}}></th>
                                         <th colspan="12" className='curent-year' style={{position:'sticky', top: '0', height:'1.5em'}}>Año actual</th>
                                         <th></th>
                                         <th colspan="12" className='year' style={{position:'sticky', top: '0', height:'1.5em'}}>Año Siguente</th>
                                     </tr>
                                     <tr>
-                                        <th></th>
-                                        <th></th>
+                                        <th style={{position:'sticky', left:'0', backgroundColor:'#fff', width:'100%', zIndex:'1', top:'1.5em'}}></th>
+                                        <th style={{position:'sticky', left:`${Math.max(...j.skus.map(h=>h.name.length))/2-1.5}em`, backgroundColor:'#fff', width:'100%', zIndex:'1', top:'1.5em'}}></th>
                                         {
                                             data.periods.map((i,index)=>(
                                                 index!==11?<td style={{position:'sticky', top: '1.5em', backgroundColor:'#fff'}}>{i.date}</td>:<><td style={{position:'sticky', top: '1.5em', backgroundColor:'#fff'}}>{i.date}</td><td colspan="1" className='spacer' style={{position:'sticky', top: '1.5em'}}>--</td></>
@@ -190,7 +187,7 @@ const TradeSpend = ({editable=true, data=null, onSimulate, loading, onPromoChang
                                         j.skus.map((i, index)=>(
                                             <>
                                             <tr>
-                                                <td rowspan='3' style={{position:'sticky', left:'0', backgroundColor:'#fff'}}>{i.name==='total'?(`Total ${j.name}`):(i.name)}</td>
+                                                <td rowspan='3' style={{position:'sticky', left:'0', backgroundColor:'#fff', textAlign:'left'}}>{i.name==='total'?(`Total ${j.name}`):(i.name)}</td>
                                             </tr>
                                             <tr>
                                                 {i.values.map((k, count)=>{
@@ -214,7 +211,7 @@ const TradeSpend = ({editable=true, data=null, onSimulate, loading, onPromoChang
                                                                     editable?
                                                                     <input 
                                                                         disabled={!editable} 
-                                                                        style={{border:'0',backgroundColor:data.oldValues?(data.oldValues.table[index0].skus[index].promo_price!==k.promo_price?'#a9d08e':'#fff'):'#fff'}} 
+                                                                        style={{fontSize:'1em',border:'0',backgroundColor:data.oldValues?(data.oldValues.table[index0].skus[index].promo_price!==k.promo_price?'#a9d08e':'#fff'):'#fff'}} 
                                                                         defaultValue={truncateNumber(k.promo_price)} 
                                                                         onChange={(e)=>{onPromoChange(e.target.value, i.id, j.id, k.index)}} 
                                                                     />

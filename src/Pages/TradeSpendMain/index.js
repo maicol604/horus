@@ -44,7 +44,7 @@ const TradeSpendMain = () => {
             case 8:
                 return 'SEP'
             case 9:
-                return 'ACT'
+                return 'OCT'
             case 10:
                 return 'NOV'
             case 11:

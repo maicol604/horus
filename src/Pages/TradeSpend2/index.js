@@ -95,9 +95,9 @@ const TradeSpend = ({data, dataExpand}) => {
             (data?
             <div>
                 <table cellSpacing="0" cellPadding="0">
-                    <tr>
-                        <th style={{backgroundColor:'transparent'}} className='sku-name'></th>
-                        <th style={{backgroundColor:'#fff'}} className='sku-name'></th>
+                    <tr style={{position:'sticky', top:'0'}}>
+                        <th style={{backgroundColor:'#fff', height:'1.5em', position:'sticky', top:'0'}} className='sku-name'></th>
+                        <th style={{backgroundColor:'#fff', position:'sticky', top:'0', zIndex:'10000'}} className='sku-name'>test</th>
                         <th colSpan={"2"} style={{backgroundColor:'#6fd1b0', color:'#000'}}>BASE</th>
                         <th colSpan={"2"} style={{backgroundColor:'#ebce75', color:'#000'}}>PROMOCIÓN</th>
                         <th colSpan={"1"} className='spacer'>--</th>
@@ -109,9 +109,9 @@ const TradeSpend = ({data, dataExpand}) => {
                         <th rowSpan={'2'}>ROI %</th>
                         <th rowSpan={'2'}>UPLIFT %</th>
                     </tr>
-                    <tr>
-                        <th style={{backgroundColor:'transparent'}}></th>
-                        <th style={{backgroundColor:'#fff'}} className='sku-name'></th>
+                    <tr style={{position:'sticky', top:'1.5em'}}>
+                        <th style={{backgroundColor:'#fff', width:'100%', position:'sticky', top:'1.5em'}}></th>
+                        <th style={{backgroundColor:'#fff', width:'100%', position:'sticky', top:'1.5em', zIndex:'100'}} className='sku-name'></th>
                         <th className='sub'>Precio</th>
                         <th className='sub'>Volumen</th>
                         <th className='sub'>Precio</th>
@@ -170,7 +170,7 @@ const TradeSpend = ({data, dataExpand}) => {
                                 i.skus.map((j, index0)=>(
                                     index0===(i.skus.length-1)?
                                     <tr>
-                                        <td style={{borderBottom:'1px solid #a6a6a6'}} className='sku-name'>{j.name}</td>
+                                        <td style={{borderBottom:'1px solid #a6a6a6', textAlign:'left'}} className='sku-name'>{j.name}</td>
                                         <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.base_price)}</td>
                                         <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.base_qty)}</td>
                                         <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(j.promo_price)}</td>
@@ -190,7 +190,7 @@ const TradeSpend = ({data, dataExpand}) => {
                                     </tr>
                                     :
                                     <tr>
-                                        <td className='sku-name'>{truncateNumber(j.name)}</td>
+                                        <td className='sku-name' style={{textAlign:'left'}}>{j.name}</td>
                                         <td>{truncateNumber(j.base_price)}</td>
                                         <td>{truncateNumber(j.base_qty)}</td>
                                         <td>{truncateNumber(j.promo_price)}</td>
