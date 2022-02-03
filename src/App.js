@@ -9,6 +9,7 @@ import Categories from './Pages/Categories';
 import TradeSpend from './Pages/TradeSpend2';
 import Simulator from './Pages/Simulator';
 import Clients from './Pages/Clients';
+import PageConstution from './Pages/PageUnderConstruction';
 import Home from './Pages/Home';
 
 const theme = createTheme({
@@ -58,6 +59,12 @@ function App() {
     {
       renderView: <Clients />,
       view: '4'
+    },
+    {
+      renderView: <PageConstution onChange={(value) => {
+        setRender(value)
+      }} />,
+      view: '5'
     },
   ]
 

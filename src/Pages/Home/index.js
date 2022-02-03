@@ -248,7 +248,6 @@ const Home = ({ onChange }) => {
                 <div className='option'>
                     <div className='option-icon'>
                         <img src={pricingIcon} style={{ width: '75px' }} />
-
                     </div>
                     <div className='title' >
                         <Typography style={{ fontWeight: 'bold' }} onClick={handleClick} id='PricingManagement'>
@@ -272,7 +271,7 @@ const Home = ({ onChange }) => {
                                             Lab
                                         </Typography>
                                     </MenuItem>
-                                    <MenuItem onClick={handleClose}>
+                                    <MenuItem onClick={() => { onChange('5') }}>
                                         <Typography style={{ fontWeight: 'bold' }} >
                                             Report repository
                                         </Typography>
@@ -313,7 +312,7 @@ const Home = ({ onChange }) => {
                                             Promotion Planning
                                         </Typography>
                                     </MenuItem>
-                                    <MenuItem onClick={handleClose}>
+                                    <MenuItem onClick={() => { onChange('5') }}>
                                         <Typography style={{ fontWeight: 'bold' }} >
                                             Sell in vs Sell out
                                         </Typography>
@@ -345,18 +344,16 @@ const Home = ({ onChange }) => {
                                         'aria-labelledby': 'basic-button',
                                     }}
                                 >
-                                    <MenuItem onClick={handleClose}>
+                                    <MenuItem onClick={() => { onChange('5') }}>
                                         <Typography style={{ fontWeight: 'bold' }} >
                                             Building blocks
                                         </Typography>
                                     </MenuItem>
-                                    <MenuItem onClick={handleClose}>
+                                    <MenuItem onClick={() => { onChange('5') }}>
                                         <Typography style={{ fontWeight: 'bold' }} >
                                             Demand Planning
                                         </Typography>
                                     </MenuItem>
-
-
                                 </Menu> : null
                         }
                     </div>
