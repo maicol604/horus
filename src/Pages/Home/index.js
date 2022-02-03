@@ -361,7 +361,7 @@ const Home = ({ onChange }) => {
                     Copyright © 2021-2022 Forecasting Lab
                 </div>
             </div>
-            <div style={{display: 'flex', justifyContent:'flex-end', width:'150px', height:'150px', position:'absolute',  bottom: '2em', right: '10px'}} >
+            <div style={{display: 'flex', justifyContent:'flex-end', width:'150px', height:'150px', position:'absolute',  bottom: '2.2em', right: '10px'}} >
              <img src={plankton} alt='' style={{ width: '250px', height:'150px' }} /> 
             </div> 
         </HomeWrapper>
