@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/horus/static/css/main.3c766e2a.chunk.css",
-    "main.js": "/horus/static/js/main.8879ff6a.chunk.js",
-    "main.js.map": "/horus/static/js/main.8879ff6a.chunk.js.map",
+    "main.js": "/horus/static/js/main.4204606c.chunk.js",
+    "main.js.map": "/horus/static/js/main.4204606c.chunk.js.map",
     "runtime-main.js": "/horus/static/js/runtime-main.a3b3583b.js",
     "runtime-main.js.map": "/horus/static/js/runtime-main.a3b3583b.js.map",
     "static/css/2.b065e2c3.chunk.css": "/horus/static/css/2.b065e2c3.chunk.css",
@@ -44,6 +44,7 @@
     "static/media/client (7).fd4da7b9.jpeg": "/horus/static/media/client (7).fd4da7b9.jpeg",
     "static/media/client (8).f87aba15.jpeg": "/horus/static/media/client (8).f87aba15.jpeg",
     "static/media/eye.f958bf8c.png": "/horus/static/media/eye.f958bf8c.png",
+    "static/media/forecasting.b02334da.png": "/horus/static/media/forecasting.b02334da.png",
     "static/media/horus.a67137fc.svg": "/horus/static/media/horus.a67137fc.svg",
     "static/media/logo.a2ef798e.png": "/horus/static/media/logo.a2ef798e.png",
     "static/media/plakton.3dabd9e0.png": "/horus/static/media/plakton.3dabd9e0.png",
@@ -54,6 +55,6 @@
     "static/css/2.b065e2c3.chunk.css",
     "static/js/2.0a01935f.chunk.js",
     "static/css/main.3c766e2a.chunk.css",
-    "static/js/main.8879ff6a.chunk.js"
+    "static/js/main.4204606c.chunk.js"
   ]
 }
