@@ -9,7 +9,18 @@ import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
 import SpeedDial from '../../Components/SpeedDial';
 
+import img1 from '../../Assets/Img/clients/client (1).jpeg';
+import img2 from '../../Assets/Img/clients/client (2).jpeg';
+import img3 from '../../Assets/Img/clients/client (3).jpeg';
+import img4 from '../../Assets/Img/clients/client (4).jpeg';
+import img5 from '../../Assets/Img/clients/client (5).jpeg';
+import img6 from '../../Assets/Img/clients/client (6).jpeg';
+import img7 from '../../Assets/Img/clients/client (7).jpeg';
+import img8 from '../../Assets/Img/clients/client (8).jpeg';
 import wlogo from '../../Assets/Img/test-logo.png';
+
+const images = [img6, img2, img3, img7, img8, img1, img5, img4];
+
 
 const TableWrapper = styled.div`
     position: relative;
@@ -87,8 +98,8 @@ const TradeSpend = ({data, dataExpand}) => {
                     <tr>
                         <th style={{backgroundColor:'transparent'}} className='sku-name'></th>
                         <th style={{backgroundColor:'#fff'}} className='sku-name'></th>
-                        <th colSpan={"2"} style={{backgroundColor:'#0070c0'}}>BASE</th>
-                        <th colSpan={"2"} style={{backgroundColor:'red'}}>PROMOCIÓN</th>
+                        <th colSpan={"2"} style={{backgroundColor:'#6fd1b0', color:'#000'}}>BASE</th>
+                        <th colSpan={"2"} style={{backgroundColor:'#ebce75', color:'#000'}}>PROMOCIÓN</th>
                         <th colSpan={"1"} className='spacer'>--</th>
                         <th colSpan={"2"}>GROSS SALES</th>
                         <th colSpan={"2"}>COND. COM.</th>
@@ -149,9 +160,9 @@ const TradeSpend = ({data, dataExpand}) => {
                             <>
                             <tr>
                                 <td rowSpan={`${i.skus.length+1}`} style={{borderBottom:'1px solid #a6a6a6'}}>
-                                    {/* {<div style={{width:'100%', padding: '1em', boxSizing:'border-box'}}>
-                                        <img src={wlogo} alt='' style={{width:'100%'}}/>
-                                    </div>} */}
+                                    <div style={{width:'100%', padding: '1em', boxSizing:'border-box'}}>
+                                        <img src={images[index]} alt='' style={{width:'100%'}}/>
+                                    </div>
                                     {i.name}
                                 </td>
                             </tr>

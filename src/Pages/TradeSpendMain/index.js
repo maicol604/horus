@@ -13,6 +13,8 @@ const TradeSpendMain = () => {
     const [data2, setData2] = React.useState(null);
     const [simulationData, setSimulationData] = React.useState(null);
 
+    const [opened, setOpened] = React.useState({});
+
     const [auth, setAuth] = React.useState({
         access_token:null
     });
@@ -47,6 +49,8 @@ const TradeSpendMain = () => {
                 return 'NOV'
             case 11:
                 return 'DIC'
+            default:
+                return ''
     }
     }
 
@@ -191,6 +195,16 @@ const TradeSpendMain = () => {
                             onPromoChange={onPromoChange}
                             loading={loading}
                             promo={Object.keys(promo).length>0}
+                            onChangeAccordion={(panel)=>{
+                                let auxOpened = opened;
+                                let flag=true;
+
+                                auxOpened = {...auxOpened, [`${panel}`]:{open: (auxOpened[panel]?!auxOpened[panel].open:flag), id: panel}};
+                                
+                                //console.log(auxOpened)
+                                setOpened(auxOpened);
+                            }}
+                            opened={opened}
                         />
                     </>
                 )
@@ -203,6 +217,16 @@ const TradeSpendMain = () => {
                             onSimulate={()=>getSimulation(auth.access_token)}
                             onPromoChange={onPromoChange}
                             loading={loading}
+                            onChangeAccordion={(panel)=>{
+                                let auxOpened = opened;
+                                let flag=true;
+
+                                auxOpened = {...auxOpened, [`${panel}`]:{open: (auxOpened[panel]?!auxOpened[panel].open:flag), id: panel}};
+                                
+                                //console.log(auxOpened)
+                                setOpened(auxOpened);
+                            }}
+                            opened={opened}
                         />
                     </>
                 )

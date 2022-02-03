@@ -17,6 +17,17 @@ import Button from '@mui/material/Button';
 import PsychologyIcon from '@mui/icons-material/Psychology';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
+import img1 from '../../Assets/Img/clients/client (1).jpeg';
+import img2 from '../../Assets/Img/clients/client (2).jpeg';
+import img3 from '../../Assets/Img/clients/client (3).jpeg';
+import img4 from '../../Assets/Img/clients/client (4).jpeg';
+import img5 from '../../Assets/Img/clients/client (5).jpeg';
+import img6 from '../../Assets/Img/clients/client (6).jpeg';
+import img7 from '../../Assets/Img/clients/client (7).jpeg';
+import img8 from '../../Assets/Img/clients/client (8).jpeg';
+
+const images = [img6, img2, img3, img7, img8, img1, img5, img4];
+
 const TableWrapper = styled.div`
     padding: 2em;
     table{
@@ -33,10 +44,10 @@ const TableWrapper = styled.div`
             }
         }
         .curent-year{
-            background-color: #ffc000;
+            background-color: #6fd1b0;
         }
         .year{
-            background-color: #9bc2e6;
+            background-color: #ebce75;
         }
         .spacer{
             opacity: 0;
@@ -49,7 +60,7 @@ const TableWrapper = styled.div`
     }
 `;
 
-const TradeSpend = ({editable=true, data=null, onSimulate, loading, onPromoChange, promo}) => {
+const TradeSpend = ({editable=true, data=null, onSimulate, loading, onPromoChange, promo, onChangeAccordion, opened}) => {
 
     const truncateNumber = (number) => {
         try{
@@ -58,6 +69,12 @@ const TradeSpend = ({editable=true, data=null, onSimulate, loading, onPromoChang
         catch{
           return (number)
         }
+    }
+
+    const searchOpen = (id) => {
+        if(!opened[id])
+            return false;
+        return opened[id].open;
     }
 
     return (
@@ -129,15 +146,21 @@ const TradeSpend = ({editable=true, data=null, onSimulate, loading, onPromoChang
             }
             {
                 !data.table?
-                <></>
+                <></>   
                 :
                 data.table.map((j,index0)=>(
-                    <Accordion>
+                    <Accordion
+                        expanded={searchOpen(index0)}
+                        onChange={(e)=>{
+                            onChangeAccordion(index0, e)
+                        }}
+                        style={{marginBottom: '.5em'}}
+                    >
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                         >
                             <div style={{display:'flex', alignItems:'center'}}>
-                                <span>imagen</span><span style={{marginLeft:'1em'}}>{j.name}</span>
+                                <span><img src={images[index0]} style={{width: '5em'}}/></span><span style={{marginLeft:'1em'}}>{j.name}</span>
                             </div>
                         </AccordionSummary>
                         <AccordionDetails>
@@ -186,10 +209,15 @@ const TradeSpend = ({editable=true, data=null, onSimulate, loading, onPromoChang
                                                     return (
                                                         <>
                                                             {count===0?<td style={{position:'sticky', left:`${Math.max(...j.skus.map(h=>h.name.length))/2-1.5}em`, backgroundColor:'#fff'}}>PROMO</td>:<></>}
-                                                            <td /*key={k.promo_price}*/style={{backgroundColor:data.oldValues?(data.oldValues.table[index0].skus[index].promo_price!==k.promo_price?'#a9d08e':'#fff'):'#fff', padding: '0 1.5em'}}>
+                                                            <td /*key={k.promo_price}*/style={{backgroundColor:(k.promo_qty!==k.base_qty)?'#a9d08e':'#fff', padding: '0 1.5em'}}>
                                                                 {
                                                                     editable?
-                                                                    <input disabled={!editable} style={{border:'0',backgroundColor:data.oldValues?(data.oldValues.table[index0].skus[index].promo_price!==k.promo_price?'#a9d08e':'#fff'):'#fff'}} defaultValue={truncateNumber(k.promo_price)} onChange={(e)=>{onPromoChange(e.target.value, i.id, j.id, count)}} />
+                                                                    <input 
+                                                                        disabled={!editable} 
+                                                                        style={{border:'0',backgroundColor:data.oldValues?(data.oldValues.table[index0].skus[index].promo_price!==k.promo_price?'#a9d08e':'#fff'):'#fff'}} 
+                                                                        defaultValue={truncateNumber(k.promo_price)} 
+                                                                        onChange={(e)=>{onPromoChange(e.target.value, i.id, j.id, k.index)}} 
+                                                                    />
                                                                     :
                                                                     truncateNumber(k.promo_qty)
                                                                 }
