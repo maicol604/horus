@@ -49,7 +49,7 @@ import OptimalPrices from '../OptimalPrices';
 
 import bg1 from '../../Assets/Img/1.svg';
 import bg2 from '../../Assets/Img/P3.png';
-import bg3 from '../../Assets/Img/P2.png';
+import bg3 from '../../Assets/Img/forecasting.png';
 
 import pie1 from '../../Assets/Img/13.png';
 import pie2 from '../../Assets/Img/11.png';
@@ -2532,10 +2532,10 @@ export default () => {
         )
       default:
         return (
-          <Grid container alignItems='flex-start' spacing={3}>
-            <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '10vh'}}>
-              <div style={{width:'40vw', filter: 'saturate(1)', opacity:'1'}}>
-                <img src={bg3} alt='' style={{width:'100%'}}/>
+          <Grid container alignItems='flex-start' spacing={3}  style={{backgroundColor:'#fff'}}>
+            <Grid item xs={12} style={{display: 'flex', justifyContent:'center', marginTop: '10vh', backgroundColor:'#fff'}}>
+              <div style={{width:'40vw', filter: 'saturate(1)', opacity:'1', backgroundColor:'#fff'} }>
+                <img src={bg3} alt='' style={{width:'100%', filter:'invert(100%)'}}/>
               </div>
             </Grid>
           </Grid>
