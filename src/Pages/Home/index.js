@@ -9,12 +9,11 @@ import logo from '../../Assets/Img/logo.png';
 import gear from '../../Assets/Img/P2.png';
 import banderaespania from '../../Assets/Img/espaniabandera.png'
 import banderausa from '../../Assets/Img/banderausa.png'
-import FolderIcon from '@mui/icons-material/Folder';
-import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import initialIcon from '../../Assets/Img/17.png';
 import pricingIcon from '../../Assets/Img/18.png';
 import salesIcon from '../../Assets/Img/19.png';
 import forecastIcon from '../../Assets/Img/20.png';
+import plankton from '../../Assets/Img/plakton.png';
 
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
@@ -159,10 +158,6 @@ const Home = ({ onChange }) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
-
-    const onChangepage = () => {
-    }
-
 
     return (
         <HomeWrapper>
@@ -360,11 +355,15 @@ const Home = ({ onChange }) => {
                 </div>
 
             </div>
+            
             <div className='footer'>
                 <div>
                     Copyright © 2021-2022 Forecasting Lab
                 </div>
             </div>
+            <div style={{display: 'flex', justifyContent:'flex-end', width:'150px', height:'150px', position:'absolute',  bottom: '2em', right: '10px'}} >
+             <img src={plankton} alt='' style={{ width: '250px', height:'150px' }} /> 
+            </div> 
         </HomeWrapper>
     )
 }
