@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/horus/static/css/main.3c766e2a.chunk.css",
-    "main.js": "/horus/static/js/main.2da6685a.chunk.js",
-    "main.js.map": "/horus/static/js/main.2da6685a.chunk.js.map",
+    "main.js": "/horus/static/js/main.7188b244.chunk.js",
+    "main.js.map": "/horus/static/js/main.7188b244.chunk.js.map",
     "runtime-main.js": "/horus/static/js/runtime-main.a3b3583b.js",
     "runtime-main.js.map": "/horus/static/js/runtime-main.a3b3583b.js.map",
     "static/css/2.b065e2c3.chunk.css": "/horus/static/css/2.b065e2c3.chunk.css",
@@ -55,6 +55,6 @@
     "static/css/2.b065e2c3.chunk.css",
     "static/js/2.f250c678.chunk.js",
     "static/css/main.3c766e2a.chunk.css",
-    "static/js/main.2da6685a.chunk.js"
+    "static/js/main.7188b244.chunk.js"
   ]
 }
