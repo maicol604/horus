@@ -26,6 +26,12 @@ const TableWrapper = styled.div`
     position: relative;
     //height: 10em;
     //overflow: scroll;
+    margin-top: 5em;
+    .expanded{
+        td:nth-child(even){
+            background-color: #ededed;
+        }
+    }
     table{
         th{
             text-transform: uppercase;
@@ -46,7 +52,7 @@ const TableWrapper = styled.div`
             background-color: #ffc000;
         }
         .year{
-            background-color: #9bc2e6;
+            background-color: #6fd1b0;
         }
         .spacer{
             opacity: 0;
@@ -62,6 +68,7 @@ const TableWrapper = styled.div`
             left: 0;
             background-color: #fff;
             z-index: 1;
+            text-align: left;
         }
         .sub{
             background-color: #fff;
@@ -76,7 +83,7 @@ const TableWrapper = styled.div`
     }
 `;
 
-const TradeSpend = ({data, dataExpand}) => {
+const TradeSpend = ({data, dataExpand, retract=true}) => {
 
     const truncateNumber = (number) => {
         try{
@@ -86,8 +93,37 @@ const TradeSpend = ({data, dataExpand}) => {
           return (number)
         }
     }
-
-    const [retract, setRetract] = React.useState(true);
+    
+    const getMonthName = (month) => {
+        switch(month){
+            case 0:
+                return 'ENE'
+            case 1:
+                return 'FEB'
+            case 2:
+                return 'MAR'
+            case 3:
+                return 'ABR'
+            case 4:
+                return 'MAY'
+            case 5:
+                return 'JUN'
+            case 6:
+                return 'JUL'
+            case 7:
+                return 'AGO'
+            case 8:
+                return 'SEP'
+            case 9:
+                return 'OCT'
+            case 10:
+                return 'NOV'
+            case 11:
+                return 'DIC'
+            default:
+                return ''
+        }
+    }
 
     return (
         <TableWrapper>
@@ -218,62 +254,157 @@ const TradeSpend = ({data, dataExpand}) => {
             :<></>
             )
             :
-            <div style={{position:'relative'}}>
+            (dataExpand?
+            <div className={'expanded'} style={{position:'relative'}}>
                 <table cellSpacing="0" cellPadding="0">
                     <tr>
-                        <th colSpan={2} className='sku-name'></th>  
-                        <th colSpan={"4"} className='header'>Enero</th>
-                        <th colSpan={"4"} className='header'>Febrero</th>
+                        <th colSpan={2} className='sku-name' style={{backgroundColor:'#fff', top:'0', zIndex:'100'}}></th>  
+                        
+                        {
+                            dataExpand[0].skus[0].values.map((i, index)=>(
+                                <th colSpan={4} className='header'>{getMonthName(new Date(i.date).getMonth())}</th>
+                            ))
+                        }
                         <th colSpan={"1"} className='spacer'>--</th>
-                        <th colSpan={"4"} className='header' style={{backgroundColor:'#ffe699', color:'#000'}}>GROSS SALES</th>
+                        <th colSpan={dataExpand[0].skus[0].values.length*2} className='header' style={{backgroundColor:'#ffe699', color:'#000'}}>GROSS SALES</th>
                         <th colSpan={"1"} className='spacer'>--</th>
-                        <th colSpan={"4"} className='header' style={{backgroundColor:'#ffe699', color:'#000'}}>COND. COM.</th>
+                        <th colSpan={dataExpand[0].skus[0].values.length*2} className='header' style={{backgroundColor:'#ffe699', color:'#000'}}>COND. COM.</th>
                         <th colSpan={"1"} className='spacer'>--</th>
-                        <th colSpan={"4"} className='header' style={{backgroundColor:'#ffe699', color:'#000'}}>TRADE SPEND</th>
+                        <th colSpan={dataExpand[0].skus[0].values.length*2} className='header' style={{backgroundColor:'#ffe699', color:'#000'}}>TRADE SPEND</th>
+                        <th colSpan={"1"} className='spacer'>--</th>
+                        <th colSpan={dataExpand[0].skus[0].values.length*2} className='header' style={{backgroundColor:'#ffe699', color:'#000'}}>NET SALES</th>
+                        <th colSpan={"1"} className='spacer'>--</th>
+                        <th colSpan={dataExpand[0].skus[0].values.length*2} className='header' style={{backgroundColor:'#ffe699', color:'#000'}}>OP</th>
+                        <th colSpan={"1"} className='spacer'>--</th>
+                        <th colSpan={dataExpand[0].skus[0].values.length} className='header' style={{backgroundColor:'#ffe699', color:'#000'}}>ROI %</th>
+                        <th colSpan={"1"} className='spacer'>--</th>
+                        <th colSpan={dataExpand[0].skus[0].values.length} className='header' style={{backgroundColor:'#ffe699', color:'#000'}}>UPLIFT %</th>
                     </tr>
                     <tr>
-                        <th colSpan={2} className='sku-name'></th>
-                        <th colSpan={"2"} className='header' style={{backgroundColor:'#9bc2e6', color:'#000', top:'1.5em'}}>BASE</th>
-                        <th colSpan={"2"} className='header' style={{backgroundColor:'red', top:'1.5em'}}>PROMOCIÓN</th>
-                        <th colSpan={"2"} className='header' style={{backgroundColor:'#9bc2e6', color:'#000', top:'1.5em'}}>BASE</th>
-                        <th colSpan={"2"} className='header' style={{backgroundColor:'red', top:'1.5em'}}>PROMOCIÓN</th>
+                        <th colSpan={2} className='sku-name' style={{backgroundColor:'#fff', top:'1.5em', zIndex:'100'}}></th>
+                        {
+                            dataExpand[0].skus[0].values.map((i, index)=>(
+                                <>
+                                    <th colSpan={"2"} className='header' style={{backgroundColor:'#6fd1b0', color:'#000', top:'1.5em'}}>BASE</th>
+                                    <th colSpan={"2"} className='header' style={{backgroundColor:'#ebce75', top:'1.5em'}}>PROMOCIÓN</th>
+                                </>
+                            ))
+                        }
                         <th style={{backgroundColor:'transparent'}}></th>
-                        <th colSpan={"2"} className='header' style={{backgroundColor:'#fff', color:'#000', top:'1.5em'}}>Enero</th>
-                        <th colSpan={"2"} className='header' style={{backgroundColor:'#fff', color:'#000', top:'1.5em'}}>Febrero</th>
+                        {
+                            dataExpand[0].skus[0].values.map((i, index)=>(
+                                <th colSpan={"2"} className='header' style={{backgroundColor:'#fff', color:'#000', top:'1.5em'}}>{getMonthName(new Date(i.date).getMonth())}</th>
+                            ))
+                        }
                         <th style={{backgroundColor:'transparent'}}></th>
-                        <th colSpan={"2"} className='header' style={{backgroundColor:'#fff', color:'#000', top:'1.5em'}}>Enero</th>
-                        <th colSpan={"2"} className='header' style={{backgroundColor:'#fff', color:'#000', top:'1.5em'}}>Febrero</th>
+                        {
+                            dataExpand[0].skus[0].values.map((i, index)=>(
+                                <th colSpan={"2"} className='header' style={{backgroundColor:'#fff', color:'#000', top:'1.5em'}}>{getMonthName(new Date(i.date).getMonth())}</th>
+                            ))
+                        }
                         <th style={{backgroundColor:'transparent'}}></th>
-                        <th colSpan={"2"} className='header' style={{backgroundColor:'#fff', color:'#000', top:'1.5em'}}>Enero</th>
-                        <th colSpan={"2"} className='header' style={{backgroundColor:'#fff', color:'#000', top:'1.5em'}}>Febrero</th>
+                        {
+                            dataExpand[0].skus[0].values.map((i, index)=>(
+                                <th colSpan={"2"} className='header' style={{backgroundColor:'#fff', color:'#000', top:'1.5em'}}>{getMonthName(new Date(i.date).getMonth())}</th>
+                            ))
+                        }
+                        <th style={{backgroundColor:'transparent'}}></th>
+                        {
+                            dataExpand[0].skus[0].values.map((i, index)=>(
+                                <th colSpan={"2"} className='header' style={{backgroundColor:'#fff', color:'#000', top:'1.5em'}}>{getMonthName(new Date(i.date).getMonth())}</th>
+                            ))
+                        }
+                        <th style={{backgroundColor:'transparent'}}></th>
+                        {
+                            dataExpand[0].skus[0].values.map((i, index)=>(
+                                <th colSpan={"2"} className='header' style={{backgroundColor:'#fff', color:'#000', top:'1.5em'}}>{getMonthName(new Date(i.date).getMonth())}</th>
+                            ))
+                        }
+                        <th style={{backgroundColor:'transparent'}}></th>
+                        {
+                            dataExpand[0].skus[0].values.map((i, index)=>(
+                                <th colSpan={"1"} className='header' style={{backgroundColor:'#fff', color:'#000', top:'1.5em'}}>{getMonthName(new Date(i.date).getMonth())}</th>
+                            ))
+                        }
+                        <th style={{backgroundColor:'transparent'}}></th>
+                        {
+                            dataExpand[0].skus[0].values.map((i, index)=>(
+                                <th colSpan={"1"} className='header' style={{backgroundColor:'#fff', color:'#000', top:'1.5em'}}>{getMonthName(new Date(i.date).getMonth())}</th>
+                            ))
+                        }
                     </tr>
                     <tr>
-                        <th colSpan={2} className='sku-name'></th>
-                        <th className='sub' className='header' style={{top:'3em'}}>Precio</th>
-                        <th className='sub' className='header' style={{top:'3em'}}>Volumen</th>
-                        <th className='sub' className='header' style={{top:'3em'}}>Precio</th>
-                        <th className='sub' className='header' style={{top:'3em'}}>Volumen</th>
-                        <th className='sub' className='header' style={{top:'3em'}}>Precio</th>
-                        <th className='sub' className='header' style={{top:'3em'}}>Volumen</th>
-                        <th className='sub' className='header' style={{top:'3em'}}>Precio</th>
-                        <th className='sub' className='header' style={{top:'3em'}}>Volumen</th>
+                        <th colSpan={2} className='sku-name' style={{backgroundColor:'#fff', top:'3em', zIndex:'100'}}></th>
+                        
+                        {
+                            dataExpand[0].skus[0].values.map((i, index)=>(
+                                <>
+                                    <th className='sub' className='header' style={{top:'3em'}}>Precio</th>
+                                    <th className='sub' className='header' style={{top:'3em'}}>Volumen</th>
+                                </>
+                            ))
+                        }
+                        
+                        {
+                            dataExpand[0].skus[0].values.map((i, index)=>(
+                                <>
+                                    <th className='sub' className='header' style={{top:'3em'}}>Precio</th>
+                                    <th className='sub' className='header' style={{top:'3em'}}>Volumen</th>
+                                </>
+                            ))
+                        }
                         <th className='sub' style={{backgroundColor:'transparent'}}></th>
-                        <th className='sub' className='header' style={{backgroundColor:'#9bc2e6', top:'3em'}}>Base</th>
-                        <th className='sub' className='header' style={{backgroundColor:'red', color:'#fff', top:'3em'}}>Promo</th>
-                        <th className='sub' className='header' style={{backgroundColor:'#9bc2e6', top:'3em'}}>Base</th>
-                        <th className='sub' className='header' style={{backgroundColor:'red', color:'#fff', top:'3em'}}>Promo</th>
-                        <th className='sub' className='header' style={{backgroundColor:'transparent'}}></th>
-                        <th className='sub' className='header' style={{backgroundColor:'#9bc2e6', top:'3em'}}>Base</th>
-                        <th className='sub' className='header' style={{backgroundColor:'red', color:'#fff', top:'3em'}}>Promo</th>
-                        <th className='sub' className='header' style={{backgroundColor:'#9bc2e6', top:'3em'}}>Base</th>
-                        <th className='sub' className='header' style={{backgroundColor:'red', color:'#fff', top:'3em'}}>Promo</th>
-                        <th className='sub' className='header' style={{backgroundColor:'transparent'}}></th>
-                        <th className='sub' className='header' style={{backgroundColor:'#9bc2e6', top:'3em'}}>Base</th>
-                        <th className='sub' className='header' style={{backgroundColor:'red', color:'#fff', top:'3em'}}>Promo</th>
-                        <th className='sub' className='header' style={{backgroundColor:'#9bc2e6', top:'3em'}}>Base</th>
-                        <th className='sub' className='header' style={{backgroundColor:'red', color:'#fff', top:'3em'}}>Promo</th>
+                        {
+                            dataExpand[0].skus[0].values.map((i, index)=>(
+                                <>
+                                    <th className='sub' className='header' style={{backgroundColor:'#6fd1b0', top:'3em'}}>Base</th>
+                                    <th className='sub' className='header' style={{backgroundColor:'#ebce75', color:'#fff', top:'3em'}}>Promo</th>
+                                </>
+                            ))
+                        }
+                        <th className='sub' style={{backgroundColor:'transparent'}}></th>
+                        {
+                            dataExpand[0].skus[0].values.map((i, index)=>(
+                                <>
+                                    <th className='sub' className='header' style={{backgroundColor:'#6fd1b0', top:'3em'}}>Base</th>
+                                    <th className='sub' className='header' style={{backgroundColor:'#ebce75', color:'#fff', top:'3em'}}>Promo</th>
+                                </>
+                            ))
+                        }
+                        <th className='sub' style={{backgroundColor:'transparent'}}></th>
+                        {
+                            dataExpand[0].skus[0].values.map((i, index)=>(
+                                <>
+                                    <th className='sub' className='header' style={{backgroundColor:'#6fd1b0', top:'3em'}}>Base</th>
+                                    <th className='sub' className='header' style={{backgroundColor:'#ebce75', color:'#fff', top:'3em'}}>Promo</th>
+                                </>
+                            ))
+                        }
+                        <th className='sub' style={{backgroundColor:'transparent'}}></th>
+                        {
+                            dataExpand[0].skus[0].values.map((i, index)=>(
+                                <>
+                                    <th className='sub' className='header' style={{backgroundColor:'#6fd1b0', top:'3em'}}>Base</th>
+                                    <th className='sub' className='header' style={{backgroundColor:'#ebce75', color:'#fff', top:'3em'}}>Promo</th>
+                                </>
+                            ))
+                        }
+                        <th className='sub' style={{backgroundColor:'transparent'}}></th>
+                        {
+                            dataExpand[0].skus[0].values.map((i, index)=>(
+                                <>
+                                    <th className='sub' className='header' style={{backgroundColor:'#6fd1b0', top:'3em'}}>Base</th>
+                                    <th className='sub' className='header' style={{backgroundColor:'#ebce75', color:'#fff', top:'3em'}}>Promo</th>
+                                </>
+                            ))
+                        }
+                        <th className='sub' style={{backgroundColor:'transparent'}}></th>
+                        <th className='sub' style={{backgroundColor:'transparent'}}></th>
                     </tr>
                     <tr>
+                        <th style={{backgroundColor:'transparent'}}>--</th>
+                    </tr>
+                    {/* {<tr>
                         <td colSpan={2} style={{padding:'0 1em'}} className='sku-name'></td>
                         <td>00.00</td>
                         <td>00.00</td>
@@ -300,96 +431,173 @@ const TradeSpend = ({data, dataExpand}) => {
                         <td>00.00</td>  
                     </tr>
                     <tr>
-                        <td className='sku-name' colSpan={2}>SKU 1</td>
                         <th style={{backgroundColor:'transparent'}}>--</th>
-                    </tr>
+                    </tr>} */}
 
                     {
-                        [1,2,3,4,5,6,7,8].map((i, index)=>(
+                        dataExpand.filter(i=>(i.id!==0)).map((j, index0)=>(
                             <>
-                            <tr>
-                                <td className='sku-name' colSpan={2}>SKU 1</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td></td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td></td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>  
-                                <td></td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>  
-                            </tr>
-                            <tr>
-                                <td className='sku-name' colSpan={2}>SKU 2</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td></td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td></td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>  
-                                <td></td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>
-                                <td>00.00</td>  
-                            </tr>
-                            <tr>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}} className='sku-name' colSpan={2}>SKU 3</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}></td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}></td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td> 
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}></td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>
-                                <td style={{borderBottom:'1px solid #a6a6a6'}}>00.00</td>  
-                            </tr>
+                            {j.skus.filter(i=>(i.id!==0)).map((i, index)=>(
+                                <>
+                                {index!==(j.skus.length-2)?
+                                <tr>
+                                    <td className='sku-name' colSpan={2}>{i.name}</td>
+                                    {
+                                        i.values.map((k, index1)=>(
+                                            <>
+                                                <td>{truncateNumber(k.base_price)}</td> 
+                                                <td>{truncateNumber(k.base_qty)}</td> 
+                                                <td>{truncateNumber(k.promo_price)}</td> 
+                                                <td>{truncateNumber(k.promo_qty)}</td> 
+                                            </>
+                                        ))
+                                    }
+                                    <td></td>
+                                    {
+                                        i.values.map((k, index1)=>(
+                                            <>
+                                                <td>{truncateNumber(k.base_gross_sale)}</td> 
+                                                <td>{truncateNumber(k.promo_gross_sale)}</td> 
+                                            </>
+                                        ))
+                                    }
+                                    <td></td>
+                                    {
+                                        i.values.map((k, index1)=>(
+                                            <>
+                                                <td>{truncateNumber(k.base_commercial_cond)}</td> 
+                                                <td>{truncateNumber(k.promo_commercial_cond)}</td> 
+                                            </>
+                                        ))
+                                    }
+                                    <td></td>
+                                    {
+                                        i.values.map((k, index1)=>(
+                                            <>
+                                                <td colSpan={2} style={{textAlign:'right'}}>{truncateNumber(k.trade_spend)}</td> 
+                                            </>
+                                        ))
+                                    }
+                                    <td></td>
+                                    {
+                                        i.values.map((k, index1)=>(
+                                            <>
+                                                <td>{truncateNumber(k.base_net_sale)}</td> 
+                                                <td>{truncateNumber(k.promo_net_sale)}</td> 
+                                            </>
+                                        ))
+                                    }
+                                    <td></td>
+                                    {
+                                        i.values.map((k, index1)=>(
+                                            <>
+                                                <td>{truncateNumber(k.base_op)}</td> 
+                                                <td>{truncateNumber(k.promo_op)}</td> 
+                                            </>
+                                        ))
+                                    }
+                                    <td></td>
+                                    {
+                                        i.values.map((k, index1)=>(
+                                            <>
+                                                <td>{truncateNumber(k.roi)}</td> 
+                                            </>
+                                        ))
+                                    }
+                                    <td></td>
+                                    {
+                                        i.values.map((k, index1)=>(
+                                            <>
+                                                <td>{truncateNumber(k.uplift)}</td> 
+                                            </>
+                                        ))
+                                    }
+                                </tr>
+                                :
+                                <tr>
+                                    <td style={{borderBottom:'1px solid #a6a6a6'}} className='sku-name' colSpan={2}>{i.name}</td>
+                                    {
+                                        i.values.map((k, index1)=>(
+                                            <>
+                                                <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(k.base_price)}</td> 
+                                                <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(k.base_qty)}</td> 
+                                                <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(k.promo_price)}</td> 
+                                                <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(k.promo_qty)}</td> 
+                                            </>
+                                        ))
+                                    }
+                                    <td style={{borderBottom:'1px solid #a6a6a6'}}></td>
+                                    {
+                                        i.values.map((k, index1)=>(
+                                            <>
+                                                <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(k.base_gross_sale)}</td> 
+                                                <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(k.promo_gross_sale)}</td> 
+                                            </>
+                                        ))
+                                    }
+                                    <td style={{borderBottom:'1px solid #a6a6a6'}}></td>
+                                    {
+                                        i.values.map((k, index1)=>(
+                                            <>
+                                                <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(k.base_commercial_cond)}</td> 
+                                                <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(k.promo_commercial_cond)}</td> 
+                                            </>
+                                        ))
+                                    }
+                                    <td style={{borderBottom:'1px solid #a6a6a6'}}></td>
+                                    {
+                                        i.values.map((k, index1)=>(
+                                            <>
+                                                <td colSpan={2} style={{borderBottom:'1px solid #a6a6a6', textAlign:'right'}}>{truncateNumber(k.trade_spend)}</td> 
+                                            </>
+                                        ))
+                                    }
+                                    <td style={{borderBottom:'1px solid #a6a6a6'}}></td>
+                                    {
+                                        i.values.map((k, index1)=>(
+                                            <>
+                                                <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(k.base_net_sale)}</td> 
+                                                <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(k.promo_net_sale)}</td> 
+                                            </>
+                                        ))
+                                    }
+                                    <td style={{borderBottom:'1px solid #a6a6a6'}}></td>
+                                    {
+                                        i.values.map((k, index1)=>(
+                                            <>
+                                                <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(k.base_op)}</td> 
+                                                <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(k.promo_op)}</td> 
+                                            </>
+                                        ))
+                                    }
+                                    <td style={{borderBottom:'1px solid #a6a6a6'}}></td>
+                                    {
+                                        i.values.map((k, index1)=>(
+                                            <>
+                                                <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(k.roi)}</td> 
+                                            </>
+                                        ))
+                                    }
+                                    <td style={{borderBottom:'1px solid #a6a6a6'}}></td>
+                                    {
+                                        i.values.map((k, index1)=>(
+                                            <>
+                                                <td style={{borderBottom:'1px solid #a6a6a6'}}>{truncateNumber(k.uplift)}</td> 
+                                            </>
+                                        ))
+                                    }
+                                </tr>
+                                }
+                                </>
+                            ))}
                             </>
                         ))
                     }
                 </table>
             </div>
+            :
+            <></>
+            )
             }
             <div style={{position:'fixed', right:'1em', bottom:'1em'}}>
                 <SpeedDial/>

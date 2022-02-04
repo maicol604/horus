@@ -4,6 +4,7 @@ import TradeSpend1 from '../TradeSpend';
 import TradeSpend2 from '../TradeSpend2';
 import Tabs from '../../Components/Tabs';
 import Loader from '../../Components/Loader';
+import Button from '@mui/material/Button';
 
 const TradeSpendMain = () => {
 
@@ -11,6 +12,7 @@ const TradeSpendMain = () => {
     
     const [data, setData] = React.useState(null);
     const [data2, setData2] = React.useState(null);
+    const [data3, setData3] = React.useState(null);
     const [simulationData, setSimulationData] = React.useState(null);
 
     const [opened, setOpened] = React.useState({});
@@ -114,6 +116,7 @@ const TradeSpendMain = () => {
             //console.log('trade simulacion',{...result.data, periods, oldValues:data})
             setSimulationData({...result.data, periods, oldValues:data});
             getValues2(t, result.data);
+            getValues3(t, result.data);
             //setData({...result.data, periods, oldValues:data});
             setOption(1);
         })
@@ -182,6 +185,34 @@ const TradeSpendMain = () => {
 
     }
 
+    const getValues3 = (t, values) => {
+        let url = `https://pricing.demo4to.com/api/trade.spend.values/get_expanded_p_l?access-token=${t}&start_period=1&end_period=23`;
+
+        //&values=${JSON.stringify(values)}
+
+        //console.log(JSON.stringify(values))
+
+        let requestOptions = {
+            method: 'GET',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+        };
+    
+        fetch(url, requestOptions)
+        .then(response => response.json())
+        .then(result => {
+            console.log('get_expanded_p_l',result)
+            if(result.type!=="Exception")
+                setData3(result.data);
+        })
+        .catch(error => {
+            console.log('get_expanded_p_l', error);
+        });
+
+    }
+
+    const [expand, setExpand] = React.useState(false);
+
     const getContent = (op) => {
         //console.log('sw data',data)
         switch(op){
@@ -232,10 +263,45 @@ const TradeSpendMain = () => {
                 )
             case 2:
                 return (
-                    <div style={{width:'100%', overflow:'auto', height:'70vh'}}>
-                        <TradeSpend2
-                            data={data2}
-                        />
+                    <div>
+                        {data2?
+                            <div style={{textAlign:'left', padding:'1em 0'}}>
+                                {!expand?
+                                    <Button 
+                                        color="primary" 
+                                        variant='contained'
+                                        onClick={()=>{
+                                            setExpand(true)
+                                        }}
+                                    >
+                                        Expandir
+                                    </Button>
+                                :
+                                    <Button 
+                                        color="primary" 
+                                        variant='contained'
+                                        onClick={()=>{
+                                            setExpand(false)
+                                        }}
+                                    >
+                                        Contraer
+                                    </Button>
+                                }
+                                
+                            </div>
+                            :
+                            <></>
+                        }
+                        <div style={{width:'100%', overflow:'auto', height:'70vh'}}>
+                            <TradeSpend2
+                                data={data2}
+                                dataExpand={data3}
+                                retract={!expand}
+                                onClick={()=>{
+
+                                }}
+                            />
+                        </div>
                     </div>
                 )
             default:
