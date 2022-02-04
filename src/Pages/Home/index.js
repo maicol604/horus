@@ -146,7 +146,7 @@ const HomeWrapper = styled.div`
     }
 `;
 
-const Home = ({ onChange }) => {
+const Home = ({ onChange,toChange,toLab }) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const [selectMenu, setSelectMenu] = React.useState(null);
@@ -158,6 +158,12 @@ const Home = ({ onChange }) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const onToLab = (value) => {
+         onChange('2');
+         toChange(true)
+         }
+
 
     return (
         <HomeWrapper>
@@ -229,7 +235,8 @@ const Home = ({ onChange }) => {
                                         'aria-labelledby': 'basic-button',
                                     }}
                                 >
-                                    <MenuItem onClick={() => { onChange('1') }}>
+                                    <MenuItem onClick={() => { onChange('1');
+                                                               toChange(false) }}>
                                         <Typography style={{ fontWeight: 'bold' }} >
                                             Carga de datos
                                         </Typography>
@@ -261,7 +268,10 @@ const Home = ({ onChange }) => {
                                         'aria-labelledby': 'basic-button',
                                     }}
                                 >
-                                    <MenuItem onClick={() => { onChange('2') }}>
+                                    <MenuItem onClick={()=> {
+                                        onChange('2');
+                                        toChange(true)
+                                    }}>
                                         <Typography style={{ fontWeight: 'bold' }} >
                                             Lab
                                         </Typography>
@@ -297,17 +307,23 @@ const Home = ({ onChange }) => {
                                         'aria-labelledby': 'basic-button',
                                     }}
                                 >
-                                    <MenuItem onClick={() => { onChange('4') }}>
+                                    <MenuItem onClick={() => { onChange('4') 
+                                    toChange(false) }}>
                                         <Typography style={{ fontWeight: 'bold' }} >
                                             Setup retailers
                                         </Typography>
                                     </MenuItem>
-                                    <MenuItem onClick={() => { onChange('3') }}>
+                                    <MenuItem onClick={() => { onChange('3') 
+                                                              toChange(false)
+                                                          }}>
                                         <Typography style={{ fontWeight: 'bold' }} >
                                             Promotion Planning
                                         </Typography>
                                     </MenuItem>
-                                    <MenuItem onClick={() => { onChange('5') }}>
+                                    <MenuItem onClick={() => {
+                                         onChange('5')
+                                         toChange(false)
+                                         }}>
                                         <Typography style={{ fontWeight: 'bold' }} >
                                             Sell in vs Sell out
                                         </Typography>
@@ -339,12 +355,18 @@ const Home = ({ onChange }) => {
                                         'aria-labelledby': 'basic-button',
                                     }}
                                 >
-                                    <MenuItem onClick={() => { onChange('5') }}>
+                                    <MenuItem onClick={() => { 
+                                        onChange('5') 
+                                        toChange(false)
+                                        }}>
                                         <Typography style={{ fontWeight: 'bold' }} >
                                             Building blocks
                                         </Typography>
                                     </MenuItem>
-                                    <MenuItem onClick={() => { onChange('5') }}>
+                                    <MenuItem onClick={() => { 
+                                          onChange('5')
+                                          toChange(false)
+                                     }}>
                                         <Typography style={{ fontWeight: 'bold' }} >
                                             Demand Planning
                                         </Typography>

@@ -36,11 +36,19 @@ const theme = createTheme({
 function App() {
 
   const [render, setRender] = React.useState('0')
+  const [toLab, setTolab] = React.useState(false)
   const options = [
     {
-      renderView: <Home onChange={(value) => {
+      renderView: <Home 
+      onChange={(value) => {
         setRender(value)
-      }} />,
+      }}
+      toChange={(value) => {
+        setTolab(value)
+      }}
+      toLab={toLab}
+      
+       />,
       view: '0'
     },
     {
@@ -49,7 +57,8 @@ function App() {
       view: '1'
     },
     {
-      renderView: <Simulator />,
+      renderView: <Simulator
+      />,
       view: '2'
     },
     {
@@ -64,12 +73,18 @@ function App() {
       renderView: <PageConstution 
       onChange={(value) => {
         setRender(value)
-      }} />,
+      }}
+      toChange={(value) => {
+        setTolab(value)
+      }}
+      toLab={toLab}
+      />,
       view: '5'
     },
   ]
+ 
 
-  console.log(render)
+  console.log('header',toLab)
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
@@ -80,6 +95,8 @@ function App() {
             onChange={(value) => {
               setRender(value)
             }}
+            toLab={toLab}
+
           />
         }
 
