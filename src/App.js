@@ -61,7 +61,8 @@ function App() {
       view: '4'
     },
     {
-      renderView: <PageConstution onChange={(value) => {
+      renderView: <PageConstution 
+      onChange={(value) => {
         setRender(value)
       }} />,
       view: '5'
@@ -74,7 +75,8 @@ function App() {
       <ThemeProvider theme={theme}>
         {
           render !== '0' &&
-          <Header
+          <Header 
+          render={render}
             onChange={(value) => {
               setRender(value)
             }}

@@ -60,7 +60,8 @@ function NewClients({ onNextPage }) {
             display: 'flex',
             flex: 1,
             alignContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
+            marginTop: '50px'
         }}>
 
             <Grid
@@ -72,7 +73,7 @@ function NewClients({ onNextPage }) {
                 md={12} >
 
                 <Grid item xs={12}>
-                    <Typography variant='h2'>Carga de Clientes</Typography>
+                    <Typography variant='h5'>Carga de Clientes</Typography>
                 </Grid>
 
                 <Grid item xs={12} md={6}>
