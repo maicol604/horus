@@ -236,7 +236,7 @@ const OptimalPrices = ({token}) => {
         let url;
         //console.log(subcategory!=='Todas')
         if(subcategory!=='Todas'){
-            console.log('here')
+            console.log('here 1')
             url = "https://pricing.demo4to.com/api/pricing.sku.subcategory/"+subcategory+"/get_month_table?access-token="+token+"&month="+month;
         }
         else{
@@ -449,7 +449,7 @@ const OptimalPrices = ({token}) => {
                                     cpy[1] = {...cpy[1], value:e.target.value};
                                     setChartData({...chartData, enviroment:cpy});
                                 }}
-                                value={chartData.enviroment[1].value}
+                                value={''}
                                 disabled={!chartData.data}
                             />
                         </Grid>
@@ -464,7 +464,7 @@ const OptimalPrices = ({token}) => {
                                     cpy[0] = {...cpy[0], value:e.target.value};
                                     setChartData({...chartData, enviroment:cpy});
                                 }}
-                                value={chartData.enviroment[0].value}
+                                value={''}
                                 disabled={!chartData.data}
                             />
                         </Grid>

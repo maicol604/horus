@@ -92,7 +92,7 @@ const HorusChart = ({categories=[], subcategories=[], skus=[], brands=[]}) => {
     }
 
     React.useEffect(()=>{
-        ////console.log(categories)
+        console.log('horus chart',categories, subcategories, skus, brands)
         let newSettings = [];
         for(let i=0;i<categories.length;i++){
             for(let j=0;j<subcategories.length;j++){
