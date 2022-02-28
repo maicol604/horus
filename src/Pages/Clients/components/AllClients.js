@@ -87,7 +87,7 @@ function AllClients({ onPreviusPage }) {
 
     return (
         <div style={{ marginTop: '50px', marginLeft: '40px', marginRight: '20px', gap: '15px' }}>
-            <h2> Carga de datos</h2>
+            <Typography variant='h5'>Carga de datos</Typography>
             {clients.length === 0 ?
                 <div>Cargando clientes...</div> : (
                     <div style={{ width: '350px' }}>
