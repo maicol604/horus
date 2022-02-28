@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/horus/static/css/main.3c766e2a.chunk.css",
-    "main.js": "/horus/static/js/main.7188b244.chunk.js",
-    "main.js.map": "/horus/static/js/main.7188b244.chunk.js.map",
-    "runtime-main.js": "/horus/static/js/runtime-main.a3b3583b.js",
-    "runtime-main.js.map": "/horus/static/js/runtime-main.a3b3583b.js.map",
+    "main.js": "/horus/static/js/main.e28e57c4.chunk.js",
+    "main.js.map": "/horus/static/js/main.e28e57c4.chunk.js.map",
+    "runtime-main.js": "/horus/static/js/runtime-main.dfd05cc0.js",
+    "runtime-main.js.map": "/horus/static/js/runtime-main.dfd05cc0.js.map",
     "static/css/2.b065e2c3.chunk.css": "/horus/static/css/2.b065e2c3.chunk.css",
-    "static/js/2.f250c678.chunk.js": "/horus/static/js/2.f250c678.chunk.js",
-    "static/js/2.f250c678.chunk.js.map": "/horus/static/js/2.f250c678.chunk.js.map",
-    "static/js/3.890640a7.chunk.js": "/horus/static/js/3.890640a7.chunk.js",
-    "static/js/3.890640a7.chunk.js.map": "/horus/static/js/3.890640a7.chunk.js.map",
+    "static/js/2.1635cec2.chunk.js": "/horus/static/js/2.1635cec2.chunk.js",
+    "static/js/2.1635cec2.chunk.js.map": "/horus/static/js/2.1635cec2.chunk.js.map",
+    "static/js/3.b8465d28.chunk.js": "/horus/static/js/3.b8465d28.chunk.js",
+    "static/js/3.b8465d28.chunk.js.map": "/horus/static/js/3.b8465d28.chunk.js.map",
     "static/js/4.f50d5232.chunk.js": "/horus/static/js/4.f50d5232.chunk.js",
     "static/js/4.f50d5232.chunk.js.map": "/horus/static/js/4.f50d5232.chunk.js.map",
     "index.html": "/horus/index.html",
     "static/css/2.b065e2c3.chunk.css.map": "/horus/static/css/2.b065e2c3.chunk.css.map",
     "static/css/main.3c766e2a.chunk.css.map": "/horus/static/css/main.3c766e2a.chunk.css.map",
-    "static/js/2.f250c678.chunk.js.LICENSE.txt": "/horus/static/js/2.f250c678.chunk.js.LICENSE.txt",
-    "static/js/3.890640a7.chunk.js.LICENSE.txt": "/horus/static/js/3.890640a7.chunk.js.LICENSE.txt",
+    "static/js/2.1635cec2.chunk.js.LICENSE.txt": "/horus/static/js/2.1635cec2.chunk.js.LICENSE.txt",
+    "static/js/3.b8465d28.chunk.js.LICENSE.txt": "/horus/static/js/3.b8465d28.chunk.js.LICENSE.txt",
     "static/js/4.f50d5232.chunk.js.LICENSE.txt": "/horus/static/js/4.f50d5232.chunk.js.LICENSE.txt",
     "static/media/1.831c2464.svg": "/horus/static/media/1.831c2464.svg",
     "static/media/1.bc51c0be.png": "/horus/static/media/1.bc51c0be.png",
@@ -51,10 +51,10 @@
     "static/media/test-logo.09716089.png": "/horus/static/media/test-logo.09716089.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.a3b3583b.js",
+    "static/js/runtime-main.dfd05cc0.js",
     "static/css/2.b065e2c3.chunk.css",
-    "static/js/2.f250c678.chunk.js",
+    "static/js/2.1635cec2.chunk.js",
     "static/css/main.3c766e2a.chunk.css",
-    "static/js/main.7188b244.chunk.js"
+    "static/js/main.e28e57c4.chunk.js"
   ]
 }
